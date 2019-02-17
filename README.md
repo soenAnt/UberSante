@@ -14,8 +14,6 @@ The clinic has a __capacity of 5 medical rooms__, and there are __7 assigned doc
 
 Made by: 
 
-//add your ids below and delete this line after
-
 Antoine Betenjaneh 27161956
 
 Scott Bouchard 26251625
