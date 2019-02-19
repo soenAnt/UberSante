@@ -6,7 +6,7 @@ import java.time.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "appointment")
+@Table(name = "appointments")
 public class Appointment {
 
 	@Id @GeneratedValue
