@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="..\Static\Register.css">
     <meta charset="UTF-8">
     <title>Register</title>
 </head>
 <body>
-<form>
+<form id="checkform">
     <div class="container">
         <h1>Uber Sante</h1>
         <h2>Register</h2>
@@ -20,6 +24,7 @@
         <input type="text" placeholder="Enter Last Name" name="lastname" required>
 
         <label class="email"><b>Email</b></label>
+        <span class="msg error">Not a valid email address</span>
         <input type="text" placeholder="Enter Email" name="email" required>
 
         <label class="genderlb"><b>Gender</b></label>
@@ -41,15 +46,16 @@
         <input type="text" placeholder="Enter Address" name="address" required>
 
         <label class="pass"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
+        <input type="password" placeholder="Enter Password" id="password" required>
 
         <label class="repeatpass"><b>Repeat Password</b></label>
-        <input type="password" placeholder="Repeat Password" name="repeatpass" required>
+        <input type="password" placeholder="Repeat Password" id="repeatpass" required>
 
         <div>
             <button type="submit" class="registerbtn">Register</button>
         </div>
     </div>
 </form>
+<script src="..\Static\Register.js" type="text/javascript"></script>
 </body>
 </html>

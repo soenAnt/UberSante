@@ -11,6 +11,15 @@ label{
 display: block;
 }
 
+span{
+display:block;
+}
+
+.msg {
+    display: none;
+    color: red;
+}
+
 input[type=text]:focus, input[type=password]:focus {
   background-color: #ddd;
   outline: none;
@@ -28,7 +37,7 @@ hr {
   margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 27%;
+  width: 25%;
   opacity: 0.9;
 }
 
