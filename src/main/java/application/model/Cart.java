@@ -1,4 +1,4 @@
-package model;
+package application.model;
 
 import javax.persistence.*;
 import java.time.*;

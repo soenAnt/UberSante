@@ -1,7 +1,6 @@
-package model;
+package application.model;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.time.*;
 import org.springframework.format.annotation.DateTimeFormat;
 

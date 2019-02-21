@@ -1,21 +1,15 @@
-package model;
+package application.model;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "doctors")
-public class Doctor {
+public class Doctor extends User{
 
 	@Id @GeneratedValue
 	@Column(name = "doctorId")
 	private int doctorId;
-	
-	@Column(name = "firstName")
-	private String firstName;
-	
-	@Column(name = "lastName")
-	private String lastName;
-	
+
 	@Column(name = "specailty")
 	private String specailty;
 	
@@ -25,19 +19,15 @@ public class Doctor {
 	@Column(name = "physicianPermitNumber")
 	private int physicianPermitNumber;
 	
-	@Column(name = "password")
-	private String password;
+
 
 	public Doctor(int doctorId, String firstName, String lastName, String specailty, String city,
-			int physicianPermitNumber, String password) {
-		
+			int physicianPermitNumber, String password, String userType) {
+		super(firstName, lastName, password, userType);
 		this.doctorId = doctorId;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.specailty = specailty;
 		this.city = city;
 		this.physicianPermitNumber = physicianPermitNumber;
-		this.password = password;
 	}
 
 	public int getDoctorId() {
@@ -48,21 +38,6 @@ public class Doctor {
 		this.doctorId = doctorId;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	public String getSpecailty() {
 		return specailty;
@@ -88,12 +63,5 @@ public class Doctor {
 		this.physicianPermitNumber = physicianPermitNumber;
 	}
 
-	public String getPassword() {
-		return password;
-	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
 }

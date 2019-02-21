@@ -1,10 +1,10 @@
-package model;
+package application.model;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "nurses")
-public class Nurse {
+public class Nurse extends User{
 
 	@Id @GeneratedValue
 	@Column(name = "nurseId")
@@ -12,15 +12,11 @@ public class Nurse {
 	
 	@Column(name = "accessId")
 	private String accessId;
-	
-	@Column(name = "password")
-	private String password;
 
-	public Nurse(int nurseId, String accessId, String password) {
-		
+	public Nurse(String firstName,String lastName, int nurseId, String accessId, String password, String userType) {
+		super(firstName, lastName, password, userType);
 		this.nurseId = nurseId;
 		this.accessId = accessId;
-		this.password = password;
 	}
 
 	public int getNurseId() {
@@ -39,11 +35,5 @@ public class Nurse {
 		this.accessId = accessId;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 }

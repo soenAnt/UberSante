@@ -1,4 +1,4 @@
-package model;
+package application.model;
 
 import javax.persistence.*;
 
@@ -6,16 +6,10 @@ import java.util.Date;
 
 @Entity
 @Table(name = "patients")
-public class Patient {
+public class Patient extends User{
 	@Id @GeneratedValue
 	@Column(name = "patientId")
 	private int patientId;
-	
-	@Column(name = "firstName")
-	private String firstName;
-	
-	@Column(name = "lastName")
-	private String lastName;
 	
 	@Column(name = "healthCardNumber")
 	private String healthCardNumber;
@@ -35,21 +29,17 @@ public class Patient {
 	@Column(name = "address")
 	private String address;
 	
-	@Column(name = "password")
-	private String password;
 	
 	public Patient(int patientId, String firstName, String lastName, String healthCardNumber, Date birthday, char gender,
-			int phoneNumber, String email, String address, String password) {
+			int phoneNumber, String email, String address, String password, String userType) {
+		super(firstName, lastName, password, userType);
 		this.patientId = patientId;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.healthCardNumber = healthCardNumber;
 		this.birthday = birthday;
 		this.gender = gender;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.address = address;
-		this.password = password;
 	}
 	
 	public int getPatientId() {
@@ -58,18 +48,7 @@ public class Patient {
 	public void setPatientId(int patientId) {
 		this.patientId = patientId;
 	}
-	public String getfirstName() {
-		return firstName;
-	}
-	public void setfirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getlastName() {
-		return lastName;
-	}
-	public void setlastName(String lastName) {
-		this.lastName = lastName;
-	}
+
 	public String gethealthCardNumber() {
 		return healthCardNumber;
 	}
@@ -106,11 +85,6 @@ public class Patient {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+
 
 }
