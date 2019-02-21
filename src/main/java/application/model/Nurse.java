@@ -6,25 +6,19 @@ import javax.persistence.*;
 @Table(name = "nurses")
 public class Nurse extends User{
 
-	@Id @GeneratedValue
-	@Column(name = "nurseId")
-	private int nurseId;
+	@Id
+	private int userId;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId
+	private User user;
 	
 	@Column(name = "accessId")
 	private String accessId;
 
-	public Nurse(String firstName,String lastName, int nurseId, String accessId, String password, String userType) {
+	public Nurse(String firstName,String lastName, String accessId, String password, String userType) {
 		super(firstName, lastName, password, userType);
-		this.nurseId = nurseId;
 		this.accessId = accessId;
-	}
-
-	public int getNurseId() {
-		return nurseId;
-	}
-
-	public void setNurseId(int nurseId) {
-		this.nurseId = nurseId;
 	}
 
 	public String getAccessId() {

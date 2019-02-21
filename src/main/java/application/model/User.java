@@ -1,13 +1,15 @@
 package application.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User {
-	
+
+	@Id @GeneratedValue
+	@Column(name = "userId")
+    private int userId;
+
 	@Column(name = "firstName")
 	private String firstName;
 	
@@ -26,8 +28,15 @@ public class User {
 		this.password = password;
 		this.userType = userType;
 	}
-	
-	
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -60,6 +69,4 @@ public class User {
 		this.userType = userType;
 	}
 
-	
-	
 }

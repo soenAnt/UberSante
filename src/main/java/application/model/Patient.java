@@ -7,9 +7,13 @@ import java.util.Date;
 @Entity
 @Table(name = "patients")
 public class Patient extends User{
-	@Id @GeneratedValue
-	@Column(name = "patientId")
-	private int patientId;
+
+    @Id
+    private int userId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private User user;
 	
 	@Column(name = "healthCardNumber")
 	private String healthCardNumber;
@@ -30,10 +34,9 @@ public class Patient extends User{
 	private String address;
 	
 	
-	public Patient(int patientId, String firstName, String lastName, String healthCardNumber, Date birthday, char gender,
+	public Patient(String firstName, String lastName, String healthCardNumber, Date birthday, char gender,
 			int phoneNumber, String email, String address, String password, String userType) {
 		super(firstName, lastName, password, userType);
-		this.patientId = patientId;
 		this.healthCardNumber = healthCardNumber;
 		this.birthday = birthday;
 		this.gender = gender;
@@ -41,18 +44,11 @@ public class Patient extends User{
 		this.email = email;
 		this.address = address;
 	}
-	
-	public int getPatientId() {
-		return patientId;
-	}
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
-	}
 
-	public String gethealthCardNumber() {
+	public String getHealthCardNumber() {
 		return healthCardNumber;
 	}
-	public void sethealthCardNumber(String healthCardNumber) {
+	public void setHealthCardNumber(String healthCardNumber) {
 		this.healthCardNumber = healthCardNumber;
 	}
 	public Date getBirthday() {
@@ -67,10 +63,10 @@ public class Patient extends User{
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
-	public int getphoneNumber() {
+	public int getPhoneNumber() {
 		return phoneNumber;
 	}
-	public void setphoneNumber(int phoneNumber) {
+	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 	public String getEmail() {

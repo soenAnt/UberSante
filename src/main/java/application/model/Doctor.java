@@ -6,12 +6,15 @@ import javax.persistence.*;
 @Table(name = "doctors")
 public class Doctor extends User{
 
-	@Id @GeneratedValue
-	@Column(name = "doctorId")
-	private int doctorId;
+	@Id
+    private int userId;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId
+	private User user;
 
-	@Column(name = "specailty")
-	private String specailty;
+	@Column(name = "specialty")
+	private String specialty;
 	
 	@Column(name = "city")
 	private String city;
@@ -21,30 +24,21 @@ public class Doctor extends User{
 	
 
 
-	public Doctor(int doctorId, String firstName, String lastName, String specailty, String city,
+	public Doctor(String firstName, String lastName, String specialty, String city,
 			int physicianPermitNumber, String password, String userType) {
 		super(firstName, lastName, password, userType);
-		this.doctorId = doctorId;
-		this.specailty = specailty;
+		this.specialty = specialty;
 		this.city = city;
 		this.physicianPermitNumber = physicianPermitNumber;
 	}
 
-	public int getDoctorId() {
-		return doctorId;
+
+	public String getSpecialty() {
+		return specialty;
 	}
 
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
-	}
-
-
-	public String getSpecailty() {
-		return specailty;
-	}
-
-	public void setSpecailty(String specailty) {
-		this.specailty = specailty;
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
 	}
 
 	public String getCity() {
