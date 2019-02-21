@@ -1,74 +1,90 @@
-INSERT IGNORE INTO patients VALUES (1, 'Boris', 'Fitzgerald', '1959-12-21', 'M', '514-344-9140',
-'boris_the_goat@gmail.com', '2345 Mcintosh Street S8D 2L3, Montreal QC.', 'BORF 1145 1180', 'goat360');
-INSERT IGNORE INTO patients VALUES (2, 'Felix', 'Roscinante', '1980-05-05', 'M', '514-370-7785',
-'felix77@gmail.com', '5989 Elway Street H2S 1K9, Montreal QC.', 'FELR 0022 2765', 'pass123');
-INSERT IGNORE INTO patients VALUES (3, 'Alicia', 'Mayoris', '1996-04-15', 'F', '438-560-2021',
-'alimay@gmail.com', '349 Durbians Avenue F8T 1H4, Montreal QC.', 'ALIM 7135 1854', 'osmosis');
-INSERT IGNORE INTO patients VALUES (4, 'Jerome', 'Damien', '1990-10-10', 'M', '514-612-5527',
-'JeromeD@dayrep.com', '3326 De la Providence Avenue J8H 2J7, Montreal QC.', 'JERD 4485 1200', 'toothpaste');
-INSERT IGNORE INTO patients VALUES (5, 'Matthew', 'Colson', '1984-07-23', 'M', '438-955-6541',
-'angel-lessons@outlook.com', '1544 Victoria Park Ave M2J 3T7, Montreal QC.', 'MATC 4888 7556', 'goawayhackers');
+INSERT IGNORE INTO users VALUES (1, 'Boris', 'Fitzgerald','goat360', 'patient');
+INSERT IGNORE INTO users VALUES (2, 'Felix', 'Roscinante','pass123', 'patient');
+INSERT IGNORE INTO users VALUES (3, 'Alicia', 'Mayoris','osmosis', 'patient');
+INSERT IGNORE INTO users VALUES (4, 'Jerome', 'Damien', 'toothpaste', 'patient');
+INSERT IGNORE INTO users VALUES (5, 'Matthew', 'Colson','goawayhackers', 'patient');
+INSERT IGNORE INTO users VALUES (6, 'Claire', 'Titheradge','cardioc', 'doctor');
+INSERT IGNORE INTO users VALUES (7, 'Mikayla', 'Borella','mikay01', 'doctor');
+INSERT IGNORE INTO users VALUES (8, 'William', 'Petchy','doctor123', 'doctor');
+INSERT IGNORE INTO users VALUES (9, 'Sean', 'Pocock','marcopolo', 'doctor');
+INSERT IGNORE INTO users VALUES (10, 'Lara', 'Mingay','crying2019', 'doctor');
+INSERT IGNORE INTO users VALUES (11, 'Matilda', 'Fanny','fannypack', 'doctor');
+INSERT IGNORE INTO users VALUES (12, 'Zachary', 'Ludowici','toes300', 'doctor');
+INSERT IGNORE INTO users VALUES (13, 'Rita', 'Rodriguez', 'nursing101', 'nurse');
+INSERT IGNORE INTO users VALUES (14, 'Gwendolyn', 'Shoop', 'costco', 'nurse');
+INSERT IGNORE INTO users VALUES (15, 'William', 'Kline', 'ubereats', 'nurse');
 
-INSERT IGNORE INTO doctors VALUES (1, 'Claire', 'Titheradge', 'Cardiology', 'Montreal', '1141833','cardioc');
-INSERT IGNORE INTO doctors VALUES (2, 'Mikayla', 'Borella', 'General practice', 'Montreal', '2748499','mikay01');
-INSERT IGNORE INTO doctors VALUES (3, 'William', 'Petchy', 'Gastroenterology', 'Montreal', '5986621','doctor123');
-INSERT IGNORE INTO doctors VALUES (4, 'Sean', 'Pocock', 'Endocrinology', 'Montreal', '4508102','marcopolo');
-INSERT IGNORE INTO doctors VALUES (5, 'Lara', 'Mingay', 'Paediatrics', 'Montreal', '9856221','crying2019');
-INSERT IGNORE INTO doctors VALUES (6, 'Matilda', 'Fanny', 'Internal medicine', 'Montreal', '7391852','fannypack');
-INSERT IGNORE INTO doctors VALUES (7, 'Zachary', 'Ludowici', 'Orthopaedics', 'Montreal', '1223554','toes300');
+INSERT IGNORE INTO patients VALUES (1,'1959-12-21', 'M', '514-344-9140',
+'boris_the_goat@gmail.com', '2345 Mcintosh Street S8D 2L3, Montreal QC.', 'BORF 1145 1180');
+INSERT IGNORE INTO patients VALUES (2, '1980-05-05', 'M', '514-370-7785',
+'felix77@gmail.com', '5989 Elway Street H2S 1K9, Montreal QC.', 'FELR 0022 2765');
+INSERT IGNORE INTO patients VALUES (3, '1996-04-15', 'F', '438-560-2021',
+'alimay@gmail.com', '349 Durbians Avenue F8T 1H4, Montreal QC.', 'ALIM 7135 1854');
+INSERT IGNORE INTO patients VALUES (4,  '1990-10-10', 'M', '514-612-5527',
+'JeromeD@dayrep.com', '3326 De la Providence Avenue J8H 2J7, Montreal QC.', 'JERD 4485 1200');
+INSERT IGNORE INTO patients VALUES (5,  '1984-07-23', 'M', '438-955-6541',
+'angel-lessons@outlook.com', '1544 Victoria Park Ave M2J 3T7, Montreal QC.', 'MATC 4888 7556');
 
-INSERT IGNORE INTO nurses VALUES (1, 'DHG88451', 'nursing101');
-INSERT IGNORE INTO nurses VALUES (2, 'IUE15447', 'costco');
-INSERT IGNORE INTO nurses VALUES (3, 'KMN12805', 'ubereats');
+INSERT IGNORE INTO doctors VALUES (6, 'Cardiology', 'Montreal', '1141833');
+INSERT IGNORE INTO doctors VALUES (7, 'General practice', 'Montreal', '2748499');
+INSERT IGNORE INTO doctors VALUES (8, 'Gastroenterology', 'Montreal', '5986621');
+INSERT IGNORE INTO doctors VALUES (9, 'Endocrinology', 'Montreal', '4508102');
+INSERT IGNORE INTO doctors VALUES (10, 'Paediatrics', 'Montreal', '9856221');
+INSERT IGNORE INTO doctors VALUES (11, 'Internal medicine', 'Montreal', '7391852');
+INSERT IGNORE INTO doctors VALUES (12, 'Orthopaedics', 'Montreal', '1223554');
 
-INSERT IGNORE INTO appointments VALUES (1, 3, 7, '2019-05-04', '16:00', '16:20', 1, 'walk-in', 'toe fungus infection.');
+INSERT IGNORE INTO nurses VALUES (13, 'DHG88451');
+INSERT IGNORE INTO nurses VALUES (14, 'IUE15447');
+INSERT IGNORE INTO nurses VALUES (15, 'KMN12805');
 
-INSERT IGNORE INTO schedules VALUES (1, 1, 'Sunday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (2, 1, 'Monday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (3, 1, 'Tuesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (4, 1, 'Wednesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (5, 1, 'Thursday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (6, 1, 'Friday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (7, 1, 'Saturday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (8, 2, 'Sunday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (9, 2, 'Monday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (10, 2, 'Tuesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (11, 2, 'Wednesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (12, 2, 'Thursday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (13, 2, 'Friday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (14, 2, 'Saturday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (15, 3, 'Sunday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (16, 3, 'Monday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (17, 3, 'Tuesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (18, 3, 'Wednesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (19, 3, 'Thursday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (20, 3, 'Friday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (21, 3, 'Saturday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (22, 4, 'Sunday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (23, 4, 'Monday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (24, 4, 'Tuesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (25, 4, 'Wednesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (26, 4, 'Thursday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (27, 4, 'Friday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (28, 4, 'Saturday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (29, 5, 'Sunday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (30, 5, 'Monday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (31, 5, 'Tuesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (32, 5, 'Wednesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (33, 5, 'Thursday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (34, 5, 'Friday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (35, 5, 'Saturday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (36, 6, 'Sunday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (37, 6, 'Monday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (38, 6, 'Tuesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (39, 6, 'Wednesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (40, 6, 'Thursday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (41, 6, 'Friday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (42, 6, 'Saturday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (43, 7, 'Sunday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (44, 7, 'Monday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (45, 7, 'Tuesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (46, 7, 'Wednesday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (47, 7, 'Thursday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (48, 7, 'Friday', '9:00', '17:00');
-INSERT IGNORE INTO schedules VALUES (49, 7, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO appointments VALUES (1, 3, 12, '2019-05-04', '16:00', '16:20', 1, 'walk-in', 'toe fungus infection.');
+
+INSERT IGNORE INTO schedules VALUES (1, 6, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (2, 6, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (3, 6, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (4, 6, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (5, 6, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (6, 6, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (7, 6, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (8, 7, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (9, 7, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (10, 7, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (11, 7, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (12, 7, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (13, 7, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (14, 7, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (15, 8, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (16, 8, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (17, 8, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (18, 8, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (19, 8, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (20, 8, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (21, 8, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (22, 9, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (23, 9, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (24, 9, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (25, 9, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (26, 9, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (27, 9, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (28, 9, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (29, 10, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (30, 10, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (31, 10, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (32, 10, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (33, 10, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (34, 10, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (35, 10, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (36, 11, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (37, 11, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (38, 11, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (39, 11, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (40, 11, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (41, 11, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (42, 11, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (43, 12, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (44, 12, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (45, 12, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (46, 12, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (47, 12, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (48, 12, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (49, 12, 'Saturday', '9:00', '17:00');
