@@ -14,8 +14,6 @@ The clinic has a __capacity of 5 medical rooms__, and there are __7 assigned doc
 
 Made by: 
 
-//add your ids below and delete this line after
-
 Antoine Betenjaneh 27161956
 
 Scott Bouchard 26251625
@@ -25,3 +23,11 @@ Irina Fakotakis 40029185
 Matthew Benchimol 27759614
 
 Keeran Ratnasabapathy 27658095
+
+Berfin Saricam 40017210
+
+Karl-Joey Chami 27736657
+
+Georgik Barsemian 40032101
+
+Xi Chen 27276605
