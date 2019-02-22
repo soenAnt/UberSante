@@ -7,12 +7,9 @@ if (re.test(email)) {
     $('.msg').hide();
     $('.error').show();
 }
-
 });
-
 var password1 = document.getElementById('password');
-var password2 = document.getElementById('repeatpass');
-
+var password2 = document.getElementById('confirm-password');
 var checkPasswordValidity = function() {
     if (password1.value != password2.value) {
         password1.setCustomValidity('Passwords must match.');
@@ -20,6 +17,5 @@ var checkPasswordValidity = function() {
         password1.setCustomValidity('');
     }
 };
-
 password1.addEventListener('change', checkPasswordValidity, false);
 password2.addEventListener('change', checkPasswordValidity, false);
