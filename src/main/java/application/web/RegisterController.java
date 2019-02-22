@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import javax.servlet.http.HttpServletRequest;
+
 @Controller
-public class RegistrationController {
+public class RegisterController {
     @GetMapping("/register")
     public String registrationPage(){
         return "register";
