@@ -5,10 +5,9 @@
 	    <meta charset="UTF-8"/>
 	    <title>Login</title>
 	    <link rel="stylesheet" type="text/css" href="../static/login.css"/>
-	    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
-    	<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
-    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    	<script src="../static/login.js"></script>
+    	
 	</head>
 	
 	<body>
@@ -16,22 +15,46 @@
 		<form id="loginform">
 		    <div class="container">
 		        <h2>Login</h2>
-		
-		        <label class="email"><b>Email</b></label>
-		        <span class="msg error">Not a valid email address</span>
 		        <br />
-		        <input type="text" placeholder="Enter Email" name="email" required="true"/>
+		        
+		        <label class="user_type_lb"><b>Log into UberSante as:</b></label>
+		        <select name="user_type" id="user_type" onchange="selectUserType()">
+				   <option value="patient">Patient</option>
+				   <option value="nurse">Nurse</option>
+				   <option value="doctor">Doctor</option>
+				 </select>
+				 <br /><br />
 		
-				<br />
-		        <label class="pass"><b>Password</b></label>
-		        <br />
-		        <input type="password" placeholder="Enter Password" id="password" required="true"/>
+				<div id="patient">
+			        <label class="email"><b>Email</b></label>
+			        <span class="msg error">Not a valid email address</span>
+			        <br />
+			        <input type="text" placeholder="Enter Email" name="email" required="true"/>
+		        </div>
+		        
+		        <div id="nurse">
+			        <label class="access_id"><b>Access ID</b></label>
+			        <br />
+			        <input type="text" placeholder="Enter Access ID" name="access_id" required="true"/>
+		        </div>
+		        
+		        <div id="doctor">
+			        <label class="ppn"><b>Physician Permit Number</b></label>
+			        <br />
+			        <input type="text" placeholder="Enter Physician Permit #" name="ppn" required="true"/>
+		        </div>
 		
-		        <div>
-		            <button type="submit" class="login-btn">Login</button>
+				<div id="password_submit">
+					<br />
+			        <label class="pass"><b>Password</b></label>
+			        <br />
+			        <input type="password" placeholder="Enter Password" id="password" required="true"/>
+		
+			        <div>
+			            <button type="submit" class="login-btn">Login</button>
+			        </div>
 		        </div>
 		    </div>
 		</form>
-		
 	</body>
 </html>
