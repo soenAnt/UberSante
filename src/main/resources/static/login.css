@@ -1,4 +1,4 @@
-input[type=text], input[type=password] {
+input[type=text], input[type=password], .user_type{
   width: 25%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -36,4 +36,16 @@ hr {
 }
 button:hover {
   opacity:1;
+}
+#patient {
+	display:none;
+}
+#password_submit {
+	display:none;
+}
+#doctor {
+	display:none;
+}
+#nurse {
+	display:none;
 }
