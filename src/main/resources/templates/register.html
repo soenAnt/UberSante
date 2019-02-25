@@ -10,16 +10,16 @@
     <title>Register</title>
 </head>
 <body>
-<form id="checkform">
+<form id="checkform" method="post" >
     <div class="container">
         <h2>Register</h2>
         <p>Please fill in the following form to create an account.</p>
 
         <label class="name"><b>First Name</b></label>
-        <input type="text" placeholder="Enter First Name" name="firstname" required="true"/>
+        <input type="text" placeholder="Enter First Name" name="firstName" required="true"/>
 
         <label class="name"><b>Last Name</b></label>
-        <input type="text" placeholder="Enter Last Name" name="lastname" required="true"/>
+        <input type="text" placeholder="Enter Last Name" name="lastName" required="true"/>
 
         <label class="email"><b>Email</b></label>
         <span class="msg error">Not a valid email address</span>
@@ -27,27 +27,27 @@
 
         <label class="genderlb"><b>Gender</b></label>
         <select name="gender" class="gender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="male">male</option>
+            <option value="female">female</option>
         </select>
 
         <label class="dob"><b>Date of birth</b></label>
-        <input type="date" name="dob" required="true"/>
+        <input type="date" name="dateOfBirth" id="dateOfBirth" required="true"/>
 
         <label class="healthcard"><b>Health Card Number</b></label>
-        <input type="text" placeholder="Enter Health Card Number" name="healthcard" required="true"/>
+        <input type="text" placeholder="Enter Health Card Number" name="healthCard" required="true"/>
 
         <label class="phone"><b>Phone Number</b></label>
-        <input type="text" placeholder="XXX-XXX-XXXX" name="phone" required="true"/>
+        <input type="text" placeholder="XXX-XXX-XXXX" name="phoneNumber" required="true"/>
 
         <label class="address"><b>Address</b></label>
         <input type="text" placeholder="Enter Address" name="address" required="true"/>
 
         <label class="pass"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" id="password" required="true"/>
+        <input type="password" placeholder="Enter Password" id="password" name="password" required="true"/>
 
         <label class="confirm-password"><b>Confirm Password</b></label>
-        <input type="password" placeholder="Confirm Password" id="confirm-password" required="true"/>
+        <input type="password" placeholder="Confirm Password" id="confirm_password" name="confirm_password" required="true"/>
 
         <div>
             <button type="submit" class="register-btn">Register</button>
