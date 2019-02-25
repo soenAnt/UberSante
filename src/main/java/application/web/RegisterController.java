@@ -34,7 +34,7 @@ public class RegisterController {
             // TODO allocate instantiation of patients to another class (i.e. factory?)
             Patient patient = new Patient(registerForm);
             this.userRepository.save((User) patient);
-            return ("home");
+            return ("login");
         }else{
             //unsuccessful registration
             // TODO verify email in real-time and let user know if it's already taken.
