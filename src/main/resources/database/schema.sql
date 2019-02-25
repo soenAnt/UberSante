@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS patients (
   `phone_number` VARCHAR(12) NOT NULL,
   `email` VARCHAR(45) UNIQUE NOT NULL,
   `address` VARCHAR(45) NOT NULL,
-  `health_card_number` VARCHAR(14) NOT NULL,
+  `health_card_number` VARCHAR(14) UNIQUE NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;
 
@@ -31,13 +31,13 @@ CREATE TABLE IF NOT EXISTS doctors (
   `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `specialty` VARCHAR(45) NOT NULL,
   `city` VARCHAR(45) NOT NULL,
-  `physician_permit_number` INT(7) NOT NULL,
+  `physician_permit_number` INT(7) UNIQUE NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS nurses (
   `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `access_id` VARCHAR(8) NOT NULL,
+  `access_id` VARCHAR(8) UNIQUE NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;
 
