@@ -15,7 +15,10 @@ public class Doctor extends User{
 	
 	@Column(name = "physicianPermitNumber")
 	private int physicianPermitNumber;
-	
+
+	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+	private Collection<Appointment> appointments;
+
 	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
 	private Collection<Schedule> schedules;
 
@@ -52,5 +55,19 @@ public class Doctor extends User{
 		this.physicianPermitNumber = physicianPermitNumber;
 	}
 
+    public Collection<Appointment> getAppointments() {
+        return appointments;
+    }
 
+    public void setAppointments(Collection<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public Collection<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(Collection<Schedule> schedules) {
+        this.schedules = schedules;
+    }
 }

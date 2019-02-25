@@ -32,6 +32,9 @@ public class Patient extends User{
 	private String address;
 
 	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+	private Collection<Appointment> appointments;
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private Collection<Cart> carts;
 
 	public Patient(){
@@ -95,7 +98,21 @@ public class Patient extends User{
 	public void setAddress(String address) {
 		this.address = address;
 	}
+    public Collection<Appointment> getAppointments() {
+        return appointments;
+    }
 
+    public void setAppointments(Collection<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public Collection<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Collection<Cart> carts) {
+        this.carts = carts;
+    }
     private Date stringToDate(String birthDate) {
         Date birth= null;
         try {
