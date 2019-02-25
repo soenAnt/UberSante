@@ -1,12 +1,12 @@
-CREATE DATABASE IF NOT EXISTS ubersante;
+CREATE DATABASE IF NOT EXISTS UberSante;
 
-ALTER DATABASE ubersante
+ALTER DATABASE UberSante
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 
-GRANT ALL PRIVILEGES ON ubersante.* TO soen@localhost IDENTIFIED BY 's344';
+GRANT ALL PRIVILEGES ON UberSante.* TO soen@localhost IDENTIFIED BY 's344';
 
-USE ubersante;
+USE UberSante;
 
 CREATE TABLE IF NOT EXISTS users (
   `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS appointments (
   `doctor_user_id` INT UNSIGNED NOT NULL,
   `date` DATE NOT NULL,
   `start_time` TIMESTAMP NOT NULL,
-  `end_time` TIMESTAMP NOT NULL,
+  `end_time` TIMESTAMP NULL,
   `room` INT NOT NULL,
   `appointment_type` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS carts (
   `cart_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `patient_user_id` INT UNSIGNED NOT NULL,
   `start_time` TIMESTAMP NOT NULL,
-  `end_time` TIMESTAMP NOT NULL,
+  `end_time` TIMESTAMP NULL,
   `appointment_type` VARCHAR(45) NOT NULL,
   FOREIGN KEY (patient_user_id) REFERENCES patients(user_id)
 ) ENGINE=InnoDB;
