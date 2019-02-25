@@ -6,13 +6,6 @@ import javax.persistence.*;
 @Table(name = "nurses")
 public class Nurse extends User{
 
-	@Id
-	private int userId;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
-	private User user;
-	
 	@Column(name = "accessId")
 	private String accessId;
 

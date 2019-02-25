@@ -1,8 +1,8 @@
 package application.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "appointments")
@@ -11,19 +11,13 @@ public class Appointment {
 	@Id @GeneratedValue
 	@Column(name = "appointmentId")
 	private int appointmentId;
-	
-	@Column(name = "date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate date;
-	
+
 	@Column(name = "startTime")
-	@DateTimeFormat(pattern = "HH:mm:ss")
-	private LocalDateTime startTime;
-	
+	private Timestamp startTime;
+
 	@Column(name = "endTime")
-	@DateTimeFormat(pattern = "HH:mm:ss")
-	private LocalDateTime endTime;
-		
+	private Timestamp endTime;
+
 	@Column(name = "room")
 	private int room;
 	
@@ -41,13 +35,11 @@ public class Appointment {
 	@JoinColumn(name = "doctorId")
 	private Doctor doctor;
 
-	public Appointment(int appointmentId, LocalDate date, LocalDateTime startTime, LocalDateTime endTime, int room,
-			String appointmentType, String description, Patient patient, Doctor doctor) {
-		
-		this.appointmentId = appointmentId;
-		this.date = date;
+	public Appointment(Timestamp startTime, int room, String appointmentType, String description,
+					   Patient patient, Doctor doctor) {
+
 		this.startTime = startTime;
-		this.endTime = endTime;
+		this.endTime = processEndTime(startTime, appointmentType);
 		this.room = room;
 		this.appointmentType = appointmentType;
 		this.description = description;
@@ -63,27 +55,19 @@ public class Appointment {
 		this.appointmentId = appointmentId;
 	}
 
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	public LocalDateTime getStartTime() {
+	public Timestamp getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(LocalDateTime startTime) {
+	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
 	}
 
-	public LocalDateTime getEndTime() {
+	public Timestamp getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(LocalDateTime endTime) {
+	public void setEndTime(Timestamp endTime) {
 		this.endTime = endTime;
 	}
 
@@ -126,8 +110,21 @@ public class Appointment {
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
 	}
-	
-	
-	
-	
+
+	private Timestamp processEndTime(Timestamp startTime, String appointmentType) {
+
+		LocalDateTime start = startTime.toLocalDateTime();
+		LocalDateTime end = null;
+
+		if(appointmentType == "20min" || appointmentType == "walk-in"){
+			end = start.plusMinutes(20);
+		}
+		else{
+			end = start.plusMinutes(60);
+		}
+
+		endTime = Timestamp.valueOf(end);
+
+		return endTime;
+	}
 }

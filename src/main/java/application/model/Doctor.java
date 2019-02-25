@@ -1,17 +1,11 @@
 package application.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "doctors")
 public class Doctor extends User{
-
-	@Id
-    private int userId;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
-	private User user;
 
 	@Column(name = "specialty")
 	private String specialty;
@@ -22,7 +16,8 @@ public class Doctor extends User{
 	@Column(name = "physicianPermitNumber")
 	private int physicianPermitNumber;
 	
-
+	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+	private Collection<Schedule> schedules;
 
 	public Doctor(String firstName, String lastName, String specialty, String city,
 			int physicianPermitNumber, String password, String userType) {

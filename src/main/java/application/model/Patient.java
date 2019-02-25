@@ -1,20 +1,18 @@
 package application.model;
 
+import application.web.RegisterForm;
+
 import javax.persistence.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Table(name = "patients")
 public class Patient extends User{
 
-    @Id
-    private int userId;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private User user;
-	
 	@Column(name = "healthCardNumber")
 	private String healthCardNumber;
 	
@@ -22,20 +20,26 @@ public class Patient extends User{
 	private Date birthday;
 	
 	@Column(name = "gender")
-	private char gender;
+	private String gender;
 	
 	@Column(name = "phoneNumber")
-	private int phoneNumber;
+	private String phoneNumber;
 	
 	@Column(name = "email")
 	private String email;
 	
 	@Column(name = "address")
 	private String address;
+
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private Collection<Cart> carts;
+
+	public Patient(){
+		super();
+	}
 	
-	
-	public Patient(String firstName, String lastName, String healthCardNumber, Date birthday, char gender,
-			int phoneNumber, String email, String address, String password, String userType) {
+	public Patient(String firstName, String lastName, String healthCardNumber, Date birthday, String gender,
+			String phoneNumber, String email, String address, String password, String userType) {
 		super(firstName, lastName, password, userType);
 		this.healthCardNumber = healthCardNumber;
 		this.birthday = birthday;
@@ -45,7 +49,17 @@ public class Patient extends User{
 		this.address = address;
 	}
 
-	public String getHealthCardNumber() {
+    public Patient(RegisterForm registerForm) {
+	    super(registerForm.getFirstName(),registerForm.getLastName(),registerForm.getPassword(),registerForm.getUSER_TYPE());
+        this.healthCardNumber = registerForm.getHealthCard();
+        this.birthday = stringToDate(registerForm.getDateOfBirth());
+        this.gender = registerForm.getGender();
+        this.phoneNumber = registerForm.getPhoneNumber();
+        this.email = registerForm.getEmail();
+        this.address = registerForm.getAddress();
+    }
+
+    public String getHealthCardNumber() {
 		return healthCardNumber;
 	}
 	public void setHealthCardNumber(String healthCardNumber) {
@@ -57,16 +71,16 @@ public class Patient extends User{
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
-	public char getGender() {
+	public String getGender() {
 		return gender;
 	}
-	public void setGender(char gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public int getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 	public String getEmail() {
@@ -82,5 +96,13 @@ public class Patient extends User{
 		this.address = address;
 	}
 
-
+    private Date stringToDate(String birthDate) {
+        Date birth= null;
+        try {
+            birth = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return birth;
+    }
 }

@@ -4,10 +4,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
-	@Id @GeneratedValue
-	@Column(name = "userId")
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "userId", updatable = false, nullable = false)
     private int userId;
 
 	@Column(name = "firstName")
@@ -29,7 +30,11 @@ public class User {
 		this.userType = userType;
 	}
 
-    public int getUserId() {
+	public User() {
+
+	}
+
+	public int getUserId() {
         return userId;
     }
 

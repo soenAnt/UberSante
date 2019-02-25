@@ -1,58 +1,68 @@
 package application.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
 
 @Entity
 @Table(name = "carts")
 public class Cart {
 	
 	@Id @GeneratedValue
-	@Column(name = "appointmentId")
+	@Column(name = "cartId")
 	private int cartId;
-	
-	@Column(name = "date")
-	private int patientId;
-	
+
+	@Column(name = "startTime")
+    private Timestamp startTime;
+
 	@Column(name = "endTime")
-	@DateTimeFormat(pattern = "HH:mm:ss")
-	private LocalDateTime datetime;
+	private Timestamp endTime;
 	
 	@Column(name = "appointmentType")
 	private String appointmentType;
 
-	public Cart(int cartId, int patientId, LocalDateTime datetime, String appointmentType) {
-		
-		this.cartId = cartId;
-		this.patientId = patientId;
-		this.datetime = datetime;
-		this.appointmentType = appointmentType;
-	}
+	@ManyToOne
+    @JoinColumn
+    private Patient patient;
 
-	public int getCartId() {
+	public Cart(){}
+
+	public Cart(Patient patient, Timestamp startTime, String appointmentType) {
+        this.patient = patient;
+	    this.startTime = startTime;
+        this.endTime = processEndTime(startTime, appointmentType);
+        this.appointmentType = appointmentType;
+    }
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public int getCartId() {
 		return cartId;
 	}
 
 	public void setCartId(int cartId) {
 		this.cartId = cartId;
-	}
-
-	public int getPatientId() {
-		return patientId;
-	}
-
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
-	}
-
-	public LocalDateTime getDatetime() {
-		return datetime;
-	}
-
-	public void setDatetime(LocalDateTime datetime) {
-		this.datetime = datetime;
 	}
 
 	public String getAppointmentType() {
@@ -62,6 +72,21 @@ public class Cart {
 	public void setAppointmentType(String appointmentType) {
 		this.appointmentType = appointmentType;
 	}
-	
-	
+
+    private Timestamp processEndTime(Timestamp startTime, String appointmentType) {
+
+        LocalDateTime start = startTime.toLocalDateTime();
+        LocalDateTime end = null;
+
+        if(appointmentType == "20min" || appointmentType == "walk-in"){
+            end = start.plusMinutes(20);
+        }
+        else{
+            end = start.plusMinutes(60);
+        }
+
+        endTime = Timestamp.valueOf(end);
+
+        return endTime;
+    }
 }
