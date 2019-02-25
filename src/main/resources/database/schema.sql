@@ -9,65 +9,66 @@ GRANT ALL PRIVILEGES ON ubersante.* TO soen@localhost IDENTIFIED BY 's344';
 USE ubersante;
 
 CREATE TABLE IF NOT EXISTS users (
-  `userId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `firstName` VARCHAR(45) NULL,
-  `lastName` VARCHAR(45) NULL,
-  `password` VARCHAR(45) NULL,
-  `userType` VARCHAR(45) NULL
+  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `first_name` VARCHAR(45) NOT NULL,
+  `last_name` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `user_type` VARCHAR(45) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS patients (
-  `userId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `birthday` DATE NULL,
-  `gender` CHAR(1) NULL,
-  `phoneNumber` VARCHAR(12) NULL,
-  `email` VARCHAR(45) NULL,
-  `address` VARCHAR(45) NULL,
-  `healthCardNumber` VARCHAR(12) NULL,
-  FOREIGN KEY (userId) REFERENCES users(userId)
+  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `birthday` DATE NOT NULL,
+  `gender` VARCHAR(12) NOT NULL,
+  `phone_number` VARCHAR(12) NOT NULL,
+  `email` VARCHAR(45) UNIQUE NOT NULL,
+  `address` VARCHAR(45) NOT NULL,
+  `health_card_number` VARCHAR(14) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS doctors (
-  `userId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `specialty` VARCHAR(45) NULL,
-  `city` VARCHAR(45) NULL,
-  `physicianPermitNumber` INT(7) NULL,
-  FOREIGN KEY (userId) REFERENCES users(userId)
+  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `specialty` VARCHAR(45) NOT NULL,
+  `city` VARCHAR(45) NOT NULL,
+  `physician_permit_number` INT(7) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS nurses (
-  `userId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `accessId` VARCHAR(8) NULL,
-  FOREIGN KEY (userId) REFERENCES users(userId)
+  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `access_id` VARCHAR(8) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS appointments (
-  `appointmentId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `patientId` INT UNSIGNED NOT NULL,
-  `doctorId` INT UNSIGNED NOT NULL,
-  `date` DATE NULL,
-  `startTime` TIME NOT NULL,
-  `endTime` TIME NOT NULL,
-  `room` INT NULL,
-  `appointmentType` VARCHAR(45) NULL,
-  `description` VARCHAR(255) NULL,
-  FOREIGN KEY (patientId) REFERENCES patients(userId),
-  FOREIGN KEY (doctorId) REFERENCES doctors(userId)
+  `appointment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `patient_user_id` INT UNSIGNED NOT NULL,
+  `doctor_user_id` INT UNSIGNED NOT NULL,
+  `date` DATE NOT NULL,
+  `start_time` TIMESTAMP NOT NULL,
+  `end_time` TIMESTAMP NOT NULL,
+  `room` INT NOT NULL,
+  `appointment_type` VARCHAR(45) NOT NULL,
+  `description` VARCHAR(255) NOT NULL,
+  FOREIGN KEY (patient_user_id) REFERENCES patients(user_id),
+  FOREIGN KEY (doctor_user_id) REFERENCES doctors(user_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS carts (
-  `cartId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `patientId` INT UNSIGNED NOT NULL,
-  `datetime` TIMESTAMP NULL,
-  `appointmentType` VARCHAR(45) NULL,
-  FOREIGN KEY (patientId) REFERENCES patients(userId)
+  `cart_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `patient_user_id` INT UNSIGNED NOT NULL,
+  `start_time` TIMESTAMP NOT NULL,
+  `end_time` TIMESTAMP NOT NULL,
+  `appointment_type` VARCHAR(45) NOT NULL,
+  FOREIGN KEY (patient_user_id) REFERENCES patients(user_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS schedules (
-  `scheduleId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `doctorId` INT UNSIGNED NOT NULL,
-  `dayOfWeek` VARCHAR(9) NULL,
-  `startTime` TIME NULL,
-  `endTime` TIME NULL,
-  FOREIGN KEY (doctorId) REFERENCES doctors(userId)
+  `schedule_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `doctor_user_id` INT UNSIGNED NOT NULL,
+  `day_of_week` VARCHAR(9) NOT NULL,
+  `start_time` TIME NOT NULL,
+  `end_time` TIME NOT NULL,
+  FOREIGN KEY (doctor_user_id) REFERENCES doctors(user_id)
 ) ENGINE=InnoDB;

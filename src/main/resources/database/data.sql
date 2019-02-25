@@ -14,15 +14,15 @@ INSERT IGNORE INTO users VALUES (13, 'Rita', 'Rodriguez', 'nursing101', 'nurse')
 INSERT IGNORE INTO users VALUES (14, 'Gwendolyn', 'Shoop', 'costco', 'nurse');
 INSERT IGNORE INTO users VALUES (15, 'William', 'Kline', 'ubereats', 'nurse');
 
-INSERT IGNORE INTO patients VALUES (1,'1959-12-21', 'M', '514-344-9140',
+INSERT IGNORE INTO patients VALUES (1,'1959-12-21', 'Male', '514-344-9140',
 'boris_the_goat@gmail.com', '2345 Mcintosh Street S8D 2L3, Montreal QC.', 'BORF 1145 1180');
-INSERT IGNORE INTO patients VALUES (2, '1980-05-05', 'M', '514-370-7785',
+INSERT IGNORE INTO patients VALUES (2, '1980-05-05', 'Male', '514-370-7785',
 'felix77@gmail.com', '5989 Elway Street H2S 1K9, Montreal QC.', 'FELR 0022 2765');
-INSERT IGNORE INTO patients VALUES (3, '1996-04-15', 'F', '438-560-2021',
+INSERT IGNORE INTO patients VALUES (3, '1996-04-15', 'Female', '438-560-2021',
 'alimay@gmail.com', '349 Durbians Avenue F8T 1H4, Montreal QC.', 'ALIM 7135 1854');
-INSERT IGNORE INTO patients VALUES (4,  '1990-10-10', 'M', '514-612-5527',
+INSERT IGNORE INTO patients VALUES (4,  '1990-10-10', 'Male', '514-612-5527',
 'JeromeD@dayrep.com', '3326 De la Providence Avenue J8H 2J7, Montreal QC.', 'JERD 4485 1200');
-INSERT IGNORE INTO patients VALUES (5,  '1984-07-23', 'M', '438-955-6541',
+INSERT IGNORE INTO patients VALUES (5,  '1984-07-23', 'Male', '438-955-6541',
 'angel-lessons@outlook.com', '1544 Victoria Park Ave M2J 3T7, Montreal QC.', 'MATC 4888 7556');
 
 INSERT IGNORE INTO doctors VALUES (6, 'Cardiology', 'Montreal', '1141833');
