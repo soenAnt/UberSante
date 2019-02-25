@@ -1,45 +1,45 @@
 package application.web;
-import org.springframework.http.HttpStatus;
+import application.model.Patient;
+import application.model.User;
+import application.repository.PatientRepository;
+import application.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-import javax.servlet.http.HttpServletRequest;
+
+import java.util.Collection;
+
 
 @Controller
 public class RegisterController {
-    @GetMapping("/register")
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registrationPage(){
         return "register";
     }
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public @ResponseBody
-    ModelAndView register(
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam String email,
-            @RequestParam String gender,
-            @RequestParam String dateOfBirth,
-            @RequestParam String healthCard,
-            @RequestParam String phoneNumber,
-            @RequestParam String address,
-            @RequestParam String password,
-            @RequestParam String confirmPassword, HttpServletRequest request){
-        /*
-         * Boolean value must be replaced by call to registerPatient()
-         * registerPatient() should return a boolean depending on successful database patient creation
-         * Upon success, user is redirected to login page; else, an error message is shown and user stays
-         * on the register page until successful registration
-         */
-        Boolean success = false;
-        if(success){
+
+
+    @PostMapping("/register")
+    public String register(@ModelAttribute RegisterForm registerForm){
+
+        Collection<Patient> existingPatient =  this.patientRepository.findByEmail(registerForm.getEmail());
+
+        if(existingPatient.isEmpty()){
             //successful registration
-            request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.MOVED_PERMANENTLY);
-            return new ModelAndView("redirect:/login");
+            // TODO allocate instantiation of patients to another class (i.e. factory?)
+            Patient patient = new Patient(registerForm);
+            this.userRepository.save((User) patient);
+            return ("home");
         }else{
             //unsuccessful registration
-            request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.BAD_REQUEST);
-            return new ModelAndView("redirect:/register");
+            // TODO verify email in real-time and let user know if it's already taken.
+            System.out.println("email already exists");
+            return ("register");
         }
     }
 }
