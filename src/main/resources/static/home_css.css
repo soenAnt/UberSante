@@ -1,4 +1,11 @@
-body {
+div.wrap {
+    width:100%;
+    margin:0 auto;
+}
+
+div.main {
+    width:100%;
+    background-image: linear-gradient(white, whitesmoke, whitesmoke, lightblue, lightskyblue);
 }
 
 ul {
@@ -37,4 +44,20 @@ li a:hover {
     background-color: #cef1ff;
     text-decoration: none;
     color: black;
+}
+
+.day{
+    padding: 0px 500px 0px 10px;
+}
+
+th, td {
+    border-bottom: 1px solid #dddddd;
+}
+
+.welcomeimg{
+    text-align:center;
+    border: 5px;
+    border-color: lightblue;
+
+
 }
