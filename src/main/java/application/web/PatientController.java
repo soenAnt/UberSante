@@ -23,5 +23,24 @@ public class PatientController {
         //model.addAttribute("cart", cart); <-- should add the cart fragment to homepage
         return "home";
     }
+    
+    @RequestMapping(value="/removeFromCart", method= RequestMethod.GET)
+    public String removeFromCart(@RequestParam(value="appointmentId", required = true) int id){
+        // remove appointment from cart
+        return "";
+    }
+
+    @RequestMapping(value="/persistAppointment", method= RequestMethod.GET)
+    public String persistAppointment(@RequestParam(value="appointmentId", required = true) int id){
+        // persist the appointment in table appointment_info
+        return "";
+    }
+
+    @RequestMapping(value="/checkout", method= RequestMethod.GET)
+    public String checkout(@RequestParam(value="appointmentId", required = true) int id){
+ 		// redirect to checkout page -> payment page (Matthew)
+		// persist the appointment in table appointments
+        return "";
+    }
 
 }
