@@ -11,50 +11,50 @@
 	</head>
 	
 	<body>
-	
-		<form id="loginform">
-		    <div class="container">
-		        <h2>Login</h2>
-		        <br />
-		        
-		        <label class="user_type_lb"><b>Log into UberSante as:</b></label>
-		        <select name="user_type" id="user_type" onchange="selectUserType()">
-				   <option value="patient">Patient</option>
-				   <option value="nurse">Nurse</option>
-				   <option value="doctor">Doctor</option>
-				 </select>
-				 <br /><br />
-		
-				<div id="patient">
-			        <label class="email"><b>Email</b></label>
-			        <span class="msg error">Not a valid email address</span>
-			        <br />
-			        <input type="text" placeholder="Enter Email" name="email" required="true"/>
-		        </div>
-		        
-		        <div id="nurse">
-			        <label class="access_id"><b>Access ID</b></label>
-			        <br />
-			        <input type="text" placeholder="Enter Access ID" name="access_id" required="true"/>
-		        </div>
-		        
-		        <div id="doctor">
-			        <label class="ppn"><b>Physician Permit Number</b></label>
-			        <br />
-			        <input type="text" placeholder="Enter Physician Permit #" name="ppn" required="true"/>
-		        </div>
-		
-				<div id="password_submit">
-					<br />
-			        <label class="pass"><b>Password</b></label>
-			        <br />
-			        <input type="password" placeholder="Enter Password" id="password" required="true"/>
-		
-			        <div>
-			            <button type="submit" class="login-btn">Login</button>
-			        </div>
-		        </div>
-		    </div>
-		</form>
+	<form method="post" action="/validate">
+
+		<h2>Login</h2>
+		<br />
+
+		<label class="user_type_lb"><b>Log into UberSante as:</b></label>
+		<select name="user_type" id="user_type" onchange="selectUserType()">
+			<option value="patient">Patient</option>
+			<option value="nurse">Nurse</option>
+			<option value="doctor">Doctor</option>
+		</select>
+		<br /><br />
+
+		<div id="patient">
+			<label class="email"><b>Email</b></label>
+			<span class="msg error">Not a valid email address</span>
+			<br />
+			<input type="text" placeholder="Enter Email" name="identification"/>
+		</div>
+
+		<div id="nurse">
+			<label class="access_id"><b>Access ID</b></label>
+			<br />
+			<input type="text" placeholder="Enter Access ID" name="identification"/>
+		</div>
+
+		<div id="doctor">
+			<label class="ppn"><b>Physician Permit Number</b></label>
+			<br />
+			<input type="text" placeholder="Enter Physician Permit #" name="identification"/>
+		</div>
+
+		<div id="password_submit">
+			<br />
+			<label class="pass"><b>Password</b></label>
+			<br />
+			<input type="password" name="password" placeholder="Enter Password" id="password"/>
+
+			<div>
+				<button id="login" type="submit" class="login-btn" value="submit">Login</button>
+			</div>
+		</div>
+
+	</form>
+
 	</body>
 </html>
