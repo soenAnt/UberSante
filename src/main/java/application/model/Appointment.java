@@ -7,9 +7,9 @@ import java.time.*;
 @Entity
 @Table(name = "appointments")
 public class Appointment {
-	
-	@Id @GeneratedValue
-	@Column(name = "appointmentId")
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "appointmentId", updatable = false, nullable = false)
 	private int appointmentId;
 	
 	@Column(name = "room")
@@ -26,12 +26,6 @@ public class Appointment {
 	@ManyToOne
 	@JoinColumn(name = "patientId")
 	private Patient patient;
-	
-	/* @Column(name = "description")
-	private String description; */
-	
-	/* @Column(name = "startTime")
-	private Timestamp startTime; */
 
 	public Appointment(int room, AppointmentInfo appointmentInfo, Doctor doctor, Patient patient) {
 		this.room = room;

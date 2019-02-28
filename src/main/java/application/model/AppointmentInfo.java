@@ -6,13 +6,14 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "appointmentInfo")
 public class AppointmentInfo implements Cloneable, Serializable {
-	
-	@Id @GeneratedValue
-	@Column(name = "appointmentInfoId")
+
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "appointmentInfoId", updatable = false, nullable = false)
 	private int appointmentInfoId;
 	
 	@Column(name = "date")
@@ -23,15 +24,22 @@ public class AppointmentInfo implements Cloneable, Serializable {
 	
 	@Column(name = "appointmentType")
 	private String appointmentType;
+
+	@Column(name = "description")
+	private String description;
+
+	@OneToMany(mappedBy = "appointmentInfo", cascade = CascadeType.ALL)
+	private Collection<Appointment> appointments;
 	
 	public AppointmentInfo() {
 		
 	}
 	
-	public AppointmentInfo(Date date, Timestamp startTime, String appointmentType) {
+	public AppointmentInfo(Date date, Timestamp startTime, String appointmentType, String description) {
 		this.date = date;
 		this.startTime = startTime;
 		this.appointmentType = appointmentType;
+		this.description = description;
 	}
 	
 	public AppointmentInfo(AppointmentInfo info) {
@@ -69,8 +77,24 @@ public class AppointmentInfo implements Cloneable, Serializable {
 	public void setAppointmentType(String appointmentType) {
 		this.appointmentType = appointmentType;
 	}
-	
-	/*
+
+    public Collection<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Collection<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /*
 	 * doesn't seem to work; it doesn't like having the ID be null, but it also
 	 * clones the old ID which overrites what is already in the DB :S
 	@Override
