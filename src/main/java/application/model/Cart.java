@@ -13,12 +13,14 @@ public class Cart {
 	private int cartId;
 	
 	@ManyToOne
-	@JoinColumn(name = "patientId")
+	@JoinColumn(name = "patientUserId")
 	private Patient patient;
 	
 	@ManyToOne
 	@JoinColumn(name = "appointmentInfoId")
 	private AppointmentInfo appointmentInfo;
+	
+	public Cart() { }
 	
 	public Cart(Patient patient, AppointmentInfo appointmentInfo) {
 		this.patient = patient;
