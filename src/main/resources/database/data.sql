@@ -37,8 +37,8 @@ INSERT IGNORE INTO nurses VALUES (13, 'DHG88451');
 INSERT IGNORE INTO nurses VALUES (14, 'IUE15447');
 INSERT IGNORE INTO nurses VALUES (15, 'KMN12805');
 
-INSERT IGNORE INTO appointment_info VALUES(1, NULL, NULL, "walk-in");
-INSERT IGNORE INTO appointment_info VALUES(2, NULL, NULL, "annual");
+INSERT IGNORE INTO appointment_info VALUES(1, '2019-09-09', '10:20', "walk-in", "toe fungus");
+INSERT IGNORE INTO appointment_info VALUES(2, '2019-06-21', '16:00', "annual", "gastric reflux");
 
 INSERT IGNORE INTO schedules VALUES (1, 6, 'Sunday', '9:00', '17:00');
 INSERT IGNORE INTO schedules VALUES (2, 6, 'Monday', '9:00', '17:00');
