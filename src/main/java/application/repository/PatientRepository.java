@@ -10,4 +10,6 @@ import java.util.Collection;
 public interface PatientRepository extends JpaRepository<Patient, Integer>{
 
     Collection<Patient> findByEmail(String email);
+    
+    public Patient findByUserId(int id);
 }

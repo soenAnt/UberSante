@@ -1,0 +1,38 @@
+html, body {
+    height : 100%;
+    width  : 100%;
+    overflow-x: hidden;
+}
+#cart-panel {
+    z-index:99;
+    left: 420px;
+    position:absolute;
+    height : calc(100% - 113px);
+    width  : 420px;
+    margin-top: 113px;
+    margin-left:calc(100% - 420px);
+    background-color: #444444;
+    color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    overflow-y: scroll;
+}
+
+.cart-table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.cart-table, td, th{
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid white;
+}
+
+.wrapper{
+    text-align: center;
+}
+
+.cart-wrapper{
+    display: inline-block;
+    text-align: left;
+}

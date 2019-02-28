@@ -45,23 +45,27 @@ CREATE TABLE IF NOT EXISTS appointments (
   `appointment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `patient_user_id` INT UNSIGNED NOT NULL,
   `doctor_user_id` INT UNSIGNED NOT NULL,
-  `date` DATE NOT NULL,
-  `start_time` TIMESTAMP NOT NULL,
-  `end_time` TIMESTAMP NULL,
+  `appointment_info_id` INT UNSIGNED NOT NULL,
   `room` INT NOT NULL,
-  `appointment_type` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NOT NULL,
   FOREIGN KEY (patient_user_id) REFERENCES patients(user_id),
-  FOREIGN KEY (doctor_user_id) REFERENCES doctors(user_id)
+  FOREIGN KEY (doctor_user_id) REFERENCES doctors(user_id),
+  FOREIGN KEY (appointment_info_id) REFERENCES appointment_info(appointment_info_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS appointment_info (
+  `appointment_info_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `date` DATE,
+  `start_time` TIMESTAMP,
+  `appointment_type` VARCHAR(10)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS carts (
   `cart_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `patient_user_id` INT UNSIGNED NOT NULL,
-  `start_time` TIMESTAMP NOT NULL,
-  `end_time` TIMESTAMP NULL,
-  `appointment_type` VARCHAR(45) NOT NULL,
-  FOREIGN KEY (patient_user_id) REFERENCES patients(user_id)
+  `appointment_info_id` INT UNSIGNED NOT NULL,
+  FOREIGN KEY (patient_user_id) REFERENCES patients(user_id),
+  FOREIGN KEY (appointment_info_id) REFERENCES appointment_info(appointment_info_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS schedules (
