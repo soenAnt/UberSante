@@ -27,7 +27,7 @@ public class LoginController {
         LoginAuthentication loginAuthentication = new LoginAuthentication(loginForm.getIdentification(), loginForm.getPassword());
 
         System.out.println("********************************"+loginForm.getIdentification()+"   "+loginForm.getPassword()+"\n"+
-                loginAuthentication.getUserType());
+                loginAuthentication.getUserType()+" REAL:"+loginAuthentication.getRealAuthenticaton());
         return "home";
     }
 
