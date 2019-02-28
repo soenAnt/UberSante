@@ -1,4 +1,4 @@
-package application.web;
+package application.controller;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -52,7 +52,7 @@ public class PatientController {
     	Date d = Date.valueOf(date);
     	System.out.println("time: " + time);
     	Timestamp ts = Timestamp.valueOf(date + " " + time + ":00");
-    	this.save(appointment_type, d, ts, p);
+    	this.save(appointment_type, d, ts, p, description);
     	//AppointmentInfo info = appointmentInfoRepository.findByAppointmentInfoId(5);
     	//clear(info.getAppointmentInfoId());
     	checkout(6, 1); // checkout appointment 6 on user 1
@@ -73,7 +73,7 @@ public class PatientController {
     }
 
     @RequestMapping(value="/persistAppointment", method= RequestMethod.GET)
-    public String save(String appointmentType, Date date, Timestamp startTime, Patient patient){
+    public String save(String appointmentType, Date date, Timestamp startTime, Patient patient, String description){
         // persist the appointment in table appointment_info
     	int id = -1;
     	if(appointmentType.equals("walk-in")) {
@@ -88,7 +88,7 @@ public class PatientController {
 			newAppointment.setDate(date);
 			newAppointment.setStartTime(startTime);
     	} else {
-    		newAppointment = new AppointmentInfo(date, startTime, appointmentType);
+    		newAppointment = new AppointmentInfo(date, startTime, appointmentType, description);
     	}
     	
     	appointmentInfoRepository.save(newAppointment);

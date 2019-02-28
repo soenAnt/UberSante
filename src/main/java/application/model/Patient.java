@@ -1,6 +1,6 @@
 package application.model;
 
-import application.web.RegisterForm;
+import application.controller.RegisterForm;
 
 import javax.persistence.*;
 

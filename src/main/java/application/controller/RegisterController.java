@@ -1,4 +1,4 @@
-package application.web;
+package application.controller;
 import application.model.Patient;
 import application.model.User;
 import application.repository.PatientRepository;

@@ -1,4 +1,4 @@
-package application.web;
+package application.controller;
 
 /*
  * The attribute names and their getters/setters must match the form input field name

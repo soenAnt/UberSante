@@ -15,7 +15,7 @@
     </parent>
 
     <dependencies>
-        <!-- Spring boot web -->
+        <!-- Spring boot controller -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
