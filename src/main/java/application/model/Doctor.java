@@ -29,5 +29,6 @@ public class Doctor extends User {
 		this.physicianPermitNumber = physicianPermitNumber;
 	}
 
+	public Doctor() {super();}
 
 }
