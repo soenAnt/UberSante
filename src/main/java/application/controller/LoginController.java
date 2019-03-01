@@ -1,6 +1,6 @@
 package application.controller;
 
-import application.Service.LoginAuthentication;
+import application.Service.AuthenticationService;
 import application.model.Doctor;
 import application.model.Nurse;
 import application.model.Patient;
@@ -24,7 +24,6 @@ public class LoginController {
 
     @Autowired
     private DoctorRepository doctorRepository;
-
     @Autowired
     private NurseRepository nurseRepository;
     @Autowired
@@ -40,11 +39,14 @@ public class LoginController {
 
     @PostMapping(value = "/validate")
     public String loginPagelog(@ModelAttribute LoginForm loginForm, Model model){
-        LoginAuthentication loginAuthentication = new LoginAuthentication(loginForm.getIdentification(), loginForm.getPassword());
+        AuthenticationService authenticationService = new AuthenticationService(loginForm.getIdentification(), loginForm.getPassword());
 
-       boolean validate = validateUser(loginAuthentication.getRealAuthenticaton(), loginAuthentication.getPassword(),loginAuthentication.getUserType());
+       boolean validate = validateUser(authenticationService.getRealAuthenticaton(), authenticationService.getPassword(), authenticationService.getUserType());
+      //boolean validate = authenticationService.validateUser();
+
        if(validate){
            //Start the session
+           //userLogged = authenticationService.getUserLogged();
            model.addAttribute("user", userLogged);
            return "home";
        }

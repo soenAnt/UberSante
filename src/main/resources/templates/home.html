@@ -38,16 +38,16 @@
     <div class="main">
 
 
-        <div class="navigation-bar" th:if="${user}"> // if user exists then go inside the div, else skip
+        <div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
 
             <div th:if="${user.userType} == 'patient'">
                     <h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
             </div>
             <div th:if="${user.userType} == 'doctor'">
-                <h3 th:text=" 'Welcome back Doctor, ' + ${user.lastName}">Hi, User</h3>
+                <h3 th:text=" 'Welcome back Doctor ' + ${user.lastName}">Hi, User</h3>
             </div>
             <div th:if="${user.userType} == 'nurse'">
-                <h3 th:text=" 'Welcome back nurse, ' + ${user.lastName}">Hi, User</h3>
+                <h3 th:text=" 'Welcome back Nurse ' + ${user.lastName}">Hi, User</h3>
             </div>
         </div>
         <div th:unless="${user}">
