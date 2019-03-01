@@ -32,13 +32,7 @@ public class LoginController {
     private PatientRepository patientRepository;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-
     public String loginPage(){
-        System.out.println("------------------------------------ BEFORE");
-        Doctor doctor = doctorRepository.findByPhysicianPermitNumber(5986621);
-        Nurse nurse = nurseRepository.findByAccessId("DHG88451");
-        System.out.println("------------------------------------ HEY: " + doctor+" "+nurse);
-
         return "login";
     }
 
@@ -46,12 +40,15 @@ public class LoginController {
     public String loginPagelog(@ModelAttribute LoginForm loginForm){
         LoginAuthentication loginAuthentication = new LoginAuthentication(loginForm.getIdentification(), loginForm.getPassword());
 
-        System.out.println("********************************"+loginForm.getIdentification()+"   "+loginForm.getPassword()+"\n"+
-                loginAuthentication.getUserType()+" REAL:"+loginAuthentication.getRealAuthenticaton());
-
        boolean validate = validateUser(loginAuthentication.getRealAuthenticaton(), loginAuthentication.getPassword(),loginAuthentication.getUserType());
-
-        return "home";
+       if(validate){
+           //Start the session
+           return "home";
+       }
+       else{
+           // generate the error page for the authentication
+           return "errorLogin";
+       }
     }
 
     private boolean validateUser(String identification, String password, int userType){
@@ -70,10 +67,8 @@ public class LoginController {
         }
 
         User user = userRepository.findByPassword(password);
-        System.out.println("**************************--------------------------------------------");
-        System.out.println("D:"+doctor+ " N:"+nurse+" P:" + patient+ " U:"+ user);
-        if(doctor != null || nurse != null | patient != null) {
-            System.out.println("************************** MADE ITTTT");
+          if(doctor != null || nurse != null | patient != null) {
+           // System.out.println("************************** MADE ITTTT");
             if (user != null) {
                 return true;
             }
