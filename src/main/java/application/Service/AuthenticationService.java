@@ -1,4 +1,4 @@
-package application.Service;
+package application.service;
 
 import application.model.Doctor;
 import application.model.Nurse;
@@ -13,15 +13,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-//@Service
+@Service
 public class AuthenticationService {
+
     private String authentication;
     private String password;
     private int userType;
     private String realAuthenticaton;
     private User userLogged;
 
-/*
+
     @Autowired
     private DoctorRepository doctorRepository;
     @Autowired
@@ -30,11 +31,8 @@ public class AuthenticationService {
     private UserRepository userRepository;
     @Autowired
     private PatientRepository patientRepository;
-*/
 
-    //public AuthenticationService(){}
-
-    public AuthenticationService(String authentication, String password) {
+    public void processLogin(String authentication, String password) {
         this.authentication = authentication;
         this.password = password;
         userType();
@@ -68,41 +66,57 @@ public class AuthenticationService {
         }
     }
 
-/*    public boolean validateUser(){
-        Doctor doctor = null;
-        Nurse nurse = null;
-        Collection<Patient> patient  = null;
+    public boolean validateUser(){
+        Collection<Doctor> doctor_collected = null;
+        Collection<Nurse> nurse_collected = null;
+        Collection<Patient> patient_collected  = null;
 
-        User user = userRepository.findByPassword(password);
-        if (user != null) {
-
-            // user type 1 is a doctor, type 2 a nurse and type 3 a patient
-            switch (userType) {
-                case 1:
-                    doctor = doctorRepository.findByPhysicianPermitNumber(Integer.parseInt(realAuthenticaton));
-                    userLogged = doctor;
-                    break;
-                case 2:
-                    nurse = nurseRepository.findByAccessId(realAuthenticaton);
-                    userLogged = nurse;
-                    break;
-                case 3:
-                    patient = patientRepository.findByEmail(realAuthenticaton);
-                    userLogged = patient.iterator().next();
-                    break;
-            }
-
-            if(doctor != null || nurse != null | patient != null) {
-                return true;
-            }
-            else{
-                return false;
-            }
+        // user type 1 is a doctor, type 2 a nurse and type 3 a patient
+        switch (userType) {
+            case 1:
+                doctor_collected = doctorRepository.findByPhysicianPermitNumber(Integer.parseInt(realAuthenticaton));
+                if(!doctor_collected.isEmpty()) {
+                    Doctor doctor = doctor_collected.iterator().next();
+                    if (doctor.getPassword().equals(this.password)) {
+                        userLogged = doctor;
+                        return true;
+                    } else {
+                        System.out.println("Password does not match.");
+                    }
+                }
+                else System.out.println("Physician number does not exist.");
+                break;
+            case 2:
+                nurse_collected = nurseRepository.findByAccessId(realAuthenticaton);
+                if(!nurse_collected.isEmpty()) {
+                    Nurse nurse = nurse_collected.iterator().next();
+                    if (nurse.getPassword().equals(this.password)) {
+                        userLogged = nurse;
+                        return true;
+                    } else {
+                        System.out.println("Password does not match.");
+                    }
+                }
+                else System.out.println("Access id does not exist.");
+                break;
+            case 3:
+                patient_collected = patientRepository.findByEmail(realAuthenticaton);
+                if(!patient_collected.isEmpty()) {
+                    Patient patient = patient_collected.iterator().next();
+                    if (patient.getPassword().equals(this.password)) {
+                        userLogged = patient;
+                        return true;
+                    } else {
+                        System.out.println("Password does not match.");
+                    }
+                }
+                else System.out.println("Email does not exist.");
+                break;
         }
         return false;
-    }*/
+    }
 
-    //public User getUserLogged(){return userLogged;}
+    public User getUserLogged(){return userLogged;}
 
     public int getUserType() {
         return userType;
