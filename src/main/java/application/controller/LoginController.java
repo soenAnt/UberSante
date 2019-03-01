@@ -11,6 +11,7 @@ import application.repository.PatientRepository;
 import application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,18 +32,20 @@ public class LoginController {
     @Autowired
     private PatientRepository patientRepository;
 
+    private User userLogged = null;
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(){
         return "login";
     }
 
     @PostMapping(value = "/validate")
-    public String loginPagelog(@ModelAttribute LoginForm loginForm){
+    public String loginPagelog(@ModelAttribute LoginForm loginForm, Model model){
         LoginAuthentication loginAuthentication = new LoginAuthentication(loginForm.getIdentification(), loginForm.getPassword());
 
        boolean validate = validateUser(loginAuthentication.getRealAuthenticaton(), loginAuthentication.getPassword(),loginAuthentication.getUserType());
        if(validate){
            //Start the session
+           model.addAttribute("user", userLogged);
            return "home";
        }
        else{
@@ -56,21 +59,30 @@ public class LoginController {
         Nurse nurse = null;
         Collection<Patient> patient  = null;
 
-        // user type 1 is a doctor, type 2 a nurse and type 3 a patient
-        switch(userType){
-            case 1: doctor = doctorRepository.findByPhysicianPermitNumber(Integer.parseInt(identification));
-                break;
-            case 2: nurse = nurseRepository.findByAccessId(identification);
-                break;
-            case 3: patient = patientRepository.findByEmail(identification);
-                break;
-        }
-
         User user = userRepository.findByPassword(password);
-          if(doctor != null || nurse != null | patient != null) {
-           // System.out.println("************************** MADE ITTTT");
-            if (user != null) {
+        if (user != null) {
+
+            // user type 1 is a doctor, type 2 a nurse and type 3 a patient
+            switch (userType) {
+                case 1:
+                    doctor = doctorRepository.findByPhysicianPermitNumber(Integer.parseInt(identification));
+                    userLogged = doctor;
+                    break;
+                case 2:
+                    nurse = nurseRepository.findByAccessId(identification);
+                    userLogged = nurse;
+                    break;
+                case 3:
+                    patient = patientRepository.findByEmail(identification);
+                    userLogged = patient.iterator().next();
+                    break;
+            }
+
+            if(doctor != null || nurse != null | patient != null) {
                 return true;
+            }
+            else{
+                return false;
             }
         }
         return false;
