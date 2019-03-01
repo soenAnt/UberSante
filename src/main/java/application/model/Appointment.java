@@ -1,7 +1,7 @@
 package application.model;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Collection;
@@ -22,6 +22,9 @@ public class Appointment {
 
 	@Column(name = "endTime")
     private Time endTime;
+
+	@Column(name = "description")
+    private String description;
 	
 	@Column(name = "appointmentType")
 	private String appointmentType;
@@ -35,12 +38,13 @@ public class Appointment {
 	
 	public Appointment() {}
 
-    public Appointment(Patient patient, Date date, Time startTime, String appointmentType) {
+    public Appointment(Patient patient, Date date, Time startTime, String appointmentType, String description) {
         this.patient = patient;
 	    this.date = date;
         this.startTime = startTime;
         this.appointmentType = appointmentType;
         this.endTime = processEndTime(startTime, appointmentType);
+        this.description = description;
     }
 
     private Time processEndTime(Time startTime, String appointmentType) {

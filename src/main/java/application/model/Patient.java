@@ -40,7 +40,11 @@ public class Patient extends User{
 	@Transient
 	private Cart cart;
 
+	@Transient
+    private Boolean hasCart = false;
+
 	public Patient(){
+	    super();
 	}
 	
 	public Patient(String firstName, String lastName, String healthCardNumber, Date birthday, String gender,
@@ -62,6 +66,14 @@ public class Patient extends User{
         this.phoneNumber = registerForm.getPhoneNumber();
         this.email = registerForm.getEmail();
         this.address = registerForm.getAddress();
+    }
+
+    public Boolean getHasCart() {
+        return hasCart;
+    }
+
+    public void setHasCart(Boolean hasCart) {
+        this.hasCart = hasCart;
     }
 
     public String getHealthCardNumber() {

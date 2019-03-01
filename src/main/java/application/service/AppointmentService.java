@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -26,14 +27,37 @@ public class AppointmentService {
     private BookingRepository bookingRepository;
 
     /*
+     * If cart has not been initialized, create it and populate with persisted appointments.
+     */
+    private void initCart(Patient patient) {
+        Collection<Appointment> collected = this.appointmentRepository.findByPatient(patient);
+        patient.getCart().setAppointments(new ArrayList<>(collected));
+    }
+
+    /*
      * Appointment is added to cart without being persisted
      */
     public void addAppointmentToCart(Patient patient, AppointmentForm appointmentForm) {
 
-        Appointment appointment = new Appointment(patient, (java.sql.Date) stringToDate(appointmentForm.getDate()),
-                stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type());
+        if(!patient.getHasCart()){
+            initCart(patient);
+            patient.setHasCart(true);
+        }
+
+        Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
+                stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
+                appointmentForm.getDescription());
 
         patient.getCart().addAppointment(appointment);
+
+    }
+
+    /*
+     * Retrieve appointments in cart to be displayed to client
+     */
+    public ArrayList<Appointment> getAppointmentsFromCart(Patient patient){
+
+        return patient.getCart().getAppointments();
     }
 
     /*
