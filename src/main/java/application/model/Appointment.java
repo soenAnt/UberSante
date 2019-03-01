@@ -1,76 +1,118 @@
 package application.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.*;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.Collection;
 
 @Entity
 @Table(name = "appointments")
 public class Appointment {
 
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "appointmentId", updatable = false, nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "appointmentId", updatable = false, nullable = false)
 	private int appointmentId;
 	
-	@Column(name = "room")
-	private int room;
+	@Column(name = "date")
+	private Date date;
 	
-	@ManyToOne
-	@JoinColumn(name = "appointmentInfoId")
-	private AppointmentInfo appointmentInfo;
+	@Column(name = "startTime")
+	private Time startTime;
+
+	@Column(name = "endTime")
+    private Time endTime;
 	
+	@Column(name = "appointmentType")
+	private String appointmentType;
+
 	@ManyToOne
-	@JoinColumn(name = "doctorId")
-	private Doctor doctor;
+    @JoinColumn(name = "patientId")
+    private Patient patient;
+
+	@OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
+	private Collection<Booking> bookings;
 	
-	@ManyToOne
-	@JoinColumn(name = "patientId")
-	private Patient patient;
+	public Appointment() {}
 
-	public Appointment(int room, AppointmentInfo appointmentInfo, Doctor doctor, Patient patient) {
-		this.room = room;
-		this.appointmentInfo = appointmentInfo;
-		this.doctor = doctor;
-		this.patient = patient;
-	}
+    public Appointment(Patient patient, Date date, Time startTime, String appointmentType) {
+        this.patient = patient;
+	    this.date = date;
+        this.startTime = startTime;
+        this.appointmentType = appointmentType;
+        this.endTime = processEndTime(startTime, appointmentType);
+    }
 
-	public int getAppointmentId() {
-		return appointmentId;
-	}
+    private Time processEndTime(Time startTime, String appointmentType) {
 
-	public void setAppointmentId(int appointmentId) {
-		this.appointmentId = appointmentId;
-	}
+        LocalTime start = startTime.toLocalTime();
+        LocalTime end;
 
-	public int getRoom() {
-		return room;
-	}
+        if(appointmentType == "20min" || appointmentType == "walk-in"){
+            end = start.plusMinutes(20);
+        }
+        else{
+            end = start.plusMinutes(60);
+        }
 
-	public void setRoom(int room) {
-		this.room = room;
-	}
+        endTime = Time.valueOf(end);
 
-	public AppointmentInfo getAppointmentInfo() {
-		return appointmentInfo;
-	}
+        return endTime;
+    }
 
-	public void setAppointmentInfo(AppointmentInfo appointmentInfo) {
-		this.appointmentInfo = appointmentInfo;
-	}
+    public int getAppointmentId() {
+        return appointmentId;
+    }
 
-	public Doctor getDoctor() {
-		return doctor;
-	}
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
+    }
 
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public Patient getPatient() {
-		return patient;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
+    public Time getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
+    }
+
+    public Time getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getAppointmentType() {
+        return appointmentType;
+    }
+
+    public void setAppointmentType(String appointmentType) {
+        this.appointmentType = appointmentType;
+    }
+
+    public Collection<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Collection<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
 }
