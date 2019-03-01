@@ -1,54 +1,42 @@
 package application.model;
 
+import application.repository.AppointmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
-@Entity
-@Table(name = "carts")
 public class Cart {
-	
-	@Id @GeneratedValue
-	@Column(name = "cartId")
-	private int cartId;
-	
-	@ManyToOne
-	@JoinColumn(name = "patientUserId")
-	private Patient patient;
-	
-	@ManyToOne
-	@JoinColumn(name = "appointmentInfoId")
-	private AppointmentInfo appointmentInfo;
-	
-	public Cart() { }
-	
-	public Cart(Patient patient, AppointmentInfo appointmentInfo) {
-		this.patient = patient;
-		this.appointmentInfo = appointmentInfo;
-	}
-	
-	public int getCartId() {
-		return cartId;
-	}
 
-	public void setCartId(int cartId) {
-		this.cartId = cartId;
-	}
+    @Autowired
+    AppointmentRepository appointment_repo;
 
-	public Patient getPatient() {
-		return patient;
-	}
+	private ArrayList<Appointment> appointments;
 
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
+	public Cart(Patient patient) {
+	    initCart(patient);
+    }
 
-	public AppointmentInfo getAppointmentInfo() {
-		return appointmentInfo;
-	}
+    public Collection<Appointment> getAppointments() {
+        return appointments;
+    }
 
-	public void setAppointmentInfo(AppointmentInfo appointmentInfo) {
-		this.appointmentInfo = appointmentInfo;
-	}
-	
+    public void setAppointments(ArrayList<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    private void initCart(Patient patient) {
+        Collection<Appointment> collected = this.appointment_repo.findByPatient(patient);
+        appointments = new ArrayList<>(collected);
+    }
+
+    public void addAppointment(Appointment appointment){
+	    appointments.add(appointment);
+    }
+
+
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+    }
 }

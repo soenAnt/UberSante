@@ -1,6 +1,6 @@
 package application.model;
 
-import application.controller.RegisterForm;
+import application.datastructure.RegisterForm;
 
 import javax.persistence.*;
 
@@ -31,14 +31,16 @@ public class Patient extends User{
 	@Column(name = "address")
 	private String address;
 
-	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-	private Collection<Appointment> appointments;
-
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    private Collection<Cart> carts;
+    private Collection<Appointment> appointments;
+
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+	private Collection<Booking> bookings;
+
+	@Transient
+	private Cart cart;
 
 	public Patient(){
-		super();
 	}
 	
 	public Patient(String firstName, String lastName, String healthCardNumber, Date birthday, String gender,
@@ -53,7 +55,7 @@ public class Patient extends User{
 	}
 
     public Patient(RegisterForm registerForm) {
-	    super(registerForm.getFirstName(),registerForm.getLastName(),registerForm.getPassword(),registerForm.getUSER_TYPE());
+	    super(registerForm.getFirstName(),registerForm.getLastName(),registerForm.getPassword(), registerForm.getUSER_TYPE());
         this.healthCardNumber = registerForm.getHealthCard();
         this.birthday = stringToDate(registerForm.getDateOfBirth());
         this.gender = registerForm.getGender();
@@ -98,6 +100,13 @@ public class Patient extends User{
 	public void setAddress(String address) {
 		this.address = address;
 	}
+    public Collection<Booking> getBookings() {
+        return bookings;
+    }
+    public void setBookings(Collection<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
     public Collection<Appointment> getAppointments() {
         return appointments;
     }
@@ -106,14 +115,15 @@ public class Patient extends User{
         this.appointments = appointments;
     }
 
-    public Collection<Cart> getCarts() {
-        return carts;
-    }
+    public Cart getCart() {
+		return cart;
+	}
 
-    public void setCarts(Collection<Cart> carts) {
-        this.carts = carts;
-    }
-    private Date stringToDate(String birthDate) {
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	private Date stringToDate(String birthDate) {
         Date birth= null;
         try {
             birth = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
