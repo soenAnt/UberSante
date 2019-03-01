@@ -54,4 +54,7 @@ public class LoginAuthentication {
     public String getRealAuthenticaton() {
         return realAuthenticaton;
     }
+    public String getPassword() {
+        return password;
+    }
 }
