@@ -13,6 +13,7 @@ public class Nurse extends User{
 		super(firstName, lastName, password, userType);
 		this.accessId = accessId;
 	}
+	public Nurse() {super();}
 
 	public String getAccessId() {
 		return accessId;
