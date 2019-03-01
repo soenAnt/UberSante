@@ -1,8 +1,9 @@
 package application.service;
 
 import application.interfaces.IPayment;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class ProxyPayment implements IPayment {
     private RealPayment realPayment;
 
