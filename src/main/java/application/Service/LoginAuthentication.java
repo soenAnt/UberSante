@@ -11,15 +11,7 @@ public class LoginAuthentication {
     private String authentication;
     private String password;
     private int userType;
-    private boolean valid;
     private String realAuthenticaton;
-
-    @Autowired
-    private PatientRepository patientRepository;
-    @Autowired
-    private NurseRepository nurseRepository;
-    @Autowired
-    private DoctorRepository doctorRepository;
 
     public LoginAuthentication(String authentication, String password) {
         this.authentication = authentication;
@@ -55,13 +47,7 @@ public class LoginAuthentication {
                 break;
         }
     }
-    private void isUserValid(){
-        System.out.println("------------------------------------ BEFORE");
-        //Doctor doctor = doctorRepository.findByPhysicianPermitNumber(Integer.parseInt(realAuthenticaton));
 
-       // System.out.println("------------------------------------ HEY: " + doctor.getCity());
-
-    }
     public int getUserType() {
         return userType;
     }
