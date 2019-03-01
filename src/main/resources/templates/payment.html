@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <h1>Payment</h1>
 
 <body>
-<form id="checkform" method="post" >
+<form action="#" th:action="@{/payment}" th:object="${payment}" method="post" >
     <div class="container">
-        <h2>Payment</h2>
         <p>Please fill in the following form to pay for your appointment.</p>
 
         <b>Credit Card Number</b>
-        <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" name="number" required="true"/>
+        <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" th:field="*{number}" id="number" required="true"/>
 
         <b>Expiration Date</b>
-        <input type="text" placeholder="MM" name="month" required="true"/>
+        <input type="text" placeholder="MM" th:field="*{month}" id="month" required="true"/>
         /
-        <input type="text" placeholder="YY" name="year" required="true"/>
+        <input type="text" placeholder="YY" th:field="*{year}" id="year" required="true"/>
         <b>CVC</b>
-        <input type="text" placeholder="XXX" name="email" required="true"/>
+        <input type="text" placeholder="XXX" th:field="*{cvc}" id="cvc" required="true"/>
 
         <div>
-            <button type="submit" class="register-btn">Confirm</button>
+            <button type="submit" class="confirm-btn" onsubmit="return validate()">Confirm</button>
         </div>
     </div>
 </form>
