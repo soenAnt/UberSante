@@ -11,6 +11,6 @@ import java.util.Collection;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer>{
-    
+
     Collection<Booking> findByPatient(Patient patient);
 }
