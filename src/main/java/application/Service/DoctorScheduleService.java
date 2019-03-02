@@ -8,6 +8,7 @@ import application.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.Collection;
 
 @Service
@@ -39,7 +40,6 @@ public class DoctorScheduleService {
         endTimeHour = Integer.parseInt(toInt);
         toInt = doctorScheduleForm.getEndTimeMin();
         endTimeMin = Integer.parseInt(toInt);
-        System.out.print("************************* HERREEEE");
     }
 
     public boolean validateSchedule(){
@@ -56,6 +56,14 @@ public class DoctorScheduleService {
     public void findDoctorAndSchedule(int id){
         doctor = doctorRepository.findByUserId(id);
         schedules = scheduleRepository.findByDoctor(doctor);
+    }
+    public void save(){
+        findSchedule();
+        Time startTime = new Time(startTimeHour,startTimeMin,0);
+        Time endTime = new Time(endTimeHour,endTimeMin,0);
+        schedule.setStartTime(startTime);
+        schedule.setEndTime(endTime);
+        scheduleRepository.save(schedule);
     }
     private void findSchedule(){
         for(Schedule x: schedules){

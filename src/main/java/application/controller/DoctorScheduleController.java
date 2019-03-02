@@ -36,7 +36,7 @@ public class DoctorScheduleController {
         return "schedule";
     }
 
-    @PostMapping(value = "/schedule")
+    @PostMapping(value = "/schedule/validate")
     public String scheduleChange(@ModelAttribute DoctorScheduleForm doctorScheduleForm, Model model){
         doctorScheduleService.transferScheduleUpdate(doctorScheduleForm);
         model.addAttribute("user", doctor);
@@ -44,12 +44,20 @@ public class DoctorScheduleController {
 
         if(doctorScheduleService.validateSchedule()){
             model.addAttribute("success","success");
+            doctorScheduleService.save();
             return "schedule";
         }
         else {
             model.addAttribute("error","error");
             return "schedule";
         }
+    }
+
+    @GetMapping(path="/schedule/home")
+    public String scheduleToHome( Model model){
+        model.addAttribute("user", doctor);
+
+        return "home";
     }
 
 }
