@@ -119,4 +119,12 @@ public class Appointment {
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

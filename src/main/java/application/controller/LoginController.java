@@ -2,25 +2,15 @@ package application.controller;
 
 import application.service.AuthenticationService;
 import application.datastructure.LoginForm;
-import application.model.Doctor;
-import application.model.Nurse;
-import application.model.Patient;
 import application.model.User;
-import application.repository.DoctorRepository;
-import application.repository.NurseRepository;
-import application.repository.PatientRepository;
-import application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 
 @Controller
+@SessionAttributes(value = "user")
 public class LoginController {
 
     @Autowired
