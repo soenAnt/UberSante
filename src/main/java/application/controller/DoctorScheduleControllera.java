@@ -18,7 +18,7 @@ import java.util.Collection;
 
 
 @Controller
-public class DoctorScheduleController {
+public class DoctorScheduleControllera {
 
     @Autowired
     private DoctorScheduleService doctorScheduleService;
