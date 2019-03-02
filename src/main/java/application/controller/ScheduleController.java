@@ -1,7 +1,7 @@
 package application.controller;
 
-import application.Service.DoctorScheduleService;
-import application.datastructure.DoctorScheduleForm;
+import application.service.ScheduleService;
+import application.datastructure.ScheduleForm;
 import application.model.Doctor;
 import application.model.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,34 +16,34 @@ import java.util.Collection;
 
 
 @Controller
-public class DoctorScheduleController {
+public class ScheduleController {
 
     @Autowired
-    private DoctorScheduleService doctorScheduleService;
+    private ScheduleService scheduleService;
 
     private Doctor doctor;
     private Collection<Schedule> schedules;
 
     @GetMapping(path="/schedule/{someID}")
     public String schedulePage(@PathVariable int someID, Model model) {
-        doctorScheduleService.findDoctorAndSchedule(someID);
-        doctor = doctorScheduleService.getDoctor();
-        schedules = doctorScheduleService.getSchedules();
+        scheduleService.findDoctorAndSchedule(someID);
+        doctor = scheduleService.getDoctor();
+        schedules = scheduleService.getSchedules();
         model.addAttribute("user", doctor);
         model.addAttribute("schedules", schedules);
         return "schedule";
     }
 
     @PostMapping(value = "/schedule/validate")
-    public String scheduleChange(@ModelAttribute DoctorScheduleForm doctorScheduleForm, Model model){
-        doctorScheduleService.transferScheduleUpdate(doctorScheduleForm);
+    public String scheduleChange(@ModelAttribute ScheduleForm scheduleForm, Model model){
+        scheduleService.transferScheduleUpdate(scheduleForm);
         model.addAttribute("user", doctor);
         model.addAttribute("schedules", schedules);
 
         /// TODO Inside Validate method, make sure the update doesnt override a booking
-        if(doctorScheduleService.validateSchedule()){
+        if(scheduleService.validateSchedule()){
             model.addAttribute("success","success");
-            doctorScheduleService.save();
+            scheduleService.save();
             return "schedule";
         }
         else {

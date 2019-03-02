@@ -1,6 +1,6 @@
-package application.Service;
+package application.service;
 
-import application.datastructure.DoctorScheduleForm;
+import application.datastructure.ScheduleForm;
 import application.model.Doctor;
 import application.model.Schedule;
 import application.repository.DoctorRepository;
@@ -12,7 +12,7 @@ import java.sql.Time;
 import java.util.Collection;
 
 @Service
-public class DoctorScheduleService {
+public class ScheduleService {
 
     @Autowired
     private ScheduleRepository scheduleRepository;
@@ -29,16 +29,16 @@ public class DoctorScheduleService {
     private Collection<Schedule> schedules;
     private Schedule schedule;
 
-    public void transferScheduleUpdate(DoctorScheduleForm doctorScheduleForm){
+    public void transferScheduleUpdate(ScheduleForm scheduleForm){
         String toInt;
-        weekday = doctorScheduleForm.getWeekday();
-        toInt = doctorScheduleForm.getStartTimeHour();
+        weekday = scheduleForm.getWeekday();
+        toInt = scheduleForm.getStartTimeHour();
         startTimeHour = Integer.parseInt(toInt);
-        toInt = doctorScheduleForm.getStartTimeMin();
+        toInt = scheduleForm.getStartTimeMin();
         startTimeMin = Integer.parseInt(toInt);
-        toInt = doctorScheduleForm.getEndTimeHour();
+        toInt = scheduleForm.getEndTimeHour();
         endTimeHour = Integer.parseInt(toInt);
-        toInt = doctorScheduleForm.getEndTimeMin();
+        toInt = scheduleForm.getEndTimeMin();
         endTimeMin = Integer.parseInt(toInt);
     }
 
