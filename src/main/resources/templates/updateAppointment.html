@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Appointments</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="appointment_css.css"/>
+</head>
+<body>
+<br/>
+<br/>
+
+<h1 align="center">Add an appointment</h1>
+
+<table align="center">
+    <form method="post" id="appointment" action="/update_to_cart">
+        <tr>
+            <td align="right">
+                <label><b>Appointment Type:</b></label>
+            </td>
+            <td align="left">
+                <select name="appointment_type" class="appointment_type" th:value="${appointment.appointmentType}">
+                    <option value="walk-in">Walk-In</option>
+                    <option value="annual">Annual</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <label><b>Date:</b></label>
+            </td>
+            <td align="left">
+                <input type="date" name="date" id="date" th:value="${appointment.date}" required="true"/>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="right">
+                <label><b>Time:</b></label>
+            </td>
+            <td align="left">
+                <input name="id" type="hidden" id="id"  th:value="${appointment.appointmentId}"/>
+                <input name="uuid" type="hidden" id="uuid"  th:value="${appointment.uuid}"/>
+                <input id="time" name="time" type="time"  th:value="${appointment.startTime}" min="8:00" max="19:40" required="true" />
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <label><b>Description:</b></label>
+            </td>
+            <td align="left">
+                <textarea name="description" form="appointment" rows="4" cols="50" th:value="${appointment.description}"
+                          placeholder="Describe the reason behind your visit ...">
+
+                </textarea>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <button type="submit">Update</button>
+            </td>
+        </tr>
+    </form>
+</table>
+
+</body>
+</html>
