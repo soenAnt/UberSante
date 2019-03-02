@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS appointments (
   `start_time` TIME NOT NULL,
   `end_time` TIME NOT NULL,
   `appointment_type` VARCHAR(10) NOT NULL,
-  `description` VARCHAR(255) NULL,
+  `description` VARCHAR(140) NULL,
   FOREIGN KEY (patient_id) REFERENCES patients(user_id)
 ) ENGINE=InnoDB;
 
