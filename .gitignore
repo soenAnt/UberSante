@@ -29,4 +29,5 @@ hs_err_pid*
 *.iml
 .c9/
 *.launch
+.settings
 
