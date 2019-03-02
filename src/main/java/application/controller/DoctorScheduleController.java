@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -34,7 +35,11 @@ public class DoctorScheduleController {
     }
 
     @PostMapping(value = "/schedule")
-    public String scheduleChange(){
+    public String scheduleChange(@ModelAttribute ScheduleForm scheduleForm){
+        System.out.print("*************************"+scheduleForm.getWeekday()+" "+scheduleForm.getStartTimeHour()+" "+scheduleForm.getStartTimeMin()
+                +" "+scheduleForm.getEndTimeHour()+" "+scheduleForm.getEndTimeMin());
+        System.out.print("*************************"+doctor.getLastName());
+
         return "home";
     }
 
