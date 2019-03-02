@@ -1,20 +1,20 @@
 package application.controller;
 
-public class ScheduleForm {
+public class DoctorScheduleForm {
     private String weekday;
     private String startTimeHour;
     private String startTimeMin;
     private String endTimeHour;
     private String endTimeMin;
 
-    public ScheduleForm(String weekday, String startTimeHour, String startTimeMin, String endTimeHour, String endTimeMin) {
+    public DoctorScheduleForm(String weekday, String startTimeHour, String startTimeMin, String endTimeHour, String endTimeMin) {
         this.weekday = weekday;
         this.startTimeHour = startTimeHour;
         this.startTimeMin = startTimeMin;
         this.endTimeHour = endTimeHour;
         this.endTimeMin = endTimeMin;
     }
-    public ScheduleForm(){}
+    public DoctorScheduleForm(){}
 
     public String getWeekday() {
         return weekday;
