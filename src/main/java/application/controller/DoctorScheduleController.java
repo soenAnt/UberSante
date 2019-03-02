@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collection;
 
@@ -20,17 +21,21 @@ public class DoctorScheduleController {
     private ScheduleRepository scheduleRepository;
     @Autowired
     private DoctorRepository doctorRepository;
+    private Doctor doctor;
+    private Collection<Schedule> schedules;
 
     @GetMapping(path="/schedule/{someID}")
     public String schedulePage(@PathVariable int someID, Model model) {
-        System.out.println("*******************************"+someID);
-        Doctor doctor = doctorRepository.findByUserId(someID);
-        System.out.println("*******************************HEYYYY"+doctor);
-        Collection<Schedule> schedules = scheduleRepository.findByDoctor(doctor);
-        System.out.println("*****************************DAMNNNNNNN"+schedules);
+        doctor = doctorRepository.findByUserId(someID);
+        schedules = scheduleRepository.findByDoctor(doctor);
         model.addAttribute("user", doctor);
         model.addAttribute("schedules", schedules);
         return "schedule";
+    }
+
+    @PostMapping(value = "/schedule")
+    public String scheduleChange(){
+        return "home";
     }
 
 }
