@@ -1,6 +1,6 @@
 package application.Service;
 
-import application.controller.DoctorScheduleForm;
+import application.datastructure.DoctorScheduleForm;
 import application.model.Doctor;
 import application.model.Schedule;
 import application.repository.DoctorRepository;

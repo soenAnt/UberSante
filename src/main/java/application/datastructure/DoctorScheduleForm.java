@@ -1,4 +1,4 @@
-package application.controller;
+package application.datastructure;
 
 public class DoctorScheduleForm {
     private String weekday;
