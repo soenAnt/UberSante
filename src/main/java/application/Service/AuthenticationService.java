@@ -1,5 +1,6 @@
 package application.service;
 
+import application.datastructure.RegisterForm;
 import application.model.Doctor;
 import application.model.Nurse;
 import application.model.Patient;
@@ -31,6 +32,23 @@ public class AuthenticationService {
     private UserRepository userRepository;
     @Autowired
     private PatientRepository patientRepository;
+
+    public Boolean processRegistration(RegisterForm registerForm){
+
+        Collection<Patient> existingPatient =  this.patientRepository.findByEmail(registerForm.getEmail());
+
+        if(existingPatient.isEmpty()){
+            //successful registration
+            // TODO allocate instantiation of patients to another class (i.e. factory?)
+            Patient patient = new Patient(registerForm);
+            this.userRepository.save((User) patient);
+            return true;
+        }else{
+            //unsuccessful registration
+            // TODO verify email in real-time and let user know if it's already taken.
+            return false;
+        }
+    }
 
     public void processLogin(String authentication, String password) {
         this.authentication = authentication;
