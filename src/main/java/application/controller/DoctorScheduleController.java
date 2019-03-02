@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.sql.Time;
 import java.util.Collection;
 
 
@@ -36,14 +37,19 @@ public class DoctorScheduleController {
     }
 
     @PostMapping(value = "/schedule")
-    public String scheduleChange(@ModelAttribute DoctorScheduleForm doctorScheduleForm){
- /*       System.out.print("*************************"+ doctorScheduleForm.getWeekday()+" "+ doctorScheduleForm.getStartTimeHour()+" "+ doctorScheduleForm.getStartTimeMin()
-                +" "+ doctorScheduleForm.getEndTimeHour()+" "+ doctorScheduleForm.getEndTimeMin());
-
-        */
+    public String scheduleChange(@ModelAttribute DoctorScheduleForm doctorScheduleForm, Model model){
         doctorScheduleService.transferScheduleUpdate(doctorScheduleForm);
+        model.addAttribute("user", doctor);
+        model.addAttribute("schedules", schedules);
 
-        return "home";
+        if(doctorScheduleService.validateSchedule()){
+            model.addAttribute("success","success");
+            return "schedule";
+        }
+        else {
+            model.addAttribute("error","error");
+            return "schedule";
+        }
     }
 
 }

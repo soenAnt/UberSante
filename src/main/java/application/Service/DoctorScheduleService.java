@@ -18,7 +18,7 @@ public class DoctorScheduleService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    private int weekday;
+    private String weekday;
     private int startTimeHour;
     private int startTimeMin;
     private int endTimeHour;
@@ -26,11 +26,11 @@ public class DoctorScheduleService {
     private boolean valid;
     private Doctor doctor;
     private Collection<Schedule> schedules;
+    private Schedule schedule;
 
     public void transferScheduleUpdate(DoctorScheduleForm doctorScheduleForm){
         String toInt;
-        toInt = doctorScheduleForm.getWeekday();
-        weekday = Integer.parseInt(toInt);
+        weekday = doctorScheduleForm.getWeekday();
         toInt = doctorScheduleForm.getStartTimeHour();
         startTimeHour = Integer.parseInt(toInt);
         toInt = doctorScheduleForm.getStartTimeMin();
@@ -42,22 +42,29 @@ public class DoctorScheduleService {
         System.out.print("************************* HERREEEE");
     }
 
-    public void validateSchedule(){
+    public boolean validateSchedule(){
+        valid = true;
         if((startTimeMin == endTimeMin)&&(endTimeHour == startTimeHour)){
             valid = false;
         }
         if(endTimeHour < startTimeHour){
             valid = false;
         }
+        return valid;
     }
+
     public void findDoctorAndSchedule(int id){
         doctor = doctorRepository.findByUserId(id);
         schedules = scheduleRepository.findByDoctor(doctor);
     }
+    private void findSchedule(){
+        for(Schedule x: schedules){
+            if(x.getDayOfWeek().equals(weekday))
+                schedule = x;
+        }
+    }
     public Doctor getDoctor(){return doctor;}
-
     public Collection<Schedule> getSchedules() {
         return schedules;
     }
-    public boolean getValid(){return valid;}
 }
