@@ -7,12 +7,15 @@ import application.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class AppointmentService {
@@ -26,11 +29,11 @@ public class AppointmentService {
     /*
      * If cart has not been initialized, create it and populate with persisted appointments.
      */
-    private void initCart(Patient patient) {
+    public void initCart(Patient patient) {
         patient.setCart(new Cart());
         Collection<Appointment> collected = this.appointmentRepository.findByPatient(patient);
-        //if(!collected.isEmpty())
         patient.getCart().setAppointments(new ArrayList<>(collected));
+        patient.setHasCart(true);
     }
 
     /*
@@ -38,22 +41,44 @@ public class AppointmentService {
      */
     public void addAppointmentToCart(Patient patient, AppointmentForm appointmentForm) {
 
-        if(!patient.getHasCart()){
-            initCart(patient);
-            patient.setHasCart(true);
-        }
-
         Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
                 stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
                 appointmentForm.getDescription());
 
+        appointment.setDate(truncateTimeFromDate(appointment.getDate()));
+
+        appointment.setUuid(UUID.randomUUID().toString());
+
         patient.getCart().addAppointment(appointment);
+
     }
 
     /*
      * Retrieve appointments in cart to be displayed to client
      */
     public ArrayList<Appointment> getAppointmentsFromCart(Patient patient){
+
+        return patient.getCart().getAppointments();
+    }
+
+    /*
+     * Appointment updated from cart. Does not need to save once more to persist changes.
+     */
+    public ArrayList<Appointment> updateAppointment(Patient patient, Appointment appointment, String date, String time,
+                                  String description, String appointment_type){
+
+        appointment.setDate(stringToDate(date));
+        appointment.setStartTime(stringToTime(time));
+        appointment.setEndTime(stringToTime(time), appointment_type);
+        appointment.setDescription(description);
+        appointment.setAppointmentType(appointment_type);
+
+        patient.getCart().updateAppointment(appointment);
+
+        if(appointment.getAppointmentId() != 0){
+
+            this.appointmentRepository.saveAndFlush(appointment);
+        }
 
         return patient.getCart().getAppointments();
     }
@@ -73,7 +98,10 @@ public class AppointmentService {
 
         patient.getCart().removeAppointment(appointment);
 
-        this.appointmentRepository.delete(appointment);
+        if(appointment.getAppointmentId() != 0){
+
+            this.appointmentRepository.delete(appointment.getAppointmentId());
+        }
     }
 
     /*
@@ -127,7 +155,9 @@ public class AppointmentService {
         Collection<Booking> bookings = this.bookingRepository.findByPatient(patient);
 
         if(bookings.isEmpty()){
+
             System.out.println("You do not have any appointments booked.");
+
             return bookings;
         }
 
@@ -143,36 +173,47 @@ public class AppointmentService {
 
     /*
      * Handle string conversion to time
+     * TODO modify function to truncate seconds
      */
-    private Time stringToTime(String string_time) {
+    private java.sql.Time stringToTime(String string_time) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat(string_time);
+        LocalTime time = LocalTime.parse(string_time);
 
-        long ms = 0;
-
-        try {
-            ms = sdf.parse(string_time).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Time time = new Time(ms);
-
-        return time;
+        return java.sql.Time.valueOf(time);
     }
+
     /*
      * Handle string conversion to date
+     * TODO displays weekdays for non-persisted appointments. Need fix to stay consistent.
      */
     private Date stringToDate(String string_date) {
 
-        Date date = null;
+        LocalDate date = null;
+
+        date = LocalDate.parse(string_date);
+
+        return java.sql.Date.valueOf(date);
+    }
+
+    /*
+     * removing time from datetime to show only date.
+     * TODO fix bug that still displays time 00:00:00
+     */
+    private Date truncateTimeFromDate(Date date) {
+
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date date_no_time = null;
 
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse(string_date);
+
+            date_no_time = formatter.parse(formatter.format(date));
+
         } catch (ParseException e) {
+
             e.printStackTrace();
         }
 
-        return date;
+        return date_no_time;
     }
 }
