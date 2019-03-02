@@ -22,7 +22,7 @@ public class Schedule {
     private Time endTime;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "doctorId")
     private Doctor doctor;
 
     public Schedule(Doctor doctor, String dayOfWeek, Time startTime, Time endTime, String appointmentType) {

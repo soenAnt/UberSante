@@ -31,10 +31,10 @@ public class Patient extends User{
 	@Column(name = "address")
 	private String address;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "patient")
     private Collection<Appointment> appointments;
 
-	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "patient")
 	private Collection<Booking> bookings;
 
 	@Transient

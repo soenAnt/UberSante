@@ -16,10 +16,10 @@ public class Doctor extends User {
 	@Column(name = "physicianPermitNumber")
 	private int physicianPermitNumber;
 
-	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "doctor")
 	private Collection<Schedule> schedules;
 
-	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "doctor")
 	private Collection<Booking> bookings;
 
 	public Doctor(String firstName, String lastName, String specialty, String city,

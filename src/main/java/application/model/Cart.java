@@ -24,4 +24,9 @@ public class Cart {
     public void removeAppointment(Appointment appointment) {
         appointments.remove(appointment);
     }
+
+    public void updateAppointment(Appointment appointment) {
+        int index = appointments.indexOf(appointment);
+        appointments.set(index, appointment);
+    }
 }
