@@ -42,6 +42,7 @@ public class DoctorScheduleService {
         endTimeMin = Integer.parseInt(toInt);
     }
 
+    /// TODO Validate if the schedule is overriding a patient booking or appointment
     public boolean validateSchedule(){
         valid = true;
         if((startTimeMin == endTimeMin)&&(endTimeHour == startTimeHour)){

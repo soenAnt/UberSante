@@ -40,6 +40,7 @@ public class DoctorScheduleController {
         model.addAttribute("user", doctor);
         model.addAttribute("schedules", schedules);
 
+        /// TODO Inside Validate method, make sure the update doesnt override a booking
         if(doctorScheduleService.validateSchedule()){
             model.addAttribute("success","success");
             doctorScheduleService.save();
