@@ -31,6 +31,7 @@ public class Schedule {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+    public Schedule() {}
 
     public int getScheduleId() {
         return scheduleId;

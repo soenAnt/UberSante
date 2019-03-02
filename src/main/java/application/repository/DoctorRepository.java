@@ -9,4 +9,5 @@ import java.util.Collection;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Integer>{
     Doctor findByPhysicianPermitNumber(int physicianPermitNumber);
+    Doctor findByUserId(int userId);
 }
