@@ -41,31 +41,26 @@ CREATE TABLE IF NOT EXISTS nurses (
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS appointment_info (
-  `appointment_info_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `date` DATE NOT NULL,
-  `start_time` TIME NOT NULL,
-  `appointment_type` VARCHAR(10) NOT NULL,
-  `description` VARCHAR(255) NULL
-) ENGINE=InnoDB;
-
 CREATE TABLE IF NOT EXISTS appointments (
   `appointment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `patient_id` INT UNSIGNED NOT NULL,
+  `patient_id`INT UNSIGNED NOT NULL,
+  `date` DATE NOT NULL,
+  `start_time` TIME NOT NULL,
+  `end_time` TIME NOT NULL,
+  `appointment_type` VARCHAR(10) NOT NULL,
+  `description` VARCHAR(140) NULL,
+  FOREIGN KEY (patient_id) REFERENCES patients(user_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS bookings (
+  `booking_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `doctor_id` INT UNSIGNED NOT NULL,
-  `appointment_info_id` INT UNSIGNED NOT NULL,
+  `patient_id` INT UNSIGNED NOT NULL,
+  `appointment_id` INT UNSIGNED NOT NULL,
   `room` INT NOT NULL,
   FOREIGN KEY (patient_id) REFERENCES patients(user_id),
   FOREIGN KEY (doctor_id) REFERENCES doctors(user_id),
-  FOREIGN KEY (appointment_info_id) REFERENCES appointment_info(appointment_info_id)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS carts (
-  `cart_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `patient_id` INT UNSIGNED NOT NULL,
-  `appointment_info_id` INT UNSIGNED NOT NULL,
-  FOREIGN KEY (patient_id) REFERENCES patients(user_id),
-  FOREIGN KEY (appointment_info_id) REFERENCES appointment_info(appointment_info_id)
+  FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS schedules (

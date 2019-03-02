@@ -5,25 +5,25 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "doctors")
-public class Doctor extends User{
+public class Doctor extends User {
 
 	@Column(name = "specialty")
 	private String specialty;
-	
+
 	@Column(name = "city")
 	private String city;
-	
+
 	@Column(name = "physicianPermitNumber")
 	private int physicianPermitNumber;
 
-	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
-	private Collection<Appointment> appointments;
-
-	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "doctor")
 	private Collection<Schedule> schedules;
 
+	@OneToMany(mappedBy = "doctor")
+	private Collection<Booking> bookings;
+
 	public Doctor(String firstName, String lastName, String specialty, String city,
-			int physicianPermitNumber, String password, String userType) {
+				  int physicianPermitNumber, String password, String userType) {
 		super(firstName, lastName, password, userType);
 		this.specialty = specialty;
 		this.city = city;
@@ -56,19 +56,19 @@ public class Doctor extends User{
 		this.physicianPermitNumber = physicianPermitNumber;
 	}
 
-    public Collection<Appointment> getAppointments() {
-        return appointments;
-    }
+	public Collection<Booking> getBookings() {
+		return bookings;
+	}
 
-    public void setAppointments(Collection<Appointment> appointments) {
-        this.appointments = appointments;
-    }
+	public void setBookings(Collection<Booking> bookings) {
+		this.bookings = bookings;
+	}
 
-    public Collection<Schedule> getSchedules() {
-        return schedules;
-    }
+	public Collection<Schedule> getSchedules() {
+		return schedules;
+	}
 
-    public void setSchedules(Collection<Schedule> schedules) {
-        this.schedules = schedules;
-    }
+	public void setSchedules(Collection<Schedule> schedules) {
+		this.schedules = schedules;
+	}
 }

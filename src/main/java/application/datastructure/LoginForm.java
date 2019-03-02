@@ -1,4 +1,4 @@
-package application.controller;
+package application.datastructure;
 
 public class LoginForm {
     private String identification;
