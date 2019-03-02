@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <div class="container">
     <div id="cart-panel" th:fragment="cart">
-        <link rel="stylesheet" type="text/css" href="cart_css.css" th:href="@{cart_css.css}"/>
+        <link rel="stylesheet" type="text/css" href="/fragments/cart_css.css" th:href="@{/fragments/cart_css.css}"/>
         <div class="wrapper">
             <h2>Cart</h2>
             <div class="cart-wrapper">
@@ -16,41 +16,39 @@
                     <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Time</th>
+                        <th>Start-Time</th>
+                        <th>End-Time</th>
                         <th>Type</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tr th:each="appointment : ${appointments}">
                         <td th:text="${appointment.date}"></td>
-                        <td th:text="${appointment.time}"></td>
+                        <td th:text="${appointment.startTime}"></td>
+                        <td th:text="${appointment.endTime}"></td>
                         <td th:text="${appointment.appointmentType}"></td>
                         <td>
-                            <a th:href="@{/persistAppointment(id=${appointment.appointmentId})}"><button>Save</button></a>
+                            <a th:if="${appointment.appointmentId} == 0" th:href="@{/persistAppointment
+                            (id=${appointment.uuid})}"><button>Save</button></a>
+                            <a th:if="${appointment.appointmentId} != 0" th:href="@{/checkout
+                            (id=${appointment.appointmentId})}"><button>checkout</button></a>
                         </td>
                         <td>
-                            <a th:href="@{/removeFromCart(id=${appointment.appointmentId})}"><button>Remove</button></a>
+                            <a th:if="${appointment.appointmentId} == 0"
+                               th:href="@{/updateNonPersistedAppointment(id=${appointment.uuid})}"><button>Update</button></a>
+                            <a th:if="${appointment.appointmentId} != 0"
+                               th:href="@{/updatePersistedAppointment(id=${appointment.appointmentId})}"><button>Update</button></a>
+                        </td>
+                        <td>
+                            <a th:href="@{/removeAppointment(id=${appointment.appointmentId})}"><button>Remove</button></a>
                         </td>
                     </tr>
                 </table>
             </div>
             <br/>
-            <a href="/checkout"><button class="btnCommit">Checkout</button></a>
         </div>
-        <script>
-        $('#cartToggle').on('click', function(){
-        var $this = $('#cart-panel');
-        if ($this.hasClass('open')) {
-        $this.animate({
-        left : '420px'
-        }, 150).removeClass('open');
-        } else {
-        $this.animate({
-        left : '17px' //17px instead of 0 to hide scroll bar for optimal aesthetics
-        }, 150).addClass('open');
-        }
-        });
-
-        </script>
     </div>
 </div>
 </body>
