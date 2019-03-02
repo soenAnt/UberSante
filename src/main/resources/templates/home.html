@@ -29,6 +29,9 @@
     <!-- th:if="${user.userType} == 'doctor'" will add once backend is established -->
     <li><a href="#Schedule">Schedule</a></li>
     </div>
+    <div th:if="${user}">
+        <li th:if="${user.userType} == 'doctor'"><a href="/schedule">Schedule Manager</a></li>
+    </div>
     <li><a href="#contact">Contact</a></li>
     <li style="float:right"><a href="#about">About</a></li>
 </ul>
