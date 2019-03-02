@@ -1,8 +1,8 @@
-package application.controller;
+package application.datastructure;
 
 /*
  * The attribute names and their getters/setters must match the form input field name
- * As typed in the field name, on the HTML
+ * As typed in the field names in the HTML files
  */
 
 public class RegisterForm {

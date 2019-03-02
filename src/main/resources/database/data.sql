@@ -37,8 +37,15 @@ INSERT IGNORE INTO nurses VALUES (13, 'DHG88451');
 INSERT IGNORE INTO nurses VALUES (14, 'IUE15447');
 INSERT IGNORE INTO nurses VALUES (15, 'KMN12805');
 
-INSERT IGNORE INTO appointment_info VALUES(1, '2019-09-09', '10:20', "walk-in", "toe fungus");
-INSERT IGNORE INTO appointment_info VALUES(2, '2019-06-21', '16:00', "annual", "gastric reflux");
+INSERT IGNORE INTO appointments VALUES(1, 1, '2019-09-09', '10:20', '10:40', "walk-in", "");
+INSERT IGNORE INTO appointments VALUES(2, 2, '2019-06-21', '16:00', '17:00', "annual", "");
+INSERT IGNORE INTO appointments VALUES(3, 3, '2019-04-04', '15:00', '15:20', 'walk-in', "");
+INSERT IGNORE INTO appointments VALUES(4, 3, '2019-08-10', '15:00', '16:00', 'annual', "");
+INSERT IGNORE INTO appointments VALUES(5, 4, '2019-06-14', '9:00', '9:20', 'walk-in', "toe fungus");
+INSERT IGNORE INTO appointments VALUES(6, 5, '2019-05-15', '18:00', '18:20', 'walk-in', "");
+
+INSERT IGNORE INTO bookings VALUES(1, 6, 3, 3, 1);
+INSERT IGNORE INTO bookings VALUES(2, 7, 4, 5, 1);
 
 INSERT IGNORE INTO schedules VALUES (1, 6, 'Sunday', '9:00', '17:00');
 INSERT IGNORE INTO schedules VALUES (2, 6, 'Monday', '9:00', '17:00');

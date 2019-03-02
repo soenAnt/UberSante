@@ -5,12 +5,12 @@ html, body {
 }
 #cart-panel {
     z-index:99;
-    left: 420px;
+    left: 800px;
     position:absolute;
-    height : calc(100% - 113px);
-    width  : 420px;
-    margin-top: 113px;
-    margin-left:calc(100% - 420px);
+    height : calc(100% - 200px);
+    width  : 800px;
+    margin-top: 200px;
+    margin-left:calc(100% - 800px);
     background-color: #444444;
     color: white;
     box-shadow: 0 3px 6px rgba(0,0,0,0.4);
@@ -23,9 +23,9 @@ html, body {
 }
 
 .cart-table, td, th{
-    padding: 8px;
+    padding: 20px;
     text-align: left;
-    border-bottom: 1px solid white;
+    border-bottom: 2px solid white;
 }
 
 .wrapper{

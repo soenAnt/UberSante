@@ -1,136 +1,192 @@
 package application.controller;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 
+import application.datastructure.AppointmentForm;
+import application.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.*;
-
+import application.model.Booking;
 import application.model.Appointment;
-import application.model.AppointmentInfo;
-import application.model.Cart;
 import application.model.Patient;
-import application.repository.AppointmentInfoRepository;
-import application.repository.AppointmentRepository;
-import application.repository.CartRepository;
-import application.repository.PatientRepository;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
 
 @Controller
+@SessionAttributes(value = {"user", "appointments"})
 public class PatientController {
-	
-	@Autowired
-	AppointmentRepository appointmentRepository;
-	
-	@Autowired
-	AppointmentInfoRepository appointmentInfoRepository;
-	
-	@Autowired
-	CartRepository cartRepository;
-	
-	@Autowired
-	PatientRepository patientRepository;
 
-    @GetMapping("/appointment")
-    public String appointmentPage(){
-        return "appointment";
-    }
+    @Autowired
+    private AppointmentService appointmentService;
 
-    @PostMapping("/appointment")
-    public String processAppointment(@RequestParam String appointment_type,
-                                     @RequestParam String date,
-                                     @RequestParam String time,
-                                     @RequestParam String description,
-                                     Model model){
+    @PostMapping("/add_to_cart")
+    public String add(@ModelAttribute AppointmentForm appointmentForm, Model model){
 
-        //Appointment appointment = new Appointment(appointment_type, date, time, description);
-        //model.addAttribute("cart", cart); <-- should add the cart fragment to homepage
-    	
-    	// testing //
-    	Patient p = patientRepository.findByUserId(1);
-    	Date d = Date.valueOf(date);
-    	System.out.println("time: " + time);
-    	Timestamp ts = Timestamp.valueOf(date + " " + time + ":00");
-    	this.save(appointment_type, d, ts, p, description);
-    	//AppointmentInfo info = appointmentInfoRepository.findByAppointmentInfoId(5);
-    	//clear(info.getAppointmentInfoId());
-    	checkout(6, 1); // checkout appointment 6 on user 1
-    	// end testing //
+        Patient patient = setupModel(model);
+
+        this.appointmentService.addAppointmentToCart(patient, appointmentForm);
+
         return "home";
     }
-    
-    @RequestMapping(value="/removeFromCart", method= RequestMethod.GET)
-    public String clear(@RequestParam(value="appointmentInfoId", required = true) int infoId){
-        // remove appointment from cart
-    	AppointmentInfo info = appointmentInfoRepository.findByAppointmentInfoId(infoId);
-    	int cart = cartRepository.findByAppointmentInfo(info);
-    	if(info != null) {
-    		cartRepository.delete(cart);
-    		appointmentInfoRepository.delete(infoId);
-    	}
-        return "/";
+
+    @PostMapping("/update_to_cart")
+    public String updatePersisted(@RequestParam String date,
+                                  @RequestParam String time,
+                                  @RequestParam String appointment_type,
+                                  @RequestParam String description,
+                                  @RequestParam int id,
+                                  @RequestParam String uuid, Model model){
+
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
+        Appointment appointment = null;
+
+        if(id != 0){
+            appointment = retrievePersistedAppointment(id, model);
+        }
+        else {
+            appointment = retrieveNonPersistedAppointment(uuid, model);
+        }
+
+        ArrayList<Appointment> appointments = this.appointmentService.updateAppointment(patient,
+                appointment, date, time, description, appointment_type);
+
+        model.addAttribute("appointments", appointments);
+
+        return "home";
+    }
+
+    @RequestMapping(value="/removeAppointment", method= RequestMethod.GET)
+    public String remove(@RequestParam(value="id") int appointment_id, Model model){
+
+        Patient patient = setupModel(model);
+
+        Appointment appointment = retrievePersistedAppointment(appointment_id, model);
+
+        this.appointmentService.removeAppointmentFromCart(patient, appointment);
+
+        return "home";
     }
 
     @RequestMapping(value="/persistAppointment", method= RequestMethod.GET)
-    public String save(String appointmentType, Date date, Timestamp startTime, Patient patient, String description){
-        // persist the appointment in table appointment_info
-    	int id = -1;
-    	if(appointmentType.equals("walk-in")) {
-    		id = 1;
-    	} else if(appointmentType.equals("annual")) {
-    		id = 2;
-    	}
-    	AppointmentInfo info = appointmentInfoRepository.findByAppointmentInfoId(id);
-    	AppointmentInfo newAppointment = null;
-    	if(info != null) {
-			newAppointment = new AppointmentInfo(info); // prototype; using clone didn't work properly
-			newAppointment.setDate(date);
-			newAppointment.setStartTime(startTime);
-    	} else {
-    		newAppointment = new AppointmentInfo(date, startTime, appointmentType, description);
-    	}
-    	
-    	appointmentInfoRepository.save(newAppointment);
-    	cartRepository.save(new Cart(patient, newAppointment));
-        return "/";
+    public String save(@RequestParam(value="id") String uuid, Model model){
+
+        Appointment appointment = retrieveNonPersistedAppointment(uuid, model);
+
+        this.appointmentService.saveAppointment(appointment);
+
+        return "home";
+    }
+
+    @RequestMapping(value="/updateNonPersistedAppointment", method= RequestMethod.GET)
+    public String updateNonPersistedForm(@RequestParam(value="id") String uuid, Model model){
+
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
+
+        Appointment appointment = retrieveNonPersistedAppointment(uuid, model);
+
+        model.addAttribute("user", patient);
+        model.addAttribute("appointment", appointment);
+        //this.appointmentService.updateAppointment(patient, appointment);
+
+        return "updateAppointment";
+    }
+
+    @RequestMapping(value="/updatePersistedAppointment", method= RequestMethod.GET)
+    public String updatePersistedForm(@RequestParam(value="id") int id, Model model){
+
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
+
+        Appointment appointment = retrievePersistedAppointment(id, model);
+
+        model.addAttribute("user", patient);
+        model.addAttribute("appointment", appointment);
+        //this.appointmentService.updateAppointment(patient, appointment);
+
+        return "updateAppointment";
     }
 
     @RequestMapping(value="/checkout", method= RequestMethod.GET)
-    public String checkout(@RequestParam(value="appointmentInfoId", required = true) int infoId,
-    		@RequestParam(value="patientId", required = true) int ptId){
- 		// redirect to checkout page -> payment page (Matthew)
-    	
-		// persist the appointment in table appointments
-    	AppointmentInfo info = appointmentInfoRepository.findByAppointmentInfoId(infoId);
-    	Patient patient = patientRepository.findByUserId(ptId);
-    	int cartId = cartRepository.findByAppointmentInfo(info);
-    	
-    	// get doctor
-    	// get room
-    	
-    	// uncomment this and remove appointment = null
-    	//Appointment appointment = new Appointment(room, info, doctor, patient);
-    	Appointment appointment = null;
-    	
-    	appointmentRepository.save(appointment);
-    	cartRepository.delete(cartId);
-    	
+    public String checkout(@RequestParam(value="id") int appointment_id, Model model){
+
+        Patient patient = setupModel(model);
+
+        Appointment appointment = retrievePersistedAppointment(appointment_id, model);
+
+        this.appointmentService.checkoutAppointment(patient, appointment);
+
         return "checkout";
     }
     
     @RequestMapping(value="/cancelAppointment", method= RequestMethod.GET)
-    public String cancel(@RequestParam(value="appointmentId", required = true) int id) {
-    	// remove the appointment from table appointments
-    	Appointment rdv = appointmentRepository.findByAppointmentId(id);
-    	AppointmentInfo info = appointmentInfoRepository.findByAppointmentId(id);
-    	
-    	if(rdv != null) {
-    		appointmentRepository.delete(id);
-    		appointmentInfoRepository.delete(info.getAppointmentInfoId());
-    	}
-    	
-    	return "/";
+    public String cancel(@RequestParam Booking booking, Model model) {
+
+        this.appointmentService.cancelBooking(booking);
+
+        return "home";
+    }
+
+    @RequestMapping(value="/showBookings", method= RequestMethod.GET)
+    public String showBookings(Patient patient, Model model) {
+
+        Collection bookings = this.appointmentService.getBookings(patient);
+
+        model.addAttribute("bookings", bookings);
+
+        return "bookings";
+    }
+
+    // sets up boiler-plate code for each requested mapping
+    private Patient setupModel(Model model){
+
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
+
+        ArrayList<Appointment> appointments = patient.getCart().getAppointments();
+
+        model.addAttribute("user", patient);
+
+        model.addAttribute("appointments", appointments);
+
+        return patient;
+    }
+
+    // returns a persisted appointment from cart
+    private Appointment retrievePersistedAppointment(int id, Model model){
+
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
+
+        ArrayList<Appointment> appointments = patient.getCart().getAppointments();
+
+        for(Appointment appointment : appointments){
+
+            if(appointment.getAppointmentId() == id)
+
+                return appointment;
+        }
+
+        return null;
+    }
+
+    // returns a non-persisted appointment from cart using uuid instead of yet-to-be-generated appointment_id
+    private Appointment retrieveNonPersistedAppointment(String uuid, Model model){
+
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
+
+        ArrayList<Appointment> appointments = patient.getCart().getAppointments();
+
+        for(Appointment appointment : appointments){
+
+            if(appointment.getAppointmentId() == 0)
+
+                if(appointment.getUuid().equals(uuid))
+
+                    return appointment;
+        }
+
+        return null;
     }
 
 }

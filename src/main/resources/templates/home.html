@@ -7,9 +7,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../home_css.css"/>
     <meta charset="UTF-8"/>
-    <title>Register</title>
+    <title>Home</title>
 </head>
 <body>
+<div th:if="${user.userType} == 'patient'" th:replace="fragments/cart::cart"></div> <!-- cart-->
 <div class="wrap">
 <div class="header">
 
@@ -23,14 +24,15 @@
 
     <div>
     <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
-    <li><a href="#Appointments">Appointments</a></li>
+    <li><a href="/appointment_page">Appointments</a></li>
     </div>
     <div>
     <!-- th:if="${user.userType} == 'doctor'" will add once backend is established -->
-    <li><a href="#Schedule">Schedule</a></li>
+    <li><a href="/schedule">Schedule</a></li>
     </div>
-    <li><a href="#contact">Contact</a></li>
-    <li style="float:right"><a href="#about">About</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <li><a href="/about">About</a></li>
+    <li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
 </ul>
     </div>
 
@@ -56,7 +58,7 @@
 
 <div>
     <p>
-        With 24/7 access to the clinic’s availabilities, registration for walk-in appointments becomes fair and simple. Forget about never-ending morning line-ups, impatience and stress. Enjoy a calm atmosphere that transforms your waiting room into a reception area as patients arrive gradually instead.
+        With 24/7 access to the clinic’s availabilities, registration for walk-in bookings becomes fair and simple. Forget about never-ending morning line-ups, impatience and stress. Enjoy a calm atmosphere that transforms your waiting room into a reception area as patients arrive gradually instead.
     </p>
 
 </div>
@@ -122,7 +124,21 @@
 </table>
 
 <div>
-
+    <!-- Cart Slider -->
+    <script>
+        $('#cartToggle').on('click', function(){
+        var $this = $('#cart-panel');
+        if ($this.hasClass('open')) {
+        $this.animate({
+        left : '800px'
+        }, 150).removeClass('open');
+        } else {
+        $this.animate({
+        left : '17px'
+        }, 150).addClass('open');
+        }
+        });
+    </script>
 </div>
 </div>
 </div>
