@@ -1,10 +1,7 @@
 package application.service;
 
 import application.datastructure.AppointmentForm;
-import application.model.Appointment;
-import application.model.Booking;
-import application.model.Doctor;
-import application.model.Patient;
+import application.model.*;
 import application.repository.BookingRepository;
 import application.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,9 @@ public class AppointmentService {
      * If cart has not been initialized, create it and populate with persisted appointments.
      */
     private void initCart(Patient patient) {
+        patient.setCart(new Cart());
         Collection<Appointment> collected = this.appointmentRepository.findByPatient(patient);
+        //if(!collected.isEmpty())
         patient.getCart().setAppointments(new ArrayList<>(collected));
     }
 
@@ -49,7 +48,6 @@ public class AppointmentService {
                 appointmentForm.getDescription());
 
         patient.getCart().addAppointment(appointment);
-
     }
 
     /*

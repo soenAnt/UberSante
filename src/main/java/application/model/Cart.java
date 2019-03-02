@@ -6,7 +6,7 @@ public class Cart {
 
 	private ArrayList<Appointment> appointments;
 
-	public Cart(Patient patient) {
+	public Cart() {
     }
 
     public ArrayList<Appointment> getAppointments() {
@@ -20,7 +20,6 @@ public class Cart {
     public void addAppointment(Appointment appointment){
 	    appointments.add(appointment);
     }
-
 
     public void removeAppointment(Appointment appointment) {
         appointments.remove(appointment);
