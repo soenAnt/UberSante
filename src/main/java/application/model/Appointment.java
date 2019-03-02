@@ -33,8 +33,11 @@ public class Appointment {
     @JoinColumn(name = "patientId")
     private Patient patient;
 
-	@OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "appointment")
 	private Collection<Booking> bookings;
+
+	@Transient
+    private String uuid;
 	
 	public Appointment() {}
 
@@ -45,6 +48,7 @@ public class Appointment {
         this.appointmentType = appointmentType;
         this.endTime = processEndTime(startTime, appointmentType);
         this.description = description;
+        this.uuid = "abc";
     }
 
     private Time processEndTime(Time startTime, String appointmentType) {
@@ -52,7 +56,7 @@ public class Appointment {
         LocalTime start = startTime.toLocalTime();
         LocalTime end;
 
-        if(appointmentType == "20min" || appointmentType == "walk-in"){
+        if(appointmentType.equals("20min") || appointmentType.equals("walk-in")){
             end = start.plusMinutes(20);
         }
         else{
@@ -92,8 +96,8 @@ public class Appointment {
         return endTime;
     }
 
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
+    public void setEndTime(Time startTime, String appointment_type) {
+        this.endTime = processEndTime(startTime, appointment_type);
     }
 
     public String getAppointmentType() {
@@ -126,5 +130,13 @@ public class Appointment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
