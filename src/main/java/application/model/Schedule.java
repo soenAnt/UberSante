@@ -5,6 +5,7 @@ import java.sql.Time;
 
 
 @Entity
+@Table(name = "schedules")
 public class Schedule {
 
     @Id

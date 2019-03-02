@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div >
+        <h2 th:text=" 'Doctor ' +  ${user.lastName}+'\'s Schedule  '">Hi, Name Space</h2>
+    </div>
+        <table class="table table-striped">
+            <th:block th:each="schedule: ${schedules}">
+                <tr>
+                    <td th:text="${schedule.getDayOfWeek()}" />
+                    <td th:text="${schedule.startTime}" />
+                    <td th:text="${schedule.endTime}" />
+                </tr>
+            </th:block>
+        </table>
+    <br/>
+    <br/>
+    <h3>Updating schedule:</h3>
+    <form>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Weekday</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><select class="form-control" id="sel1">
+                    <option>Sunday</option>
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                    <option>Saturday</option>
+                </select></td>
+                <td><input type="time"  name="start"/></td>
+                <td><input type="time"  name="end"/></td>
+                <td><button  type="submit" class="btn btn-success" value="submit">Update</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+</html>
