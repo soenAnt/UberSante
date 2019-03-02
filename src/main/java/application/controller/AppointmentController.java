@@ -18,7 +18,7 @@ import java.util.Collection;
 
 @Controller
 @SessionAttributes(value = {"user", "appointments"})
-public class PatientController {
+public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;

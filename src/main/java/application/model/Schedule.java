@@ -5,6 +5,7 @@ import java.sql.Time;
 
 
 @Entity
+@Table(name = "schedules")
 public class Schedule {
 
     @Id
@@ -31,6 +32,7 @@ public class Schedule {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+    public Schedule() {}
 
     public int getScheduleId() {
         return scheduleId;
