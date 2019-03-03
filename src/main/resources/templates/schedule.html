@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div th:if="${error}">
+        <h2 class="text-danger">Error updating schedule</h2>
+    </div>
+    <div th:if="${success}">
+        <h2 class="text-success">Succesfull updating schedule</h2>
+    </div>
+    <div >
+        <h2 th:text=" 'Doctor ' +  ${user.lastName}+'\'s Schedule  '">Hi, Name Space</h2>
+    </div>
+        <table class="table table-striped">
+            <th:block th:each="schedule: ${schedules}">
+                <tr>
+                    <td th:text="${schedule.getDayOfWeek()}" />
+                    <td th:text="${schedule.startTime}" />
+                    <td th:text="${schedule.endTime}" />
+                </tr>
+            </th:block>
+        </table>
+    <br/>
+    <br/>
+    <h3>Updating schedule:</h3>
+    <form method="post" action="/schedule/validate">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Weekday</th>
+                <th>Start Time</th>
+                <th>          </th>
+                <th>End Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><select class="form-control" id="sel1" name="weekday">
+                    <option value="Sunday" selected="selected">Sunday</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Sunday">Thursday</option>
+                    <option value="Thursday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                </select></td>
+                <td>
+                    <select class="form-control" name="startTimeHour" size="3" >
+                        <option value="8" selected="selected">8</option>
+                        <option value="9" >9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name="startTimeMin" size="3">
+                        <option value="0" selected="selected">0</option>
+                        <option value="15">20</option>
+                        <option value="40">40</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name="endTimeHour" size="3">
+                        <option value="8" selected="selected">8</option>
+                        <option value="9" >9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name="endTimeMin" size="3">
+                        <option value="0" selected="selected">0</option>
+                        <option value="15">20</option>
+                        <option value="40">40</option>
+                    </select>
+                </td>
+                <td><button  type="submit" class="btn btn-success" value="submit">Update</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <a class="btn btn-primary" href="/schedule/home" role="button">HomePage</a>
+</div>
+</body>
+</html>

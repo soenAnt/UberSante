@@ -5,6 +5,7 @@ import java.sql.Time;
 
 
 @Entity
+@Table(name = "schedules")
 public class Schedule {
 
     @Id
@@ -22,7 +23,7 @@ public class Schedule {
     private Time endTime;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "doctorId")
     private Doctor doctor;
 
     public Schedule(Doctor doctor, String dayOfWeek, Time startTime, Time endTime, String appointmentType) {
@@ -31,6 +32,7 @@ public class Schedule {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+    public Schedule() {}
 
     public int getScheduleId() {
         return scheduleId;
