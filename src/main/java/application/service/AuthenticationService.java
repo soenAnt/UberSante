@@ -43,7 +43,7 @@ public class AuthenticationService {
             //successful registration
             // TODO allocate instantiation of patients to another class (i.e. factory?)
             Patient patient = new Patient(registerForm);
-            this.userRepository.saveAndFlush(patient);
+            patient = this.userRepository.saveAndFlush(patient);
             this.catalogService.updateCatalog(patient);
             return true;
         }else{
