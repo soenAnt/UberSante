@@ -56,6 +56,14 @@
                 <button id="add_to_cart" name="add_to_cart" type="submit" value="add_to_cart">Add to Cart</button>
             </td>
         </tr>
+        <tr>
+            <td align="right">
+                <button th:if="${user.userType} == 'nurse'" id="add_patient" name="add_patient" value="add_patient">Add Patient</button>
+            </td>
+            <td align="left">
+                <button th:if="${user.userType} == 'nurse'" id="add_doctor" name="add_doctor" value="add_doctor">Add Doctor</button>
+            </td>
+        </tr>
     </form>
 </table>
 
