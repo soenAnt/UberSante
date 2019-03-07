@@ -1,6 +1,7 @@
 package application.service;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,10 +10,9 @@ import application.model.Doctor;
 import application.model.Nurse;
 import application.model.Patient;
 import application.model.User;
+import application.model.UserCatalog;
 import application.repository.UserRepository;
-import application.repository.DoctorRepository;
 import application.repository.NurseRepository;
-import application.repository.PatientRepository;
 
 @Service
 public class CatalogService {
@@ -22,20 +22,20 @@ public class CatalogService {
 	
 	@Autowired
 	private NurseRepository nurseRepository;
-	
-	@Autowired
-	private PatientRepository patientRepository;
-	
-	@Autowired
-	private DoctorRepository doctorRepository;
-	
-	private Collection<User> users;
 	private Collection<Patient> patients;
 	private Collection<Doctor> doctors;
+	private Collection<User> users;
 	
 	private Nurse nurse;
-	private Patient patient;
-	private Doctor doctor;
+	private UserCatalog userCatalog;
+	
+	public void init() {
+		users = this.userRepository.findAll();
+
+		for(User user : users){
+		   this.userCatalog.getInstance().put(user.getUserId(), user);
+		   }
+	}
 	
 	public void findNurse(String id){
         nurse = (Nurse) nurseRepository.findByAccessId(id);
@@ -45,29 +45,29 @@ public class CatalogService {
 		return nurse;
 	}
 	
-	public void findUsers() {
-		users = this.userRepository.findAll();
-	}
-	
 	public Collection<Patient> getPatients() {
-		for(User x: users){
-            if(x.getUserType().equals("patient")) {
-                patient = patientRepository.findByUserId(x.getUserId());
-                patients.add(patient);
+		for(User u: users){
+            if(u.getUserType().equals("patient")) {
+                patients.add((Patient)u);
             }
         }
 		return patients;
 	}
 	
 	public Collection<Doctor> getDoctors() {
-		for(User x: users){
-            if(x.getUserType().equals("doctor")) {
-                doctor = doctorRepository.findByUserId(x.getUserId());
-                doctors.add(doctor);
+		for(User u: users){
+            if(u.getUserType().equals("doctor")) {
+                doctors.add((Doctor)u);
             }
         }
 		return doctors;
 	}
+	
+	// Doctors fixed at 7, so can only add patients
+	public void updateCatalog(Patient patient){
+		   // note that the whole point of saveAndFlush() was to retrieve that patientId
+		   userCatalog.getInstance().put(patient.getUserId(), patient); 
+		}
 
 	
 }

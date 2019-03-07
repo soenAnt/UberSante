@@ -32,6 +32,8 @@ public class AuthenticationService {
     private UserRepository userRepository;
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private CatalogService catalogService;
 
     public Boolean processRegistration(RegisterForm registerForm){
 
@@ -42,6 +44,7 @@ public class AuthenticationService {
             // TODO allocate instantiation of patients to another class (i.e. factory?)
             Patient patient = new Patient(registerForm);
             this.userRepository.saveAndFlush(patient);
+            this.catalogService.updateCatalog(patient);
             return true;
         }else{
             //unsuccessful registration
