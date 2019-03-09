@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Checkout</title>
 </head>
 <body>
 <span>Follow checkout procedure with payment and receipt.</span>
+<table class="cart-table">
+    <thead>
+    <tr>
+        <th>Patient </th>
+        <th>Doctor</th>
+        <th>Date</th>
+        <th>Start-Time</th>
+        <th>End-Time</th>
+        <th>Type</th>
+        <th>Health Card Number</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tr th:object="${booking}">
+        <td th:text="${booking.patient.lastName}"></td>
+        <td th:text="${booking.doctor.lastName}"></td>
+        <td th:text="${booking.appointment.date}"></td>
+        <td th:text="${booking.appointment.startTime}"></td>
+        <td th:text="${booking.appointment.endTime}"></td>
+        <td th:text="${booking.appointment.appointmentType}"></td>
+        <td th:text="${booking.patient.healthCardNumber}"></td>
+        <td th:text="${booking.patient.email}"></td>
+
+        <td>
+            <a href="/payment"><button>Payment</button></a>
+        </td>
+    </tr>
+</table>
+
+<!--
+<table th:if="{$payment} != null">
+    confirm
+</table>
+-->
 </body>
 </html>

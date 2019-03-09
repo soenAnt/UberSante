@@ -1,5 +1,7 @@
 package application.interfaces;
 
+import application.model.Payment;
+
 public interface IPayment {
-    boolean processPayment(String number, String month, String year, String cvc);
+    Payment processPayment(String number, String month, String year, String cvc);
 }

@@ -110,31 +110,32 @@ public class AppointmentService {
      * Booked appointment now removed from cart after checkout.
      * TODO refactor checkoutAppointment() to save booking ONLY after payment is made.
      */
-    public void checkoutAppointment(Patient patient, Appointment appointment){
+    public Booking checkoutAppointment(Patient patient, Appointment appointment) {
 
         Boolean exists = this.appointmentRepository.exists(appointment.getAppointmentId());
 
-        if(!exists){
+        if (!exists) {
             appointment = this.appointmentRepository.saveAndFlush(appointment);
         }
 
+        //feature 4
         Doctor doctor = getAvailableDoctor(appointment);
-
+        //feature 4
         int room = getAvailableRoom(appointment);
 
         Booking booking = new Booking(doctor, patient, appointment, room);
 
-        this.bookingRepository.save(booking);
-
-        patient.getCart().removeAppointment(appointment);
+        return booking;
     }
 
-    /*
-     * TODO feature 4: system must find an available doctor for the specified date-time
-     */
-    private Doctor getAvailableDoctor(Appointment appointment) {
+    public void confirmBooking(Booking booking, Patient patient, Appointment appointment) {
+        this.bookingRepository.save(booking);
+        patient.getCart().removeAppointment(appointment);
 
-        Doctor doctor = new Doctor(); // query db to find available doctor
+    }
+
+    private Doctor getAvailableDoctor(Appointment appointment){
+        Doctor doctor = new Doctor();
 
         return doctor;
     }

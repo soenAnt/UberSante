@@ -1,6 +1,5 @@
 package application.controller;
 
-import application.interfaces.IPayment;
 import application.model.Payment;
 import application.service.ProxyPayment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PaymentController {
 
     @Autowired
-    ProxyPayment payment;
+    ProxyPayment paymentProxy;
 
     @GetMapping("/payment")
     public String paymentPage(Model model) {
@@ -23,8 +22,10 @@ public class PaymentController {
     }
 
     @PostMapping("/payment")
-    public void payment(@ModelAttribute Payment paymentForm){
-        boolean result = payment.processPayment(paymentForm.getNumber(), paymentForm.getMonth(), paymentForm.getYear(), paymentForm.getCvc());
-        System.out.println(result);
+    public String payment(@ModelAttribute Payment paymentForm, Model model){
+        Payment payment = paymentProxy.processPayment(paymentForm.getNumber(), paymentForm.getMonth(), paymentForm.getYear(), paymentForm.getCvc());
+
+        model.addAttribute("payment", payment);
+        return "/checkout";
     }
 }

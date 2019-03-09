@@ -116,9 +116,23 @@ public class AppointmentController {
 
         Appointment appointment = retrievePersistedAppointment(appointment_id, model);
 
-        this.appointmentService.checkoutAppointment(patient, appointment);
+        // booking is return
+        Booking booking = this.appointmentService.checkoutAppointment(patient, appointment);
 
+        model.addAttribute("booking", booking);
         return "checkout";
+    }
+
+    public String confirm(@RequestParam(value="id") int appointment_id, Model model){
+
+        Patient patient = setupModel(model);
+
+        Booking booking = (Booking)((BindingAwareModelMap) model).get("booking");
+
+        Appointment appointment = retrievePersistedAppointment(appointment_id, model);
+
+        this.appointmentService.confirmBooking(booking, patient, appointment);
+        return "home";
     }
     
     @RequestMapping(value="/cancelAppointment", method= RequestMethod.GET)

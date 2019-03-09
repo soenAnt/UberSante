@@ -5,14 +5,18 @@ public class Payment {
     private String month;
     private String year;
     private String cvc;
+    private boolean isValid;
 
-    public Payment() {}
+    public Payment() {
+        this.isValid = false;
+    }
 
-    public Payment(String number, String month, String year, String cvc) {
+    public Payment(String number, String month, String year, String cvc, boolean isValid) {
         this.number = number;
         this.month = month;
         this.year = year;
         this.cvc = cvc;
+        this.isValid = isValid;
     }
 
     public String getNumber() {
@@ -45,5 +49,13 @@ public class Payment {
 
     public void setCvc(String cvc) {
         this.cvc = cvc;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
     }
 }
