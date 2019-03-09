@@ -128,9 +128,9 @@ public class AppointmentService {
         return booking;
     }
 
-    public void confirmBooking(Booking booking, Patient patient, Appointment appointment) {
+    public void confirmBooking(Booking booking, Patient patient) {
         this.bookingRepository.save(booking);
-        patient.getCart().removeAppointment(appointment);
+        patient.getCart().removeAppointment(booking.getAppointment());
 
     }
 

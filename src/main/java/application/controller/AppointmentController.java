@@ -17,7 +17,7 @@ import java.util.Collection;
 
 
 @Controller
-@SessionAttributes(value = {"user", "appointments"})
+@SessionAttributes(value = {"user", "appointments", "booking"})
 public class AppointmentController {
 
     @Autowired
@@ -123,15 +123,14 @@ public class AppointmentController {
         return "checkout";
     }
 
-    public String confirm(@RequestParam(value="id") int appointment_id, Model model){
+    @RequestMapping(value="/confirm", method= RequestMethod.GET)
+
+    public String confirm(Model model){
 
         Patient patient = setupModel(model);
-
         Booking booking = (Booking)((BindingAwareModelMap) model).get("booking");
 
-        Appointment appointment = retrievePersistedAppointment(appointment_id, model);
-
-        this.appointmentService.confirmBooking(booking, patient, appointment);
+        this.appointmentService.confirmBooking(booking, patient);
         return "home";
     }
     
