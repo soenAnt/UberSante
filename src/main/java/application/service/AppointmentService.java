@@ -147,12 +147,26 @@ public class AppointmentService {
         return 1;
     }
 
-    /*
-     * Patient's booked appointments to be displayed on booking.html
-     */
-    public Collection<Booking> getBookings(Patient patient){
 
-        Collection<Booking> bookings = this.bookingRepository.findByPatient(patient);
+    //complete getbooking method
+    public Collection<Booking> getBookings(User user){
+
+        Collection<Booking> bookings = null;
+
+        if(user.getUserType() == "patient") {
+            bookings = this.bookingRepository.findByPatient((Patient) user);
+        }
+
+
+        if(user.getUserType() == "doctor") {
+           bookings = this.bookingRepository.findByDoctor((Doctor) user);
+        }
+
+
+        if(user.getUserType() == "nurse") {
+            bookings = this.bookingRepository.findAll();
+        }
+
 
         if(bookings.isEmpty()){
 
@@ -163,6 +177,8 @@ public class AppointmentService {
 
         return bookings;
     }
+
+
 
     /*
      * Patient cancels an appointment from booking.html
