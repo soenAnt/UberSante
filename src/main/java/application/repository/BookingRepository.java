@@ -20,10 +20,10 @@ public interface BookingRepository extends JpaRepository<Booking, Integer>{
 
     Collection<Booking> findByDoctor(Doctor doctor);
     
-    @Query("SELECT room FROM bookings INNER JOIN appointments "
+    @Query(value = "SELECT room FROM bookings INNER JOIN appointments "
     		+ "WHERE bookings.appointment_id = appointments.appointment_id "
     		+ "AND date=?1 "
     		+ "AND start_time <= ?2 "
-    		+ "AND end_time >= ?3")
+    		+ "AND end_time >= ?3", nativeQuery = true)
     Collection<Integer> findTakenRooms(Date date, Time start_time, Time end_time);
 }

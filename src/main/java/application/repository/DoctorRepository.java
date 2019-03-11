@@ -18,7 +18,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer>{
 
     Collection<Doctor> findByPhysicianPermitNumber(int physicianPermitNumber);
     
-    @Query("SELECT doctor_id FROM schedules, "
+    @Query(value = "SELECT doctor_id FROM schedules, "
     		+ "("
 	    		+ "SELECT doctor FROM doctors LEFT JOIN "
 		    		+ "("
@@ -32,8 +32,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer>{
     		+ "AS x WHERE x.user_id = schedules.doctor_id "
     		+ "AND schedules.day_of_week = (SELECT {fn dayname(?1)}) "
     		+ "AND schedules.start_time <=?2 "
-    		+ "AND schedules.end_time >=?3;"
-    		)
+    		+ "AND schedules.end_time >=?3;",
+    		nativeQuery = true)
     Collection<Doctor> findAvailableDoctor(Date date, Time start_time, Time end_time);;
 
 }
