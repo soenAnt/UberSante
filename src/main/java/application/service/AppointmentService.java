@@ -3,6 +3,7 @@ package application.service;
 import application.datastructure.AppointmentForm;
 import application.model.*;
 import application.repository.BookingRepository;
+import application.repository.DoctorRepository;
 import application.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class AppointmentService {
 
     @Autowired
     private BookingRepository bookingRepository;
+    
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     /*
      * If cart has not been initialized, create it and populate with persisted appointments.
@@ -113,17 +117,23 @@ public class AppointmentService {
     public Booking checkoutAppointment(Patient patient, Appointment appointment) {
 
         Boolean exists = this.appointmentRepository.exists(appointment.getAppointmentId());
-
+        Booking booking = null;
         if (!exists) {
             appointment = this.appointmentRepository.saveAndFlush(appointment);
         }
-
-        //feature 4
+        
         Doctor doctor = getAvailableDoctor(appointment);
         //feature 4
         int room = getAvailableRoom(appointment);
+        
+        if(doctor.getPhysicianPermitNumber() == 0 || room == 0) {
+        	System.out.println("doctor or room is not available");// might need to change, simply print out for now.	
+        }
+        else {
+            booking = new Booking(doctor, patient, appointment, room);
 
-        Booking booking = new Booking(doctor, patient, appointment, room);
+            this.bookingRepository.save(booking);
+        }
 
         return booking;
     }
@@ -134,26 +144,60 @@ public class AppointmentService {
 
     }
 
-    private Doctor getAvailableDoctor(Appointment appointment){
-        Doctor doctor = new Doctor();
+    /*
+     * TODO feature 4: system must find an available doctor for the specified date-time
+     */
+    public Doctor getAvailableDoctor(Appointment appointment) {
 
+    	Doctor doctor = new Doctor(); // query db to find available doctor
+        Collection<Doctor> doctors = this.
+        		doctorRepository.
+        		findAvailableDoctor
+        		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        
+        if(!doctors.isEmpty()) 
+        	doctor = (Doctor) doctors.iterator().next();
+        
         return doctor;
     }
 
     /*
      * TODO feature 4: system must find an available room for the specified date-time
      */
-    private int getAvailableRoom(Appointment appointment) {
+    public int getAvailableRoom(Appointment appointment) {
 
-        return 1;
+    	Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+    	int room = 0;
+    	for(int i=1; i<=5; i++) {
+    		if(!takenRooms.contains(i)) {
+    				room = i;
+    				break;
+    			}
+    	}
+    	
+    	return room;
     }
 
-    /*
-     * Patient's booked appointments to be displayed on booking.html
-     */
-    public Collection<Booking> getBookings(Patient patient){
 
-        Collection<Booking> bookings = this.bookingRepository.findByPatient(patient);
+    //complete getbooking method
+    public Collection<Booking> getBookings(User user){
+
+        Collection<Booking> bookings = null;
+
+        if(user.getUserType() == "patient") {
+            bookings = this.bookingRepository.findByPatient((Patient) user);
+        }
+
+
+        if(user.getUserType() == "doctor") {
+           bookings = this.bookingRepository.findByDoctor((Doctor) user);
+        }
+
+
+        if(user.getUserType() == "nurse") {
+            bookings = this.bookingRepository.findAll();
+        }
+
 
         if(bookings.isEmpty()){
 
@@ -164,6 +208,8 @@ public class AppointmentService {
 
         return bookings;
     }
+
+
 
     /*
      * Patient cancels an appointment from booking.html

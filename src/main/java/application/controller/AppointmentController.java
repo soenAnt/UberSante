@@ -15,6 +15,8 @@ import application.model.Patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static application.controller.BookingController.getAppointment;
+
 
 @Controller
 @SessionAttributes(value = {"user", "appointments", "booking"})
@@ -169,18 +171,7 @@ public class AppointmentController {
     // returns a persisted appointment from cart
     private Appointment retrievePersistedAppointment(int id, Model model){
 
-        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
-
-        ArrayList<Appointment> appointments = patient.getCart().getAppointments();
-
-        for(Appointment appointment : appointments){
-
-            if(appointment.getAppointmentId() == id)
-
-                return appointment;
-        }
-
-        return null;
+        return getAppointment(id, (BindingAwareModelMap) model);
     }
 
     // returns a non-persisted appointment from cart using uuid instead of yet-to-be-generated appointment_id
