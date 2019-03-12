@@ -30,6 +30,9 @@ public class AppointmentService {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    private boolean isRoomsFull = false;
+    private boolean isDoctorAvailable = true;
+
     /*
      * If cart has not been initialized, create it and populate with persisted appointments.
      */
@@ -131,8 +134,6 @@ public class AppointmentService {
         }
         else {
             booking = new Booking(doctor, patient, appointment, room);
-
-            this.bookingRepository.save(booking);
         }
 
         return booking;
@@ -142,6 +143,23 @@ public class AppointmentService {
         this.bookingRepository.save(booking);
         patient.getCart().removeAppointment(booking.getAppointment());
 
+    }
+
+    public void quickRoomCheck(Appointment appointment){
+        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        if (rooms.size() == 5) {
+            isRoomsFull = false;
+        }
+        isRoomsFull = true;
+    }
+
+    public void quickDoctorCheck(Appointment appointment){
+        Collection<Integer> doctors = this.doctorRepository.findAvailableDoctor
+                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        if (doctors.isEmpty()) {
+            isDoctorAvailable = false;
+        }
+        isDoctorAvailable = true;
     }
 
     /*
@@ -209,8 +227,6 @@ public class AppointmentService {
         return bookings;
     }
 
-
-
     /*
      * Patient cancels an appointment from booking.html
      */
@@ -262,5 +278,13 @@ public class AppointmentService {
         }
 
         return date_no_time;
+    }
+
+    public boolean isRoomsFull() {
+        return isRoomsFull;
+    }
+
+    public boolean isDoctorAvailable() {
+        return isDoctorAvailable;
     }
 }

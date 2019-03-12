@@ -5,8 +5,8 @@
     <title>Checkout</title>
 </head>
 <body>
-<span>Follow checkout procedure with payment and receipt.</span>
-<table class="cart-table">
+<span th:if="${booking} != null">Follow checkout procedure with payment and receipt.</span>
+<table class="cart-table" th:if="${booking} != null">
     <thead>
     <tr>
         <th>Patient </th>
@@ -33,6 +33,14 @@
         </td>
     </tr>
 </table>
+<div th:if="${booking} == null">
+    <span th:if="${isDoctorAvailable} == false">
+        The following appointment is not available as there are no doctors available in this time slot.
+    </span>
+    <span th:if="${isRoomsFull} == true">
+        The following appointment is not available as there are no available rooms in this time slot.
+    </span>
+</div>
 <table th:if="${payment} != null" class="cart-table">
     <thead>
     <tr>
@@ -50,5 +58,6 @@
         </td>
     </tr>
 </table>
+<a href="/"><button>Cancel</button></a>
 </body>
 </html>
