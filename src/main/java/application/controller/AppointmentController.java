@@ -2,15 +2,15 @@ package application.controller;
 
 
 import application.datastructure.AppointmentForm;
+import application.model.Appointment;
+import application.model.Booking;
+import application.model.Patient;
 import application.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.*;
-import application.model.Booking;
-import application.model.Appointment;
-import application.model.Patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +19,7 @@ import static application.controller.BookingController.getAppointment;
 
 
 @Controller
-@SessionAttributes(value = {"user", "appointments"})
+@SessionAttributes(value = {"user", "appointments", "booking"})
 public class AppointmentController {
 
     @Autowired
@@ -118,9 +118,31 @@ public class AppointmentController {
 
         Appointment appointment = retrievePersistedAppointment(appointment_id, model);
 
-        this.appointmentService.checkoutAppointment(patient, appointment);
+        this.appointmentService.quickRoomCheck(appointment);
+        this.appointmentService.quickDoctorCheck(appointment);
 
+        // booking is return
+        Booking booking = this.appointmentService.checkoutAppointment(patient, appointment);
+
+        if(booking != null)
+        {
+            model.addAttribute("booking", booking);
+        }
+
+        model.addAttribute("isRoomsFull", this.appointmentService.isRoomsFull());
+        model.addAttribute("isDoctorAvailable", this.appointmentService.isDoctorAvailable());
         return "checkout";
+    }
+
+    @RequestMapping(value="/confirm", method= RequestMethod.GET)
+
+    public String confirm(Model model){
+
+        Patient patient = setupModel(model);
+        Booking booking = (Booking)((BindingAwareModelMap) model).get("booking");
+
+        this.appointmentService.confirmBooking(booking, patient);
+        return "home";
     }
     
     @RequestMapping(value="/cancelAppointment", method= RequestMethod.GET)

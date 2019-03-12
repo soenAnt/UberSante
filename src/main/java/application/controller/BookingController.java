@@ -1,17 +1,17 @@
 package application.controller;
 
-import application.datastructure.BookingForm;
+import application.datastructure.AppointmentForm;
+import application.model.Appointment;
+import application.model.Booking;
 import application.model.Doctor;
-import application.service.AppointmentService;
+import application.model.Patient;
 import application.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.*;
-import application.model.Booking;
-import application.model.Appointment;
-import application.model.Patient;
+
 import java.util.ArrayList;
 import java.util.Collection;
 

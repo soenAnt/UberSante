@@ -1,22 +1,16 @@
 package application.service;
 
 
+import application.datastructure.AppointmentForm;
 import application.model.*;
-import application.repository.BookingRepository;
 import application.repository.AppointmentRepository;
+import application.repository.BookingRepository;
 import application.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service; 
+import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
 
 @Service
 public class BookingService {
@@ -70,9 +64,9 @@ public class BookingService {
                             appointmentForm.getDescription());
         
         int room = this.appointmentService.getAvailableRoom(followUpAppointment);
-        Booking followUpBooking = new Booking(doctor, patient, appointment, room);
+        Booking followUpBooking = new Booking(doctor, patient, followUpAppointment, room);
         
-        this.bookingService.save(followUpBooking);
+        this.bookingRepository.save(followUpBooking);
         
         return followUpBooking;
     }

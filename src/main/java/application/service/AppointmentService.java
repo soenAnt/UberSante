@@ -30,6 +30,9 @@ public class AppointmentService {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    private boolean isRoomsFull = false;
+    private boolean isDoctorAvailable = true;
+
     /*
      * If cart has not been initialized, create it and populate with persisted appointments.
      */
@@ -114,29 +117,49 @@ public class AppointmentService {
      * Booked appointment now removed from cart after checkout.
      * TODO refactor checkoutAppointment() to save booking ONLY after payment is made.
      */
-    public void checkoutAppointment(Patient patient, Appointment appointment){
+    public Booking checkoutAppointment(Patient patient, Appointment appointment) {
 
         Boolean exists = this.appointmentRepository.exists(appointment.getAppointmentId());
-
-        if(!exists){
+        Booking booking = null;
+        if (!exists) {
             appointment = this.appointmentRepository.saveAndFlush(appointment);
         }
         
         Doctor doctor = getAvailableDoctor(appointment);
-
+        //feature 4
         int room = getAvailableRoom(appointment);
         
         if(doctor.getPhysicianPermitNumber() == 0 || room == 0) {
         	System.out.println("doctor or room is not available");// might need to change, simply print out for now.	
         }
         else {
-            Booking booking = new Booking(doctor, patient, appointment, room);
-
-            this.bookingRepository.save(booking);
+            booking = new Booking(doctor, patient, appointment, room);
         }
 
+        return booking;
+    }
 
-        patient.getCart().removeAppointment(appointment);
+    public void confirmBooking(Booking booking, Patient patient) {
+        this.bookingRepository.save(booking);
+        patient.getCart().removeAppointment(booking.getAppointment());
+
+    }
+
+    public void quickRoomCheck(Appointment appointment){
+        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        if (rooms.size() == 5) {
+            isRoomsFull = false;
+        }
+        isRoomsFull = true;
+    }
+
+    public void quickDoctorCheck(Appointment appointment){
+        Collection<Integer> doctors = this.doctorRepository.findAvailableDoctor
+                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        if (doctors.isEmpty()) {
+            isDoctorAvailable = false;
+        }
+        isDoctorAvailable = true;
     }
 
     /*
@@ -145,13 +168,13 @@ public class AppointmentService {
     public Doctor getAvailableDoctor(Appointment appointment) {
 
     	Doctor doctor = new Doctor(); // query db to find available doctor
-        Collection<Doctor> doctors = this.
+        Collection<Integer> doctorsId = this.
         		doctorRepository.
         		findAvailableDoctor
         		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
         
-        if(!doctors.isEmpty()) 
-        	doctor = (Doctor) doctors.iterator().next();
+        if(!doctorsId.isEmpty()) 
+        	doctor =this.doctorRepository.findByUserId( doctorsId.iterator().next() );
         
         return doctor;
     }
@@ -204,8 +227,6 @@ public class AppointmentService {
         return bookings;
     }
 
-
-
     /*
      * Patient cancels an appointment from booking.html
      */
@@ -257,5 +278,13 @@ public class AppointmentService {
         }
 
         return date_no_time;
+    }
+
+    public boolean isRoomsFull() {
+        return isRoomsFull;
+    }
+
+    public boolean isDoctorAvailable() {
+        return isDoctorAvailable;
     }
 }
