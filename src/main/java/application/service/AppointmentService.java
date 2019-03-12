@@ -150,13 +150,13 @@ public class AppointmentService {
     public Doctor getAvailableDoctor(Appointment appointment) {
 
     	Doctor doctor = new Doctor(); // query db to find available doctor
-        Collection<Doctor> doctors = this.
+        Collection<Integer> doctorsId = this.
         		doctorRepository.
         		findAvailableDoctor
         		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
         
-        if(!doctors.isEmpty()) 
-        	doctor = (Doctor) doctors.iterator().next();
+        if(!doctorsId.isEmpty()) 
+        	doctor =this.doctorRepository.findByUserId( doctorsId.iterator().next() );
         
         return doctor;
     }
