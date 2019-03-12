@@ -4,8 +4,9 @@ package application.service;
 import application.model.*;
 import application.repository.BookingRepository;
 import application.repository.AppointmentRepository;
+import application.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service; 
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,6 +30,8 @@ public class BookingService {
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private PatientRepository patientRepository;
 
     //return bookings of a user by userid
     public Collection<Booking> getBookings(User user){
@@ -59,8 +62,23 @@ public class BookingService {
         this.bookingRepository.delete(booking);
 
     }
-
-
-
-
+    
+    // create follow-up appointment by doctor
+    public Booking followUp(Doctor doctor, Patient patient, AppointmentForm appointmentForm){
+        Appointment followUpAppointment = new Appointment(patient, AppointmentService.stringToDate(appointmentForm.getDate()),
+                            AppointmentService.stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
+                            appointmentForm.getDescription());
+        
+        int room = this.appointmentService.getAvailableRoom(followUpAppointment);
+        Booking followUpBooking = new Booking(doctor, patient, appointment, room);
+        
+        this.bookingService.save(followUpBooking);
+        
+        return followUpBooking;
+    }
+    
+    // return a patient
+    public Patient getPatient(int patientId) {
+        return this.patientRepository.findByUserId(patientId);
+    }
 }
