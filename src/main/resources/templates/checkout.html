@@ -15,6 +15,7 @@
         <th>Start-Time</th>
         <th>End-Time</th>
         <th>Type</th>
+        <th>Room</th>
         <th>Health Card Number</th>
         <th>Email</th>
     </tr>
@@ -26,6 +27,7 @@
         <td th:text="${booking.appointment.startTime}"></td>
         <td th:text="${booking.appointment.endTime}"></td>
         <td th:text="${booking.appointment.appointmentType}"></td>
+        <td th:text="${booking.room}"></td>
         <td th:text="${booking.patient.healthCardNumber}"></td>
         <td th:text="${booking.patient.email}"></td>
         <td>
