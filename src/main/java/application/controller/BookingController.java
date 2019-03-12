@@ -26,7 +26,7 @@ public class BookingController {
 
 
     @RequestMapping("/updateBooking")
-    public String update(@RequestParam String date,
+    public String update(@RequestParam String date, 
                          @RequestParam String time,
                          @RequestParam String booking_type,
                          @RequestParam String description,
@@ -42,9 +42,9 @@ public class BookingController {
         Collection<Booking> bookings = this.bookingService.updateBooking(patient, doctor, booking, appointment, room);
 
         model.addAttribute("bookings", bookings);
-
+ 
         return "booking";
-    }
+    } 
 
     @RequestMapping(value="/cancelBooking", method= RequestMethod.GET)
     public String cancel(@RequestParam Booking booking, Model model){
@@ -54,7 +54,26 @@ public class BookingController {
         return "booking";
     }
 
+    @RequestMapping(value="/followUp", method= RequestMethod.GET)
+    public String followUpPage(@RequestParam(value="id") int patient_id, Model model){
+        Patient patient = this.bookingService.getPatient(patient_id);
+        Doctor doctor = (Doctor) ((BindingAwareModelMap) model).get("user");
+        
+        model.addAttribute("patient", patient);
+        model.addAttribute("doctor", doctor);
+        
+        return "appointment";
+    }
 
+    @PostMapping("/followUpBooking")
+    public String followUpBooking(@ModelAttribute AppointmentForm appointmentForm, Model model){
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
+        Doctor doctor = (Doctor) ((BindingAwareModelMap) model).get("user");
+        
+        this.bookingService.followUp(doctor, patient, appointmentForm);
+        
+        return "home";
+    }
 
     private Appointment retrieveAppointment(int id, Model model){
 

@@ -238,7 +238,7 @@ public class AppointmentService {
      * Handle string conversion to time
      * TODO modify function to truncate seconds
      */
-    private java.sql.Time stringToTime(String string_time) {
+    public static java.sql.Time stringToTime(String string_time) {
 
         LocalTime time = LocalTime.parse(string_time);
 
@@ -249,7 +249,7 @@ public class AppointmentService {
      * Handle string conversion to date
      * TODO displays weekdays for non-persisted appointments. Need fix to stay consistent.
      */
-    private Date stringToDate(String string_date) {
+    public static Date stringToDate(String string_date) {
 
         LocalDate date = null;
 
