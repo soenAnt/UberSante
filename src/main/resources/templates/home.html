@@ -18,16 +18,21 @@
 </div>
 
 <!--  th:if="${user}" will add once backend is established-->
-<div class="navigation-bar"> <!-- if user exists then go inside the div, else skip -->
+<div class="navigation-bar" th:if="${user}"> <!-- if user exists then go inside the div, else skip -->
 <ul>
 
-    <li><a class="active" href="#home">Home</a></li>
+    <li><a class="active" href="/home">Home</a></li>
     <div th:if="${user}">
         <li th:if="${user.userType} == 'doctor'"><a th:with="baseUrl=('/schedule/'+${user.userId})"
                                                     th:href="@{${baseUrl}}">Schedule Manager</a></li>
 
+
     </div>
-    <div>
+    <div th:if="${user.userType} == 'patient'">
+    <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
+    <li><a href="/booking">Bookings</a></li>
+    </div>
+    <div th:if="${user.userType} == 'patient'">
     <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
     <li><a href="/appointment_page">Appointments</a></li>
     </div>
@@ -37,6 +42,18 @@
     <li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
 
 </ul>
+    </div>
+
+    <div class="navigation-bar-default" th:if="!${user}"> <!-- if user doesn't exists then go inside this div -->
+        <ul>
+
+            <li><a class="active" href="/home">Home</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/about">About</a></li>
+
+        </ul>
     </div>
 
 
@@ -61,7 +78,10 @@
 
 <div>
     <p>
-        With 24/7 access to the clinic’s availabilities, registration for walk-in bookings becomes fair and simple. Forget about never-ending morning line-ups, impatience and stress. Enjoy a calm atmosphere that transforms your waiting room into a reception area as patients arrive gradually instead.
+
+        With 24/7 access to the clinic’s availabilities, registration for walk-in bookings becomes fair and simple.
+        Forget about never-ending morning line-ups, impatience and stress.
+        Enjoy a calm atmosphere that transforms your waiting room into a reception area as patients arrive gradually instead.
     </p>
 
 </div>
