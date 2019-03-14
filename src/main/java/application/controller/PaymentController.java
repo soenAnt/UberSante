@@ -35,6 +35,6 @@ public class PaymentController {
         model.addAttribute("payment", payment);
         model.addAttribute("user", patient);
         model.addAttribute("booking", booking);
-        return "/checkout";
+        return "checkout";
     }
 }
