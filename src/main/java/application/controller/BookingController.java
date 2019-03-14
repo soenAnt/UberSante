@@ -1,7 +1,7 @@
 package application.controller;
 
 import application.datastructure.BookingForm;
-import application.model.Doctor;
+import application.model.*;
 import application.service.AppointmentService;
 import application.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.*;
-import application.model.Booking;
-import application.model.Appointment;
-import application.model.Patient;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,6 +21,18 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @RequestMapping("/showBookings")
+    public String showBookings(Model model){
+
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        Collection<Booking> bookings = this.bookingService.getBookings(user);
+
+        model.addAttribute("bookings", bookings);
+
+        return "booking";
+    }
 
 
     @RequestMapping("/updateBooking")
