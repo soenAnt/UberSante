@@ -131,7 +131,7 @@
 
                                 <td>
                                     <a th:if="${user.UserType} == 'doctor'"
-                                       th:href="@{/followupBooking(id=${booking.bookingId})}"><button>Follow Up</button></a>
+                                       th:href="@{/followUp(id=${booking.patient.userId})}"><button>Follow Up</button></a>
                                 </td>
                             </tr>
                         </table>

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
-@SessionAttributes(value = {"user", "appointments"})
+@SessionAttributes(value = {"user", "appointments", "patient"})
 public class BookingController {
 
 
@@ -56,10 +56,10 @@ public class BookingController {
         return "booking";
     } 
 
-    @RequestMapping(value="/cancelBooking", method= RequestMethod.GET)
-    public String cancel(@RequestParam Booking booking, Model model){
+    @RequestMapping(value="/removeBooking", method= RequestMethod.GET)
+    public String cancel(@RequestParam(value="id") int booking_id, Model model){
 
-        this.bookingService.cancelBooking(booking);
+        this.bookingService.cancelBooking(booking_id);
 
         return "booking";
     }
@@ -70,16 +70,14 @@ public class BookingController {
         Doctor doctor = (Doctor) ((BindingAwareModelMap) model).get("user");
         
         model.addAttribute("patient", patient);
-        model.addAttribute("doctor", doctor);
+        model.addAttribute("user", doctor);
         
         return "appointment";
     }
 
-    @PostMapping("/followUpBooking")
-    public String followUpBooking(@ModelAttribute AppointmentForm appointmentForm, Model model){
-        Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
-        Doctor doctor = (Doctor) ((BindingAwareModelMap) model).get("user");
-        
+    @PostMapping("/follow_up")
+    public String followUpBooking(@ModelAttribute AppointmentForm appointmentForm, Patient patient, Doctor doctor){
+
         this.bookingService.followUp(doctor, patient, appointmentForm);
         
         return "home";

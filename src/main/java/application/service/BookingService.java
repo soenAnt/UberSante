@@ -51,28 +51,33 @@ public class BookingService {
 
 
     //cancel booking to be used only by Nurse
-    public void cancelBooking(Booking booking){
+    public void cancelBooking(int booking){
 
-        this.bookingRepository.delete(booking);
+        Booking bookingo = this.bookingRepository.findByBookingId(booking);
+        this.bookingRepository.delete(bookingo);
 
     }
     
     // create follow-up appointment by doctor
-    public Booking followUp(Doctor doctor, Patient patient, AppointmentForm appointmentForm){
+    public void followUp(Doctor doctor, Patient patient, AppointmentForm appointmentForm){
+
         Appointment followUpAppointment = new Appointment(patient, AppointmentService.stringToDate(appointmentForm.getDate()),
                             AppointmentService.stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
                             appointmentForm.getDescription());
         
         int room = this.appointmentService.getAvailableRoom(followUpAppointment);
-        Booking followUpBooking = new Booking(doctor, patient, followUpAppointment, room);
+
+        Appointment appointment = this.appointmentRepository.saveAndFlush(followUpAppointment);
+
+        Booking followUpBooking = new Booking(doctor, patient, appointment, room);
         
         this.bookingRepository.save(followUpBooking);
-        
-        return followUpBooking;
     }
     
     // return a patient
     public Patient getPatient(int patientId) {
-        return this.patientRepository.findByUserId(patientId);
+
+        Patient patient = this.patientRepository.findByUserId(patientId);
+        return patient;
     }
 }

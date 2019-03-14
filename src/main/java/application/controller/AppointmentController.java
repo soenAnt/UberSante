@@ -2,9 +2,7 @@ package application.controller;
 
 
 import application.datastructure.AppointmentForm;
-import application.model.Appointment;
-import application.model.Booking;
-import application.model.Patient;
+import application.model.*;
 import application.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,14 +17,26 @@ import static application.controller.BookingController.getAppointment;
 
 
 @Controller
-@SessionAttributes(value = {"user", "appointments", "booking"})
+@SessionAttributes(value = {"user", "appointments", "booking", "patient"})
 public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private BookingController bookingController;
+
     @PostMapping("/add_to_cart")
     public String add(@ModelAttribute AppointmentForm appointmentForm, Model model){
+
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        if(user.getUserType().equals("doctor")){
+            Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
+            Doctor doctor = (Doctor) user;
+            this.bookingController.followUpBooking(appointmentForm, patient, doctor);
+            return "home";
+        }
 
         Patient patient = setupModel(model);
 
