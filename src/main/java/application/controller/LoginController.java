@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 
 @Controller
@@ -22,9 +23,18 @@ public class LoginController {
     private AppointmentService appointmentService;
 
     private User userLogged = null;
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(){
         return "login";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(SessionStatus status){
+
+        status.setComplete();
+
+        return "redirect:/";
     }
 
     @PostMapping(value = "/validate")
