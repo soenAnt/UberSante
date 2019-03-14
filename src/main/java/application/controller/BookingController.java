@@ -1,11 +1,9 @@
 package application.controller;
 
 import application.datastructure.AppointmentForm;
-import application.model.Appointment;
-import application.model.Booking;
-import application.model.User;
-import application.model.Doctor;
-import application.model.Patient;
+import application.datastructure.BookingForm;
+import application.model.*;
+import application.service.AppointmentService;
 import application.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +21,18 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @RequestMapping("/showBookings")
+    public String showBookings(Model model){
+
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        Collection<Booking> bookings = this.bookingService.getBookings(user);
+
+        model.addAttribute("bookings", bookings);
+
+        return "booking";
+    }
 
 
     @RequestMapping("/updateBooking")
@@ -73,18 +83,6 @@ public class BookingController {
         this.bookingService.followUp(doctor, patient, appointmentForm);
         
         return "home";
-    }
-
-    @RequestMapping("/showBookings")
-    public String showBookings(Model model){
-
-        User user = (User) ((BindingAwareModelMap) model).get("user");
-
-        Collection<Booking> bookings = this.bookingService.getBookings(user);
-
-        model.addAttribute("bookings", bookings);
-
-        return "booking";
     }
 
     private Appointment retrieveAppointment(int id, Model model){
