@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Bookings</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="appointment_css.css"/>
-
-    <link rel="stylesheet" type="text/css" href="../home_css.css"/>
     <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../home_css.css"/>
     <meta charset="UTF-8"/>
+    <title>Contact Us</title>
 </head>
 <body>
 
@@ -34,7 +31,7 @@
             </div>
             <div th:if="${user.userType} == 'patient'">
                 <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
-                <li><a href="/showBookings">Bookings</a></li>
+                <li><a href="/booking">Bookings</a></li>
             </div>
             <div th:if="${user.userType} == 'patient'">
                 <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
@@ -78,72 +75,26 @@
             </div>
         </div>
         <div th:unless="${user}">
-            <h3>Welcome to UberSante</h3>
+            <h3>Contact Us</h3>
         </div>
 
-        <h1 align="center">Your Bookings</h1>
+        <div>
+            <p>
 
-        <table>
-            <!-- Cart.html -->
-            <head>
-                <title>UberSante</title>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            </head>
-            <body>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            <div class="container">
-                <div>
-                    <div>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Start-Time</th>
-                                <th>End-Time</th>
-                                <th>Type</th>
-                                <th th:if="${user.userType} == 'doctor'">Patient</th>
-                                <th th:if="${user.userType} == 'patient'">Doctor</th>
-                                <th>Room</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tr th:each="booking : ${bookings}">
-                                <td th:text="${booking.appointment.date}"></td>
-                                <td th:text="${booking.appointment.startTime}"></td>
-                                <td th:text="${booking.appointment.endTime}"></td>
-                                <td th:text="${booking.appointment.appointmentType}"></td>
-                                <td th:if="${user.userType} == 'patient'"><span>Dr. </span><span th:text="${booking.doctor.firstName}"></span>
-                                    <span> </span><span th:text="${booking.doctor.lastName}"></span></td>
-                                <td th:if="${user.userType} == 'doctor'"><span th:text="${booking.patient.firstName}"></span>
-                                    <span> </span><span th:text="${booking.patient.lastName}"></span></td>
-                                <td th:text="${booking.room}"></td>
+                With 24/7 access to the clinic’s availabilities, registration for walk-in bookings becomes fair and simple.
+                Forget about never-ending morning line-ups, impatience and stress.
+                Enjoy a calm atmosphere that transforms your waiting room into a reception area as patients arrive gradually instead.
+            </p>
 
-                                <td>
-                                    <a th:if="${user.UserType} == 'nurse'"
-                                       th:href="@{/updateBooking(id=${booking.bookingId})}"><button>Update</button></a>
-                                </td>
-                                <td>
-                                    <a th:if="${user.UserType} == 'nurse'"
-                                       th:href="@{/removeBooking(id=${booking.bookingId})}"><button>Remove</button></a>
-                                </td>
+        </div>
 
-                                <td>
-                                    <a th:if="${user.UserType} == 'doctor'"
-                                       th:href="@{/followupBooking(id=${booking.bookingId})}"><button>Follow Up</button></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                        <br/>
-                    </div>
-                </div>
-            </body>
-        </table>
+        <div class="welcomeimg"><img src="https://www.mhrclinicireland.com/images/upload/about1/001.jpg" /> </div>
 
-
-
+        <p>
+        <h2>
+            Contact Us at: (514) 555-2300
+        </h2>
+        </p>
 
         <div>
             <!-- Cart Slider -->
@@ -162,9 +113,10 @@
                 });
             </script>
         </div>
-    </div>
-</div>
 
+    </div>
+
+</div>
 
 </body>
 </html>

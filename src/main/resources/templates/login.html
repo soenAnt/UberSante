@@ -7,54 +7,151 @@
 	    <link rel="stylesheet" type="text/css" href="login_css.css"/>
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     	<script src="login_js.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="../home_css.css"/>
+		<script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+		<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<meta charset="UTF-8"/>
     	
 	</head>
 	
 	<body>
-	<form method="post" action="/validate">
 
-		<h2>Login</h2>
-		<br />
+	<div th:if="${user.userType} == 'patient'" th:replace="fragments/cart::cart"></div> <!-- cart-->
+	<div class="wrap">
+		<div class="header">
 
-		<label class="user_type_lb"><b>Log into UberSante as:</b></label>
-		<select name="user_type" id="user_type" onchange="selectUserType()">
-			<option value="patient">Patient</option>
-			<option value="nurse">Nurse</option>
-			<option value="doctor">Doctor</option>
-		</select>
-		<br /><br />
-
-		<div id="patient">
-			<label class="email"><b>Email</b></label>
-			<span class="msg error">Not a valid email address</span>
-			<br />
-			<input type="text" placeholder="Enter Email" name="identification"/>
+			<div class ="image"><img src="https://bonjour-sante.ca/uno/dist/images/8fc999dfe2bfdae49d12e32e303b77a6.jpg" height="200" /></div>
 		</div>
 
-		<div id="nurse">
-			<label class="access_id"><b>Access ID</b></label>
-			<br />
-			<input type="text" placeholder="Enter Access ID" name="identification"/>
+		<!--  th:if="${user}" will add once backend is established-->
+		<div class="navigation-bar" th:if="${user}"> <!-- if user exists then go inside the div, else skip -->
+			<ul>
+
+				<li><a class="active" href="/home">Home</a></li>
+				<div th:if="${user}">
+					<li th:if="${user.userType} == 'doctor'"><a th:with="baseUrl=('/schedule/'+${user.userId})"
+																th:href="@{${baseUrl}}">Schedule Manager</a></li>
+
+
+				</div>
+				<div th:if="${user.userType} == 'patient'">
+					<!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
+					<li><a href="/showBookings">Bookings</a></li>
+				</div>
+				<div th:if="${user.userType} == 'patient'">
+					<!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
+					<li><a href="/appointment_page">Appointments</a></li>
+				</div>
+
+				<li><a href="/contact">Contact</a></li>
+				<li><a href="/about">About</a></li>
+				<li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
+
+			</ul>
 		</div>
 
-		<div id="doctor">
-			<label class="ppn"><b>Physician Permit Number</b></label>
-			<br />
-			<input type="text" placeholder="Enter Physician Permit #" name="identification"/>
+		<div class="navigation-bar-default" th:if="!${user}"> <!-- if user doesn't exists then go inside this div -->
+			<ul>
+
+				<li><a class="active" href="/home">Home</a></li>
+				<li><a href="/register">Register</a></li>
+				<li><a href="/login">Login</a></li>
+				<li><a href="/contact">Contact</a></li>
+				<li><a href="/about">About</a></li>
+
+			</ul>
 		</div>
 
-		<div id="password_submit">
-			<br />
-			<label class="pass"><b>Password</b></label>
-			<br />
-			<input type="password" name="password" placeholder="Enter Password" id="password" required="required"/>
+
+		<div class="main">
+
+
+			<div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
+
+				<div th:if="${user.userType} == 'patient'">
+					<h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
+				</div>
+				<div th:if="${user.userType} == 'doctor'">
+					<h3 th:text=" 'Welcome back Doctor ' + ${user.lastName}">Hi, User</h3>
+				</div>
+				<div th:if="${user.userType} == 'nurse'">
+					<h3 th:text=" 'Welcome back Nurse ' + ${user.lastName}">Hi, User</h3>
+				</div>
+			</div>
+			<div th:unless="${user}">
+				<h3>Welcome to UberSante</h3>
+			</div>
+
+			<form method="post" action="/validate">
+
+				<h2>Login</h2>
+				<br />
+
+				<label class="user_type_lb"><b>Log into UberSante as:</b></label>
+				<select name="user_type" id="user_type" onchange="selectUserType()">
+					<option value="patient">Patient</option>
+					<option value="nurse">Nurse</option>
+					<option value="doctor">Doctor</option>
+				</select>
+				<br /><br />
+
+				<div id="patient">
+					<label class="email"><b>Email</b></label>
+					<span class="msg error">Not a valid email address</span>
+					<br />
+					<input type="text" placeholder="Enter Email" name="identification"/>
+				</div>
+
+				<div id="nurse">
+					<label class="access_id"><b>Access ID</b></label>
+					<br />
+					<input type="text" placeholder="Enter Access ID" name="identification"/>
+				</div>
+
+				<div id="doctor">
+					<label class="ppn"><b>Physician Permit Number</b></label>
+					<br />
+					<input type="text" placeholder="Enter Physician Permit #" name="identification"/>
+				</div>
+
+				<div id="password_submit">
+					<br />
+					<label class="pass"><b>Password</b></label>
+					<br />
+					<input type="password" name="password" placeholder="Enter Password" id="password" required="required"/>
+
+					<div>
+						<button id="login" type="submit" class="login-btn" value="submit">Login</button>
+					</div>
+				</div>
+
+			</form>
+
+
 
 			<div>
-				<button id="login" type="submit" class="login-btn" value="submit">Login</button>
+				<!-- Cart Slider -->
+				<script>
+					$('#cartToggle').on('click', function(){
+						var $this = $('#cart-panel');
+						if ($this.hasClass('open')) {
+							$this.animate({
+								left : '800px'
+							}, 150).removeClass('open');
+						} else {
+							$this.animate({
+								left : '17px'
+							}, 150).addClass('open');
+						}
+					});
+				</script>
 			</div>
-		</div>
 
-	</form>
+		</div>
+	</div>
 
 	</body>
 </html>

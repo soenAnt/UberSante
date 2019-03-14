@@ -153,16 +153,6 @@ public class AppointmentController {
         return "home";
     }
 
-    @RequestMapping(value="/showBookings", method= RequestMethod.GET)
-    public String showBookings(Patient patient, Model model) {
-
-        Collection bookings = this.appointmentService.getBookings(patient);
-
-        model.addAttribute("bookings", bookings);
-
-        return "bookings";
-    }
-
     // sets up boiler-plate code for each requested mapping
     private Patient setupModel(Model model){
 

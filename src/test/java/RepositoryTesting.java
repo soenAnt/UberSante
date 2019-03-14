@@ -1,19 +1,35 @@
-import static org.assertj.core.api.Assertions.assertThat;
+import application.model.Patient;
+import application.repository.PatientRepository;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.transaction.Transactional;
+
+import java.time.LocalDate;
+import java.util.Collection;
+
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-
+@DataJpaTest
 public class RepositoryTesting {
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Test
     public void shouldFindPatientById() {
-        Collection<Patient> patients = this.patientRepository.findByUserId(1);
+        Patient patient = this.patientRepository.findByUserId(1);
 
         // Boris should be inside patients collection
-        assertEquals(patients.size(), 1);
+        assertNotNull(patient);
 
         // Verify that this is truly Boris
-        assertEquals(patients.iterator().next().getFirstName(), "Boris");
+        assertEquals(patient.getFirstName(), "Boris");
     }
 
     @Test
@@ -27,8 +43,8 @@ public class RepositoryTesting {
         patient.setAddress("444 Jayz D3S 4F3, Montreal QC.");
         patient.setPhoneNumber("1234567890");
         patient.setPassword("123456");
-        patient.setHealthCard("JDOE 1234 5678");
-        patient.setDateOfBirth("1999-09-09");
+        patient.setHealthCardNumber("JDOE 1234 5678");
+        patient.setBirthday(java.sql.Date.valueOf(LocalDate.parse("1999-09-09")));
         patient.setGender("Female");
         patient.setEmail("janedoeeee@gmail.com");
 
@@ -36,36 +52,37 @@ public class RepositoryTesting {
         this.patientRepository.save(patient);
 
         //verify that new patient is added
-        patients = this.patientRepository.findByEmail("janedoeeee@gmail.com");
-        assertThat(patients.size()).isEqualTo(1);
+        Collection<Patient> patients = this.patientRepository.findByEmail("janedoeeee@gmail.com");
+        assertEquals(patients.size(),1);
     }
 
     @Test
     @Transactional
     public void shouldUpdatePatient() {
         Patient patient = this.patientRepository.findByUserId(1);
-        string oldName = patients.getFirstName();
-        string newName = oldName + 'X';
+        String oldName = patient.getFirstName();
+        String newName = oldName + 'X';
 
         patient.setFirstName(newName);
-        this.patients.save(patient);
+        this.patientRepository.save(patient);
 
         //retrieve new name from database
         patient = this.patientRepository.findByUserId(1);
-        assertThat(patient.getFirstName()).isEqualTo(newName);
+        assertEquals(patient.getFirstName(), newName);
 
     }
 
     @Test
     @Transactional
     public void shouldRemovePatient() {
-        Collection<Patient> patients = this.patientRepository.findByUserId(1);
+
+        Patient patient = this.patientRepository.findByUserId(1);
 
         // delete boris from database
-        this.patientRepository.delete(patients.iterator().next());
+        this.patientRepository.delete(patient);
 
         // Verify that Boris is deleted
-        patients = this.patientRepository.findByUserId(1);
-        assertTrue(patients.isEmpty());
+        patient = this.patientRepository.findByUserId(1);
+        assertNull(patient);
     }
 }
