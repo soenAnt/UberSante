@@ -3,6 +3,7 @@ package application.service;
 import application.datastructure.AppointmentForm;
 import application.model.*;
 import application.repository.BookingRepository;
+import application.repository.DoctorRepository;
 import application.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,12 @@ public class AppointmentService {
 
     @Autowired
     private BookingRepository bookingRepository;
+    
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    private boolean isRoomsFull = false;
+    private boolean isDoctorAvailable = true;
 
     /*
      * If cart has not been initialized, create it and populate with persisted appointments.
@@ -110,41 +117,83 @@ public class AppointmentService {
      * Booked appointment now removed from cart after checkout.
      * TODO refactor checkoutAppointment() to save booking ONLY after payment is made.
      */
-    public void checkoutAppointment(Patient patient, Appointment appointment){
+    public Booking checkoutAppointment(Patient patient, Appointment appointment) {
 
         Boolean exists = this.appointmentRepository.exists(appointment.getAppointmentId());
-
-        if(!exists){
+        Booking booking = null;
+        if (!exists) {
             appointment = this.appointmentRepository.saveAndFlush(appointment);
         }
-
+        
         Doctor doctor = getAvailableDoctor(appointment);
-
+        //feature 4
         int room = getAvailableRoom(appointment);
+        
+        if(doctor.getPhysicianPermitNumber() == 0 || room == 0) {
+        	System.out.println("doctor or room is not available");// might need to change, simply print out for now.	
+        }
+        else {
+            booking = new Booking(doctor, patient, appointment, room);
+        }
 
-        Booking booking = new Booking(doctor, patient, appointment, room);
+        return booking;
+    }
 
+    public void confirmBooking(Booking booking, Patient patient) {
         this.bookingRepository.save(booking);
+        patient.getCart().removeAppointment(booking.getAppointment());
 
-        patient.getCart().removeAppointment(appointment);
+    }
+
+    public void quickRoomCheck(Appointment appointment){
+        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        if (rooms.size() == 5) {
+            isRoomsFull = false;
+        }
+        isRoomsFull = true;
+    }
+
+    public void quickDoctorCheck(Appointment appointment){
+        Collection<Integer> doctors = this.doctorRepository.findAvailableDoctor
+                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        if (doctors.isEmpty()) {
+            isDoctorAvailable = false;
+        }
+        isDoctorAvailable = true;
     }
 
     /*
      * TODO feature 4: system must find an available doctor for the specified date-time
      */
-    private Doctor getAvailableDoctor(Appointment appointment) {
+    public Doctor getAvailableDoctor(Appointment appointment) {
 
-        Doctor doctor = new Doctor(); // query db to find available doctor
-
+    	Doctor doctor = new Doctor(); // query db to find available doctor
+        Collection<Integer> doctorsId = this.
+        		doctorRepository.
+        		findAvailableDoctor
+        		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        
+        if(!doctorsId.isEmpty()) 
+        	doctor =this.doctorRepository.findByUserId( doctorsId.iterator().next() );
+        
         return doctor;
     }
 
     /*
      * TODO feature 4: system must find an available room for the specified date-time
      */
-    private int getAvailableRoom(Appointment appointment) {
+    public int getAvailableRoom(Appointment appointment) {
 
-        return 1;
+    	Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+    	int room = 0;
+    	for(int i=1; i<=5; i++) {
+    		if(!takenRooms.contains(i)) {
+    				room = i;
+    				break;
+    			}
+    	}
+    	
+    	return room;
     }
 
 
@@ -178,8 +227,6 @@ public class AppointmentService {
         return bookings;
     }
 
-
-
     /*
      * Patient cancels an appointment from booking.html
      */
@@ -191,7 +238,7 @@ public class AppointmentService {
      * Handle string conversion to time
      * TODO modify function to truncate seconds
      */
-    private java.sql.Time stringToTime(String string_time) {
+    public static java.sql.Time stringToTime(String string_time) {
 
         LocalTime time = LocalTime.parse(string_time);
 
@@ -202,7 +249,7 @@ public class AppointmentService {
      * Handle string conversion to date
      * TODO displays weekdays for non-persisted appointments. Need fix to stay consistent.
      */
-    private Date stringToDate(String string_date) {
+    public static Date stringToDate(String string_date) {
 
         LocalDate date = null;
 
@@ -231,5 +278,13 @@ public class AppointmentService {
         }
 
         return date_no_time;
+    }
+
+    public boolean isRoomsFull() {
+        return isRoomsFull;
+    }
+
+    public boolean isDoctorAvailable() {
+        return isDoctorAvailable;
     }
 }
