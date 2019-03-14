@@ -5,13 +5,12 @@
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="register_css.css"/>
-    <meta charset="UTF-8"/>
-    <title>Register</title>
-
     <link rel="stylesheet" type="text/css" href="../home_css.css"/>
-
+    <meta charset="UTF-8"/>
+    <title>About Us</title>
 </head>
+<body>
+
 <body>
 
 <div th:if="${user.userType} == 'patient'" th:replace="fragments/cart::cart"></div> <!-- cart-->
@@ -34,7 +33,7 @@
             </div>
             <div th:if="${user.userType} == 'patient'">
                 <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
-                <li><a href="/showBookings">Bookings</a></li>
+                <li><a href="/booking">Bookings</a></li>
             </div>
             <div th:if="${user.userType} == 'patient'">
                 <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
@@ -43,6 +42,7 @@
 
             <li><a href="/contact">Contact</a></li>
             <li><a href="/about">About</a></li>
+            <li style="float:right"><a href="/login" >Logout</a></li>
             <li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
 
         </ul>
@@ -77,55 +77,54 @@
             </div>
         </div>
         <div th:unless="${user}">
-            <h3>Welcome to UberSante</h3>
+            <h3>About Us</h3>
         </div>
 
-        <form id="checkform" method="post" >
-            <div class="container">
-                <h2>Register</h2>
-                <p>Please fill in the following form to create an account.</p>
+        <div>
+            <p class="parag">
 
-                <label class="name"><b>First Name</b></label>
-                <input type="text" placeholder="Enter First Name" name="firstName" required="true"/>
+                we are global nonprofit academic medical centre that has provided world class patient care to people from
+                around the world since 1921. As the Canadian location of the Cleveland Clinic, our services help patients
+                live healthier, more active lives. Our two locations, in downtown and midtown Toronto, offer innovative clinical
+                services that are rooted in evidence and are delivered in a high quality and convenient healthcare environment.
+                Whether you need a head-to-toe medical assessment, have a family history of cardiovascular disease or want to
+                address your low back pain, we can help. Our patients benefit from the expertise of dozens of Canadian physicians,
+                specialists and wellness experts, as well as over 3,500 physicians and specialists across the Cleveland Clinic network.
+                That’s peace of mind you just can’t find anywhere else.
 
-                <label class="name"><b>Last Name</b></label>
-                <input type="text" placeholder="Enter Last Name" name="lastName" required="true"/>
+                Located in the heart of the financial district, our downtown location offers services to
+                help people age well, move better and know their healthcare options. Our midtown location,
+                in the Yonge and Eglinton area, specializes in services that help our patients move better.
 
-                <label class="email"><b>Email</b></label>
-                <span class="msg error">Not a valid email address</span>
-                <input type="text" placeholder="Enter Email" name="email" required="true"/>
+            </p>
 
-                <label class="genderlb"><b>Gender</b></label>
-                <select name="gender" class="gender">
-                    <option value="male">male</option>
-                    <option value="female">female</option>
-                </select>
+            <h3> Patients Are Our Top Priority</h3>
 
-                <label class="dob"><b>Date of birth</b></label>
-                <input type="date" name="dateOfBirth" id="dateOfBirth" required="true"/>
+            <p class="parag">
 
-                <label class="healthcard"><b>Health Card Number</b></label>
-                <input type="text" placeholder="Enter Health Card Number" name="healthCard" required="true"/>
+                “Patients First” is the guiding principle of Cleveland Clinic. We strive to provide outstanding and
+                compassionate care and service, every step along the way.
 
-                <label class="phone"><b>Phone Number</b></label>
-                <input type="text" placeholder="XXX-XXX-XXXX" name="phoneNumber" required="true"/>
+                Putting patients first requires more than world-class clinical care –
+                it requires care that addresses every aspect of a patient’s encounter with Cleveland Clinic,
+                including the patient’s physical comfort, as well as their educational, emotional, and spiritual needs.
 
-                <label class="address"><b>Address</b></label>
-                <input type="text" placeholder="Enter Address" name="address" required="true"/>
+                Formalizing our commitment to this important work, Cleveland Clinic was the first major academic
+                medical centre’s in North America to make patient experience a strategic goal, the first to appoint a
+                Chief Experience Officer, and one of the first academic medical centers to establish an Office of Patient
+                Experience. Led by Adrienne Boissy, MD, the Office of Patient Experience’s mission is to ensure consistently
+                patient-centered care by partnering with caregivers to exceed the expectations of patients and families.
+            </p>
 
-                <label class="pass"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" id="password" name="password" required="true"/>
+        </div>
 
-                <label class="confirm-password"><b>Confirm Password</b></label>
-                <input type="password" placeholder="Confirm Password" id="confirm_password" name="confirm_password" required="true"/>
+        <div class="welcomeimg"><img src="https://www.mybancroftnow.com/wp-content/uploads/2015/08/doctor-health-wellness.jpg" height="500" /> </div>
 
-                <div>
-                    <button type="submit" class="register-btn">Register</button>
-                </div>
-            </div>
-        </form>
-
-
+        <p>
+        <h2>
+            We are always available for you!
+        </h2>
+        </p>
 
         <div>
             <!-- Cart Slider -->
@@ -146,8 +145,10 @@
         </div>
 
     </div>
+
 </div>
 
-<script src="register_js.js" type="text/javascript"></script>
+</body>
+
 </body>
 </html>

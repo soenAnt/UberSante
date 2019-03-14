@@ -3,6 +3,11 @@ div.wrap {
     margin:0 auto;
 }
 
+p.parag{
+    margin: 10px;
+    padding: 10px;
+    text-align: justify-all;
+}
 div.main {
     width:100%;
     background-image: linear-gradient(white, whitesmoke, whitesmoke, lightblue, lightskyblue);

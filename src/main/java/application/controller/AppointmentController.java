@@ -2,29 +2,41 @@ package application.controller;
 
 
 import application.datastructure.AppointmentForm;
+import application.model.*;
 import application.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.*;
-import application.model.Booking;
-import application.model.Appointment;
-import application.model.Patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static application.controller.BookingController.getAppointment;
+
 
 @Controller
-@SessionAttributes(value = {"user", "appointments"})
+@SessionAttributes(value = {"user", "appointments", "booking", "patient"})
 public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private BookingController bookingController;
+
     @PostMapping("/add_to_cart")
     public String add(@ModelAttribute AppointmentForm appointmentForm, Model model){
+
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        if(user.getUserType().equals("doctor")){
+            Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
+            Doctor doctor = (Doctor) user;
+            this.bookingController.followUpBooking(appointmentForm, patient, doctor);
+            return "home";
+        }
 
         Patient patient = setupModel(model);
 
@@ -116,9 +128,31 @@ public class AppointmentController {
 
         Appointment appointment = retrievePersistedAppointment(appointment_id, model);
 
-        this.appointmentService.checkoutAppointment(patient, appointment);
+        this.appointmentService.quickRoomCheck(appointment);
+        this.appointmentService.quickDoctorCheck(appointment);
 
+        // booking is return
+        Booking booking = this.appointmentService.checkoutAppointment(patient, appointment);
+
+        if(booking != null)
+        {
+            model.addAttribute("booking", booking);
+        }
+
+        model.addAttribute("isRoomsFull", this.appointmentService.isRoomsFull());
+        model.addAttribute("isDoctorAvailable", this.appointmentService.isDoctorAvailable());
         return "checkout";
+    }
+
+    @RequestMapping(value="/confirm", method= RequestMethod.GET)
+
+    public String confirm(Model model){
+
+        Patient patient = setupModel(model);
+        Booking booking = (Booking)((BindingAwareModelMap) model).get("booking");
+
+        this.appointmentService.confirmBooking(booking, patient);
+        return "home";
     }
     
     @RequestMapping(value="/cancelAppointment", method= RequestMethod.GET)
@@ -127,16 +161,6 @@ public class AppointmentController {
         this.appointmentService.cancelBooking(booking);
 
         return "home";
-    }
-
-    @RequestMapping(value="/showBookings", method= RequestMethod.GET)
-    public String showBookings(Patient patient, Model model) {
-
-        Collection bookings = this.appointmentService.getBookings(patient);
-
-        model.addAttribute("bookings", bookings);
-
-        return "bookings";
     }
 
     // sets up boiler-plate code for each requested mapping
@@ -156,18 +180,7 @@ public class AppointmentController {
     // returns a persisted appointment from cart
     private Appointment retrievePersistedAppointment(int id, Model model){
 
-        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
-
-        ArrayList<Appointment> appointments = patient.getCart().getAppointments();
-
-        for(Appointment appointment : appointments){
-
-            if(appointment.getAppointmentId() == id)
-
-                return appointment;
-        }
-
-        return null;
+        return getAppointment(id, (BindingAwareModelMap) model);
     }
 
     // returns a non-persisted appointment from cart using uuid instead of yet-to-be-generated appointment_id
