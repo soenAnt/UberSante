@@ -3,6 +3,7 @@ package application.controller;
 import application.datastructure.AppointmentForm;
 import application.model.Appointment;
 import application.model.Booking;
+import application.model.User;
 import application.model.Doctor;
 import application.model.Patient;
 import application.service.BookingService;
@@ -17,7 +18,6 @@ import java.util.Collection;
 
 @Controller
 @SessionAttributes(value = {"user", "appointments"})
-
 public class BookingController {
 
 
@@ -73,6 +73,18 @@ public class BookingController {
         this.bookingService.followUp(doctor, patient, appointmentForm);
         
         return "home";
+    }
+
+    @RequestMapping("/showBookings")
+    public String showBookings(Model model){
+
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        Collection<Booking> bookings = this.bookingService.getBookings(user);
+
+        model.addAttribute("bookings", bookings);
+
+        return "booking";
     }
 
     private Appointment retrieveAppointment(int id, Model model){

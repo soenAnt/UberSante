@@ -50,7 +50,7 @@ public class BookingService {
     }
 
 
-    //cancelbooking to be used only by Nurse
+    //cancel booking to be used only by Nurse
     public void cancelBooking(Booking booking){
 
         this.bookingRepository.delete(booking);

@@ -202,22 +202,22 @@ public class AppointmentService {
 
         Collection<Booking> bookings = null;
 
-        if(user.getUserType() == "patient") {
+        if(user.getUserType().equals("patient")) {
             bookings = this.bookingRepository.findByPatient((Patient) user);
         }
 
 
-        if(user.getUserType() == "doctor") {
+        if(user.getUserType().equals("doctor")) {
            bookings = this.bookingRepository.findByDoctor((Doctor) user);
         }
 
 
-        if(user.getUserType() == "nurse") {
+        if(user.getUserType().equals("nurse")) {
             bookings = this.bookingRepository.findAll();
         }
 
 
-        if(bookings.isEmpty()){
+        if(bookings == null){
 
             System.out.println("You do not have any appointments booked.");
 

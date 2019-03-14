@@ -28,9 +28,8 @@
 
 
     </div>
-    <div th:if="${user.userType} == 'patient'">
-    <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
-    <li><a href="/booking">Bookings</a></li>
+    <div th:if="${user} != null">
+    <li><a href="/showBookings">Bookings</a></li>
     </div>
     <div th:if="${user.userType} == 'patient'">
     <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->

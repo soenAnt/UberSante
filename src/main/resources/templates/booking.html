@@ -91,31 +91,32 @@
             <body>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <div class="container">
-                <div id="cart-panel" th:fragment="cart">
-                    <link rel="stylesheet" type="text/css" href="/fragments/cart_css.css" th:href="@{/fragments/cart_css.css}"/>
-                    <div class="wrapper">
-                        <h2>Cart</h2>
-                        <div class="cart-wrapper">
-                            <table class="cart-table">
-                                <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Start-Time</th>
-                                    <th>End-Time</th>
-                                    <th>Type</th>
-                                    <th>Doctor</th>
-                                    <th>Room</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <td th:each="booking : ${bookings}">
-                                <td th:text="${booking.date}"></td>
-                                <td th:text="${booking.startTime}"></td>
-                                <td th:text="${booking.endTime}"></td>
-                                <td th:text="${booking.bookingType}"></td>
-                                <td th:text="${booking.doctor}"></td>
+                <div>
+                    <div>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Start-Time</th>
+                                <th>End-Time</th>
+                                <th>Type</th>
+                                <th th:if="${user.userType} == 'doctor'">Patient</th>
+                                <th th:if="${user.userType} == 'patient'">Doctor</th>
+                                <th>Room</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tr th:each="booking : ${bookings}">
+                                <td th:text="${booking.appointment.date}"></td>
+                                <td th:text="${booking.appointment.startTime}"></td>
+                                <td th:text="${booking.appointment.endTime}"></td>
+                                <td th:text="${booking.appointment.appointmentType}"></td>
+                                <td th:if="${user.userType} == 'patient'"><span>Dr. </span><span th:text="${booking.doctor.firstName}"></span>
+                                    <span> </span><span th:text="${booking.doctor.lastName}"></span></td>
+                                <td th:if="${user.userType} == 'doctor'"><span th:text="${booking.patient.firstName}"></span>
+                                    <span> </span><span th:text="${booking.patient.lastName}"></span></td>
                                 <td th:text="${booking.room}"></td>
 
                                 <td>
@@ -131,13 +132,12 @@
                                     <a th:if="${user.UserType} == 'doctor'"
                                        th:href="@{/followupBooking(id=${booking.bookingId})}"><button>Follow Up</button></a>
                                 </td>
-                                </td>
-                            </table>
-                        </div>
+                            </tr>
+                        </table>
+                    </div>
                         <br/>
                     </div>
                 </div>
-            </div>
             </body>
         </table>
 
