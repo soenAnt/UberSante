@@ -26,4 +26,6 @@ public interface BookingRepository extends JpaRepository<Booking, Integer>{
     		+ "AND start_time <= ?2 "
     		+ "AND end_time >= ?3", nativeQuery = true)
     Collection<Integer> findTakenRooms(Date date, Time start_time, Time end_time);
+
+    Booking findByBookingId(int booking);
 }

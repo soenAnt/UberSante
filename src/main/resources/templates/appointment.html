@@ -126,7 +126,8 @@
                     </tr>
                     <tr>
                         <td align="right">
-                            <button id="add_to_cart" name="add_to_cart" type="submit" value="add_to_cart">Add to Cart</button>
+                            <button th:if="${user.userType} == 'patient'" id="add_to_cart" name="add_to_cart" type="submit" value="add_to_cart">Add to Cart</button>
+                            <button th:if="${user.userType} == 'doctor'" id="follow_up" name="follow_up" type="submit" value="follow_up">Follow-up</button>
                         </td>
                     </tr>
                     <tr>
