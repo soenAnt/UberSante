@@ -1,65 +1,163 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../home_css.css"/>
     <meta charset="UTF-8"/>
     <title>Checkout</title>
 </head>
 <body>
-<span th:if="${booking} != null">Follow checkout procedure with payment and receipt.</span>
-<table class="cart-table" th:if="${booking} != null">
-    <thead>
-    <tr>
-        <th>Patient </th>
-        <th>Doctor</th>
-        <th>Date</th>
-        <th>Start-Time</th>
-        <th>End-Time</th>
-        <th>Type</th>
-        <th>Room</th>
-        <th>Health Card Number</th>
-        <th>Email</th>
-    </tr>
-    </thead>
-    <tr th:object="${booking}">
-        <td th:text="${booking.patient.lastName}"></td>
-        <td th:text="${booking.doctor.lastName}"></td>
-        <td th:text="${booking.appointment.date}"></td>
-        <td th:text="${booking.appointment.startTime}"></td>
-        <td th:text="${booking.appointment.endTime}"></td>
-        <td th:text="${booking.appointment.appointmentType}"></td>
-        <td th:text="${booking.room}"></td>
-        <td th:text="${booking.patient.healthCardNumber}"></td>
-        <td th:text="${booking.patient.email}"></td>
-        <td>
-            <a th:if="${payment} == null" href="/payment"><button>Payment</button></a>
-        </td>
-    </tr>
-</table>
-<div th:if="${booking} == null">
+
+<div th:if="${user.userType} == 'patient'" th:replace="fragments/cart::cart"></div> <!-- cart-->
+<div class="wrap">
+    <div class="header">
+
+        <div class ="image"><img src="https://bonjour-sante.ca/uno/dist/images/8fc999dfe2bfdae49d12e32e303b77a6.jpg" height="200" /></div>
+    </div>
+
+    <!--  th:if="${user}" will add once backend is established-->
+    <div class="navigation-bar" th:if="${user}"> <!-- if user exists then go inside the div, else skip -->
+        <ul>
+
+            <li><a class="active" href="/home">Home</a></li>
+            <div th:if="${user}">
+                <li th:if="${user.userType} == 'doctor'"><a th:with="baseUrl=('/schedule/'+${user.userId})"
+                                                            th:href="@{${baseUrl}}">Schedule Manager</a></li>
+
+
+            </div>
+            <div th:if="${user.userType} == 'patient'">
+                <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
+                <li><a href="/booking">Bookings</a></li>
+            </div>
+            <div th:if="${user.userType} == 'patient'">
+                <!-- th:if="${user.userType} == 'patient'"> will add once backend is established -->
+                <li><a href="/appointment_page">Appointments</a></li>
+            </div>
+
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/about">About</a></li>
+            <li style="float:right"><a href="/login" >Logout</a></li>
+            <li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
+
+        </ul>
+    </div>
+
+    <div class="navigation-bar-default" th:if="!${user}"> <!-- if user doesn't exists then go inside this div -->
+        <ul>
+
+            <li><a class="active" href="/home">Home</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/about">About</a></li>
+
+        </ul>
+    </div>
+
+
+    <div class="main">
+
+
+        <div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
+
+            <div th:if="${user.userType} == 'patient'">
+                <h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
+            </div>
+            <div th:if="${user.userType} == 'doctor'">
+                <h3 th:text=" 'Welcome back Doctor ' + ${user.lastName}">Hi, User</h3>
+            </div>
+            <div th:if="${user.userType} == 'nurse'">
+                <h3 th:text=" 'Welcome back Nurse ' + ${user.lastName}">Hi, User</h3>
+            </div>
+        </div>
+        <div th:unless="${user}">
+            <h3>Contact Us</h3>
+        </div>
+
+        <div>
+            <span th:if="${booking} != null">Follow checkout procedure with payment and receipt.</span>
+            <table class="cart-table" th:if="${booking} != null">
+                <thead>
+                <tr>
+                    <th>Patient </th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Start-Time</th>
+                    <th>End-Time</th>
+                    <th>Type</th>
+                    <th>Room</th>
+                    <th>Health Card Number</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tr th:object="${booking}">
+                    <td th:text="${booking.patient.lastName}"></td>
+                    <td th:text="${booking.doctor.lastName}"></td>
+                    <td th:text="${booking.appointment.date}"></td>
+                    <td th:text="${booking.appointment.startTime}"></td>
+                    <td th:text="${booking.appointment.endTime}"></td>
+                    <td th:text="${booking.appointment.appointmentType}"></td>
+                    <td th:text="${booking.room}"></td>
+                    <td th:text="${booking.patient.healthCardNumber}"></td>
+                    <td th:text="${booking.patient.email}"></td>
+                    <td>
+                        <a th:if="${payment} == null" href="/payment"><button>Payment</button></a>
+                    </td>
+                </tr>
+            </table>
+            <div th:if="${booking} == null">
     <span th:if="${isDoctorAvailable} == false">
         The following appointment is not available as there are no doctors available in this time slot.
     </span>
-    <span th:if="${isRoomsFull} == true">
+                <span th:if="${isRoomsFull} == true">
         The following appointment is not available as there are no available rooms in this time slot.
     </span>
-</div>
-<table th:if="${payment} != null" class="cart-table">
-    <thead>
-    <tr>
-        <th>Credit Card Number</th>
-        <th>Expiration Date</th>
-        <th>CVC</th>
-    </tr>
-    </thead>
-    <tr th:object="${payment}">
-        <td th:text="${payment.number}"></td>
-        <td><span th:text="${payment.month}"></span><span>/</span><span th:text="${payment.year}"></span></td>
-        <td th:text="XXX"></td>
-        <td>
-            <a href="/confirm"><button>Confirm</button></a>
-        </td>
-    </tr>
-</table>
-<a href="/"><button>Cancel</button></a>
-</body>
+            </div>
+            <table th:if="${payment} != null" class="cart-table">
+                <thead>
+                <tr>
+                    <th>Credit Card Number</th>
+                    <th>Expiration Date</th>
+                    <th>CVC</th>
+                </tr>
+                </thead>
+                <tr th:object="${payment}">
+                    <td th:text="${payment.number}"></td>
+                    <td><span th:text="${payment.month}"></span><span>/</span><span th:text="${payment.year}"></span></td>
+                    <td th:text="XXX"></td>
+                    <td>
+                        <a href="/confirm"><button>Confirm</button></a>
+                    </td>
+                </tr>
+            </table>
+            <a href="/"><button>Cancel</button></a>
+
+        </div>
+
+        <div>
+            <!-- Cart Slider -->
+            <script>
+                $('#cartToggle').on('click', function(){
+                    var $this = $('#cart-panel');
+                    if ($this.hasClass('open')) {
+                        $this.animate({
+                            left : '800px'
+                        }, 150).removeClass('open');
+                    } else {
+                        $this.animate({
+                            left : '17px'
+                        }, 150).addClass('open');
+                    }
+                });
+            </script>
+        </div>
+
+            </div>
+        </div>
+
+    </body>
 </html>

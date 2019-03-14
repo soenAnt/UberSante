@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
-@SessionAttributes(value = {"user", "appointments", "patient"})
+@SessionAttributes(value = {"user", "appointments", "patient", "doctor"})
 public class BookingController {
 
 
@@ -34,6 +34,17 @@ public class BookingController {
         return "booking";
     }
 
+    @RequestMapping("/updateBookingPage")
+    public String bookingUpdate(@RequestParam(value="id") int id, Model model){
+
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
+        Doctor doctor = (Doctor)((BindingAwareModelMap) model).get("doctor");
+
+        model.addAttribute("patient", patient);
+        model.addAttribute("doctor", doctor);
+
+        return "appointment";
+    }
 
     @RequestMapping("/updateBooking")
     public String update(@RequestParam String date, 
@@ -42,10 +53,9 @@ public class BookingController {
                          @RequestParam String description,
                          @RequestParam Doctor doctor,
                          @RequestParam int room,
-                         @RequestParam int id,
-                         @RequestParam String uuid, Model model){
+                         @RequestParam(value="id") int id, Model model){
 
-        Patient patient = (Patient) ((BindingAwareModelMap) model).get("user");
+        Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
         Appointment appointment = retrieveAppointment(id, model);
         Booking booking = retrieveBooking(id, model);
 
