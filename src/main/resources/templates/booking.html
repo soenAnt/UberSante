@@ -78,7 +78,7 @@
                             </tr>
                             </thead>
                             <tr th:each="booking : ${bookings}">
-                                <td th:text="${booking.appointment.date}"></td>
+                                <td th:text="${booking.appointment.stringDate}"></td>
                                 <td th:text="${booking.appointment.startTime}"></td>
                                 <td th:text="${booking.appointment.endTime}"></td>
                                 <td th:text="${booking.appointment.appointmentType}"></td>
