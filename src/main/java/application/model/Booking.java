@@ -12,6 +12,9 @@ public class Booking {
 	
 	@Column(name = "room")
 	private int room;
+	
+	@Column(name = "location")
+	private String location;
 
 	@ManyToOne
 	@JoinColumn(name = "appointmentId")
@@ -27,11 +30,12 @@ public class Booking {
 
 	public Booking(){}
 
-	public Booking(Doctor doctor, Patient patient, Appointment appointment, int room) {
+	public Booking(Doctor doctor, Patient patient, Appointment appointment, int room, String location) {
         this.doctor = doctor;
 	    this.patient = patient;
 		this.appointment = appointment;
         this.room = room;
+        this.location = location;
 	}
 
     public int getBookingId() {

@@ -23,11 +23,15 @@ public class User {
 	@Column(name = "userType")
 	private String userType;
 	
-	public User(String firstName, String lastName, String password, String userType) {
+	@Column(name = "location")
+	private String location;
+	
+	public User(String firstName, String lastName, String password, String userType, String location) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
 		this.userType = userType;
+		this.location = location;
 	}
 
 	public User() {
@@ -72,6 +76,14 @@ public class User {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 }

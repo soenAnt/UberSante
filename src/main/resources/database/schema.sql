@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS users (
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
-  `user_type` VARCHAR(45) NOT NULL
+  `user_type` VARCHAR(45) NOT NULL,
+  `location` VARCHAR(45) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS patients (
@@ -71,3 +72,39 @@ CREATE TABLE IF NOT EXISTS schedules (
   `end_time` TIME NOT NULL,
   FOREIGN KEY (doctor_id) REFERENCES doctors(user_id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS clinics (
+  `clinic_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,  
+  `name` VARCHAR(45) NOT NULL,
+  `num_doctors` INT UNSIGNED NOT NULL,
+  `num_nurses` INT UNSIGNED NOT NULL,
+  `num_rooms` INT UNSIGNED NOT NULL,
+  `num_bookings` INT UNSIGNED NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS clinics (
+  `clinic_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,  
+  `name` VARCHAR(45) NOT NULL,
+  `num_doctors` INT UNSIGNED NOT NULL,
+  `num_nurses` INT UNSIGNED NOT NULL,
+  `num_rooms` INT UNSIGNED NOT NULL,
+  `num_bookings` INT UNSIGNED NOT NULL
+) ENGINE=InnoDB;
+
+UPDATE clinics SET num_doctors = (SELECT count(doctor_id) FROM doctors WHERE user.location = "Westmount") WHERE name="Westmount";
+UPDATE clinics SET num_nurses = (SELECT count(nurse_id) FROM nurses WHERE user.location = "Westmount") WHERE name="Westmount";
+UPDATE clinics SET num_rooms = (SELECT count(room) FROM bookings WHERE bookings.location = "Westmount") WHERE name="Westmount";
+
+UPDATE clinics SET num_doctors = (SELECT count(doctor_id) FROM doctors WHERE user.location = "Mont-Royal") WHERE name="Mont-Royal";
+UPDATE clinics SET num_nurses = (SELECT count(nurse_id) FROM nurses WHERE user.location = "Mont-Royal") WHERE name="Mont-Royal";
+UPDATE clinics SET num_rooms = (SELECT count(room) FROM bookings WHERE bookings.location = "Mont-Royal") WHERE name="Mont-Royal";
+
+UPDATE clinics SET num_doctors = (SELECT count(doctor_id) FROM doctors WHERE user.location = "Outremont") WHERE name="Outremont";
+UPDATE clinics SET num_nurses = (SELECT count(nurse_id) FROM nurses WHERE user.location = "Outremont") WHERE name="Outremont";
+UPDATE clinics SET num_rooms = (SELECT count(room) FROM bookings WHERE bookings.location = "Outremont") WHERE name="Outremont";
+
+
+
+
+
+
