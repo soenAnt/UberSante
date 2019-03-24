@@ -22,6 +22,9 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    private Collection<User> doctorList;
+    private User upadtePatient;
+
     @RequestMapping("/showBookings")
     public String showBookings(Model model){
 
@@ -36,14 +39,17 @@ public class BookingController {
 
     @RequestMapping("/updateBookingPage")
     public String bookingUpdate(@RequestParam(value="id") int id, Model model){
-
+/*
         Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
-        Doctor doctor = (Doctor)((BindingAwareModelMap) model).get("doctor");
+        Doctor doctor = (Doctor)((BindingAwareModelMap) model).get("doctor");*/
 
-        model.addAttribute("patient", patient);
-        model.addAttribute("doctor", doctor);
+        doctorList = bookingService.getDoctorList();
+        upadtePatient = bookingService.getPatient(id);
 
-        return "appointment";
+        model.addAttribute("patientUpdate", upadtePatient);
+        model.addAttribute("doctorList", doctorList);
+
+        return "booking_add_update";
     }
 
     @RequestMapping("/updateBooking")
@@ -70,6 +76,12 @@ public class BookingController {
     public String cancel(@RequestParam(value="id") int booking_id, Model model){
 
         this.bookingService.cancelBooking(booking_id);
+
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        Collection<Booking> bookings = this.bookingService.getBookings(user);
+
+        model.addAttribute("bookings", bookings);
 
         return "booking";
     }

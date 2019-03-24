@@ -6,6 +6,7 @@ import application.model.*;
 import application.repository.AppointmentRepository;
 import application.repository.BookingRepository;
 import application.repository.PatientRepository;
+import application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class BookingService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     //return bookings of a user by userid
     public Collection<Booking> getBookings(User user){
@@ -79,5 +83,10 @@ public class BookingService {
 
         Patient patient = this.patientRepository.findByUserId(patientId);
         return patient;
+    }
+
+    //return doctor List
+    public Collection<User> getDoctorList(){
+        return userRepository.findByUserType("doctor");
     }
 }

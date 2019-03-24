@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bookings</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="appointment_css.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../home_css.css"/>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8"/>
+</head>
+<div class="container">
+    <div th:if="${error}">
+        <h2 class="text-danger">Error updating schedule</h2>
+    </div>
+    <div th:if="${success}">
+        <h2 class="text-success">Succesfull updating schedule</h2>
+    </div>
+    <div >
+        <h2 th:text=" 'Nurse ' +  ${user.lastName}+'\'s Portal for booking  '">Hi, Name Space</h2>
+    </div>
+
+    <h3>Updating Booking:</h3>
+    <form method="post" action="/validate/update">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Appointment Type</th>
+                <th>Doctor</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td th:text="${patientUpdate.firstName}+' '+${patientUpdate.lastName}">Name Space Last</td>
+                    <td> <input type="date" name="date" class="form-control" required="true"/></td>
+                    <td><input class="form-control" name="time" type="time"  min="8:00" max="19:40" required="true" /></td>
+                    <td><select name="appointment_type" class="form-control">
+                        <option value="walk-in">Walk-In</option>
+                        <option value="annual">Annual</option>n>
+                    </select></td>
+                    <td>
+                        <select class="form-control" name="doctor">
+                        <th:block th:each="doctor: ${doctorList}">
+                             <option th:value="${doctor.userId}" th:text="${doctor.firstName}+' '+${doctor.lastName}">Name Space Last</option>
+                        </th:block> </select>
+                    </td>
+                    <td><button  type="submit" class="btn btn-success" value="submit">Update</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <a class="btn btn-primary" href="/schedule/home" role="button">HomePage</a>
+</div>
+<body>
+
+</body>
+</html>
