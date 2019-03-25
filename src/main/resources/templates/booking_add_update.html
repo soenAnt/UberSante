@@ -14,7 +14,7 @@
 </head>
 <div class="container">
     <div th:if="${error}">
-        <h2 class="text-danger">Error updating schedule</h2>
+        <h2 class="text-danger">Error Booking Appointment: arguments not valid</h2>
     </div>
     <div th:if="${success}">
         <h2 class="text-success">Succesfull updating schedule</h2>
@@ -23,23 +23,24 @@
         <h2 th:text=" 'Nurse ' +  ${user.lastName}+'\'s Portal for booking  '">Hi, Name Space</h2>
     </div>
 
-    <h3>Updating Booking:</h3>
-    <form method="post" action="/updateBooking/validate">
-        <h2 th:text="'Updating ' +${booking.getPatient().firstName}+' '+${booking.getPatient().lastName}+' appointment with doctor '+${booking.getDoctor().firstName}+' '+${booking.getDoctor().lastName}"> Update Name Space Last With name2 space2 lastname2</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Patient</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Appointment Type</th>
-                <th>Doctor</th>
-                <th>Room number</th>
-            </tr>
-            </thead>
-            <tbody>
+
+    <div th:if="${appear}">
+        <h3>Create a Booking</h3>
+        <form method="post" action="/addBooking/validate">
+            <table class="table">
+                <thead>
                 <tr>
-                    <td th:text="${patientUpdate.firstName}+' '+${patientUpdate.lastName}">Name Space Last</td>
+                    <th>Patient Email</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Appointment Type</th>
+                    <th>Doctor</th>
+                    <th>Room number</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" id="usr" name="email"/></td>
                     <td> <input type="date" name="date" class="form-control" required="true"/></td>
                     <td><input class="form-control" name="time" type="time"  min="8:00" max="19:40" required="true" /></td>
                     <td><select name="appointment_type" class="form-control">
@@ -48,9 +49,9 @@
                     </select></td>
                     <td>
                         <select class="form-control" name="doctor">
-                        <th:block th:each="doctor: ${doctorList}">
-                             <option th:value="${doctor.userId}" th:text="${doctor.firstName}+' '+${doctor.lastName}">Name Space Last</option>
-                        </th:block> </select>
+                            <th:block th:each="doctor: ${doctorList}">
+                                <option th:value="${doctor.userId}" th:text="${doctor.firstName}+' '+${doctor.lastName}">Name Space Last</option>
+                            </th:block> </select>
                     </td>
                     <td>  <select class="form-control" name="room" size="3">
                         <option value="1" selected="selected">1</option>
@@ -59,11 +60,55 @@
                         <option value="3">4</option>
                         <option value="3">5</option>
                     </select></td>
-                    <td><button  type="submit" class="btn btn-success" value="submit">Update</button></td>
+                    <td><button  type="submit" class="btn btn-success" value="submit">Addbooking</button></td>
                 </tr>
-            </tbody>
-        </table>
-    </form>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div th:if="${booking}">
+        <form method="post" action="/updateBooking/validate">
+            <h3>Updating Booking:</h3>
+            <h2 th:text="'Updating ' +${booking.getPatient().firstName}+' '+${booking.getPatient().lastName}+' appointment with doctor '+${booking.getDoctor().firstName}+' '+${booking.getDoctor().lastName}"> Update Name Space Last With name2 space2 lastname2</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Appointment Type</th>
+                    <th>Doctor</th>
+                    <th>Room number</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${patientUpdate.firstName}+' '+${patientUpdate.lastName}">Name Space Last</td>
+                        <td> <input type="date" name="date" class="form-control" required="true"/></td>
+                        <td><input class="form-control" name="time" type="time"  min="8:00" max="19:40" required="true" /></td>
+                        <td><select name="appointment_type" class="form-control">
+                            <option value="walk-in">Walk-In</option>
+                            <option value="annual">Annual</option>n>
+                        </select></td>
+                        <td>
+                            <select class="form-control" name="doctor">
+                            <th:block th:each="doctor: ${doctorList}">
+                                 <option th:value="${doctor.userId}" th:text="${doctor.firstName}+' '+${doctor.lastName}">Name Space Last</option>
+                            </th:block> </select>
+                        </td>
+                        <td>  <select class="form-control" name="room" size="3">
+                            <option value="1" selected="selected">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="3">4</option>
+                            <option value="3">5</option>
+                        </select></td>
+                        <td><button  type="submit" class="btn btn-success" value="submit">Update</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
     <a class="btn btn-primary" href="/schedule/home" role="button">HomePage</a>
 </div>
 <body>

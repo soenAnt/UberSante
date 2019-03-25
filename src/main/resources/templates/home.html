@@ -32,7 +32,8 @@
     <li><a href="/showBookings">Bookings</a></li>
     </div>
     <div th:if="${user} != null">
-    <li th:if="${user.userType} != 'doctor'"><a href="/appointment_page">Appointments</a></li>
+    <li th:if="${user.userType} == 'patient'"><a href="/appointment_page">Appointments</a></li>
+    <li th:if="${user.userType} == 'nurse'"><a href="/addBooking">Appointments</a></li>
     </div>
 
     <li><a href="/contact">Contact</a></li>

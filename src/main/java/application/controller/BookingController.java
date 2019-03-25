@@ -1,11 +1,10 @@
 package application.controller;
 
 import application.datastructure.AppointmentForm;
-import application.datastructure.BookingForm;
+import application.datastructure.BookingAddForm;
 import application.datastructure.BookingUpdateForm;
 import application.model.*;
 import application.repository.UserRepository;
-import application.service.AppointmentService;
 import application.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +40,17 @@ public class BookingController {
         return "booking";
     }
 
+    @RequestMapping("/addBooking")
+    public String addBookings(Model model){
+
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+        doctorList = bookingService.getDoctorList();
+        model.addAttribute("doctorList", doctorList);
+        model.addAttribute("user", user);
+        model.addAttribute("appear","appear");
+
+        return "booking_add_update";
+    }
     @RequestMapping("/updateBookingPage")
     public String bookingUpdate(@RequestParam(value="id") int id, Model model){
 /*
@@ -56,14 +66,24 @@ public class BookingController {
         model.addAttribute("doctorList", doctorList);
         model.addAttribute("booking",updateBooking);
 
+
         return "booking_add_update";
     }
     @RequestMapping(value="/updateBooking/validate", method= RequestMethod.POST)
     public String bookingUpdateValidate(@ModelAttribute BookingUpdateForm bookingUpdateForm, Model model){
         User usert = (User) ((BindingAwareModelMap) model).get("user");
         System.out.println("USER TYPE UPDATE "+usert.getLastName()+" X "+usert.getUserType());
-        
+
         boolean validate = bookingService.updateValidate_Save(bookingUpdateForm, updateBooking);
+        User user = userRepository.findByUserId(13);
+        model.addAttribute("user", user);
+        return "home";
+    }
+    @RequestMapping(value="/addBooking/validate", method= RequestMethod.POST)
+    public String addBookingValidate(@ModelAttribute BookingAddForm bookingAddForm, Model model){
+        User usert = (User) ((BindingAwareModelMap) model).get("user");
+        System.out.println("USER TYPE CREATE "+usert.getLastName()+" X "+usert.getUserType());
+
         User user = userRepository.findByUserId(13);
         model.addAttribute("user", user);
         return "home";
