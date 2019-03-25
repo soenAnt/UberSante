@@ -8,6 +8,7 @@ public class BookingAddForm {
     private String doctor;
     private String room;
     private String email;
+    private String description;
     public BookingAddForm(){}
 
     public String getEmail() {
@@ -18,13 +19,22 @@ public class BookingAddForm {
         this.email = email;
     }
 
-    public BookingAddForm(String appointment_type, String date, String time, String doctor, String room, String email) {
+    public BookingAddForm(String appointment_type, String date, String time, String doctor, String room, String email, String description) {
         this.appointment_type = appointment_type;
         this.date = date;
         this.time = time;
         this.doctor = doctor;
         this.room = room;
         this.email = email;
+        this.description= description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getRoom() {
