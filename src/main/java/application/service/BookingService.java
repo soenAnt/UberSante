@@ -2,6 +2,7 @@ package application.service;
 
 
 import application.datastructure.AppointmentForm;
+import application.datastructure.BookingAddForm;
 import application.datastructure.BookingUpdateForm;
 import application.model.*;
 import application.repository.*;
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 import static application.service.AppointmentService.stringToDate;
 import static application.service.AppointmentService.stringToTime;
@@ -109,6 +111,70 @@ public class BookingService {
 
         //save booking
         if(doctorValidator && roomValidator){
+
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public boolean createValidate_Save(BookingAddForm bookingAddForm){
+        System.out.println("CREATE validator");
+        Collection<Patient> patientCollection = patientRepository.findByEmail(bookingAddForm.getEmail());
+        Patient patient = null;
+        boolean validPatient = false;
+        boolean doctorValid = false;
+        boolean roomValid = false;
+        boolean completeValidation = false;
+        // Validate patient existent
+        if (patientCollection.size()>=1){
+            patient = patientCollection.iterator().next();
+        }
+        if(patient != null){
+            validPatient = true;
+        }
+
+        if(validPatient){
+            Appointment appointment = new Appointment(patient, stringToDate(bookingAddForm.getDate()),
+                    stringToTime(bookingAddForm.getTime()), bookingAddForm.getAppointment_type(),
+                    bookingAddForm.getDescription());
+
+            appointment.setDate(truncateTimeFromDate(appointment.getDate()));
+            appointment.setUuid(UUID.randomUUID().toString());
+
+            System.out.println("APPOINTMENT:"
+                    +appointment.getPatient().getEmail()+"\n"
+                            +appointment.getStartTime()+"\n"
+                            +appointment.getEndTime()+"\n"
+                            +appointment.getDate()+"\n"
+                            +appointment.getAppointmentType()+"\n");
+
+            // creating doctor object to validate
+            Doctor doctor = doctorRepository.findByUserId(Integer.parseInt(bookingAddForm.getDoctor()));
+            doctorValid = isDoctorValid(doctor,appointment);
+            System.out.println("Verify doctor "+doctorValid);
+
+            // validate room
+            int room = Integer.parseInt(bookingAddForm.getRoom());
+            roomValid= isRoomValid(room,appointment);
+            System.out.println("Verify room "+roomValid);
+
+            //save booking
+            if(doctorValid && roomValid){
+                appointmentRepository.saveAndFlush(appointment);
+              Collection<Appointment>  appointmentWithIds = appointmentRepository.findByPatient(patient);
+              Appointment appointmentWithID = null;
+              for(Appointment x : appointmentWithIds){
+                  if(appointment.getDate().getTime() == x.getDate().getTime()){
+                      appointmentWithID = x;
+                      break;
+                  }
+                }
+                System.out.println("Appointment with ID "+appointmentWithID.getAppointmentId());
+            }
+
+        }
+        if(doctorValid && roomValid && validPatient){
 
             return true;
         }

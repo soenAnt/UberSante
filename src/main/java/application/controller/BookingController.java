@@ -43,10 +43,12 @@ public class BookingController {
     @RequestMapping("/addBooking")
     public String addBookings(Model model){
 
-        User user = (User) ((BindingAwareModelMap) model).get("user");
+        //User user = (User) ((BindingAwareModelMap) model).get("user");
+        User user = userRepository.findByUserId(13);
+        model.addAttribute("user", user);
         doctorList = bookingService.getDoctorList();
         model.addAttribute("doctorList", doctorList);
-        model.addAttribute("user", user);
+        //model.addAttribute("user", user);
         model.addAttribute("appear","appear");
 
         return "booking_add_update";
@@ -81,9 +83,11 @@ public class BookingController {
     }
     @RequestMapping(value="/addBooking/validate", method= RequestMethod.POST)
     public String addBookingValidate(@ModelAttribute BookingAddForm bookingAddForm, Model model){
-        User usert = (User) ((BindingAwareModelMap) model).get("user");
+       /* User usert = (User) ((BindingAwareModelMap) model).get("user");
         System.out.println("USER TYPE CREATE "+usert.getLastName()+" X "+usert.getUserType());
-
+*/
+        System.out.println("BOooking being added");
+        boolean validate = bookingService.createValidate_Save(bookingAddForm);
         User user = userRepository.findByUserId(13);
         model.addAttribute("user", user);
         return "home";
