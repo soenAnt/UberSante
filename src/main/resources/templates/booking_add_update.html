@@ -17,7 +17,7 @@
         <h2 class="text-danger">Error Booking Appointment: arguments not valid</h2>
     </div>
     <div th:if="${success}">
-        <h2 class="text-success">Succesfull updating schedule</h2>
+        <h2 class="text-success">Succesfully booked</h2>
     </div>
     <div >
         <h2 th:text=" 'Nurse ' +  ${user.lastName}+'\'s Portal for booking  '">Hi, Name Space</h2>
@@ -61,9 +61,7 @@
                         <option value="3">4</option>
                         <option value="3">5</option>
                     </select></td>
-                    <td><textarea name="description" class="form-control" rows="5" id="comment" placeholder="Describe the reason behind your visit ...">
-
-                </textarea></td>
+                    <td><textarea name="description" class="form-control" rows="5" id="comment" placeholder="Describe the reason behind your visit ..."></textarea></td>
                     <td><button  type="submit" class="btn btn-success" value="submit">Addbooking</button></td>
                 </tr>
                 </tbody>
@@ -113,7 +111,7 @@
             </table>
         </form>
     </div>
-    <a class="btn btn-primary" href="/schedule/home" role="button">HomePage</a>
+    <a class="btn btn-primary" href="/booking/home" role="button">HomePage</a>
 </div>
 <body>
 

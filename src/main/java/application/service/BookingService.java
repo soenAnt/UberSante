@@ -164,6 +164,7 @@ public class BookingService {
                 appointmentRepository.saveAndFlush(appointment);
               Collection<Appointment>  appointmentWithIds = appointmentRepository.findByPatient(patient);
               Appointment appointmentWithID = null;
+              //save appointment and generate ID
               for(Appointment x : appointmentWithIds){
                   if(appointment.getDate().getTime() == x.getDate().getTime()){
                       appointmentWithID = x;
@@ -171,6 +172,8 @@ public class BookingService {
                   }
                 }
                 System.out.println("Appointment with ID "+appointmentWithID.getAppointmentId());
+              Booking booking = new Booking(doctor, patient, appointmentWithID,room);
+              bookingRepository.save(booking);
             }
 
         }
