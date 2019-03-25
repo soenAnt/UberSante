@@ -91,7 +91,6 @@ public class BookingService {
     }
 
     public boolean updateValidate_Save(BookingUpdateForm bookingUpdateForm, Booking updatebooking){
-        System.out.println("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOO");
         boolean doctorValidator = false;
         boolean roomValidator = false;
         //transfering all the new appointment information
@@ -104,12 +103,10 @@ public class BookingService {
         // creating doctor object to validate
         Doctor doctor = doctorRepository.findByUserId(Integer.parseInt(bookingUpdateForm.getDoctor()));
         doctorValidator = isDoctorValid(doctor,patientAppointment);
-        System.out.println("Verify doctor "+doctorValidator);
 
         // validate room
         int room = Integer.parseInt(bookingUpdateForm.getRoom());
         roomValidator = isRoomValid(room,patientAppointment);
-        System.out.println("Verify room "+roomValidator);
 
         //save booking
         if(doctorValidator && roomValidator){
@@ -117,7 +114,6 @@ public class BookingService {
             updatebooking.setAppointment(patientAppointment);
             updatebooking.setDoctor(doctor);
             updatebooking.setRoom(room);
-            System.out.println("Booking Id that is being updated");
             bookingRepository.save(updatebooking);
             return true;
         }
@@ -126,7 +122,6 @@ public class BookingService {
         }
     }
     public boolean createValidate_Save(BookingAddForm bookingAddForm){
-        System.out.println("CREATE validator");
         Collection<Patient> patientCollection = patientRepository.findByEmail(bookingAddForm.getEmail());
         Patient patient = null;
         boolean validPatient = false;
@@ -149,22 +144,13 @@ public class BookingService {
             appointment.setDate(truncateTimeFromDate(appointment.getDate()));
             appointment.setUuid(UUID.randomUUID().toString());
 
-            System.out.println("APPOINTMENT:"
-                    +appointment.getPatient().getEmail()+"\n"
-                            +appointment.getStartTime()+"\n"
-                            +appointment.getEndTime()+"\n"
-                            +appointment.getDate()+"\n"
-                            +appointment.getAppointmentType()+"\n");
-
             // creating doctor object to validate
             Doctor doctor = doctorRepository.findByUserId(Integer.parseInt(bookingAddForm.getDoctor()));
             doctorValid = isDoctorValid(doctor,appointment);
-            System.out.println("Verify doctor "+doctorValid);
 
             // validate room
             int room = Integer.parseInt(bookingAddForm.getRoom());
             roomValid= isRoomValid(room,appointment);
-            System.out.println("Verify room "+roomValid);
 
             //save booking
             if(doctorValid && roomValid){
@@ -178,7 +164,6 @@ public class BookingService {
                       break;
                   }
                 }
-                System.out.println("Appointment with ID "+appointmentWithID.getAppointmentId());
               Booking booking = new Booking(doctor, patient, appointmentWithID,room);
               bookingRepository.save(booking);
             }
@@ -215,10 +200,9 @@ public class BookingService {
                 doctorRepository.
                 findAvailableDoctor
                         (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
-        System.out.println("validator");
+
       boolean valid = false;
         for(int id:doctorsId){
-            System.out.println(id);
             if(id == doctor.getUserId()){}
             valid = true;
         }
@@ -229,10 +213,6 @@ public class BookingService {
         boolean valid = false;
         Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
 
-        System.out.println("Printing ROOOM taken");
-        for(int id : takenRooms){
-            System.out.println(id);
-        }
         if(!takenRooms.contains(room)) {
               valid = true;
         }
