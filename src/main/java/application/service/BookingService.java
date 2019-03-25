@@ -88,30 +88,40 @@ public class BookingService {
 
     public boolean updateValidate_Save(BookingUpdateForm bookingUpdateForm, Booking updatebooking){
         System.out.println("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        boolean doctorValidator = false;
+        boolean roomValidator = false;
+        //transfering all the new appointment information
         Appointment patientAppointment = updatebooking.getAppointment();
         patientAppointment.setDate(truncateTimeFromDate(stringToDate(bookingUpdateForm.getDate())));
         patientAppointment.setAppointmentType(bookingUpdateForm.getAppointment_type());
         patientAppointment.setStartTime(stringToTime(bookingUpdateForm.getTime()));
         patientAppointment.setEndTime(stringToTime(bookingUpdateForm.getTime()),bookingUpdateForm.getAppointment_type());
 
-        System.out.println("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOO \n"+
-                patientAppointment.getAppointmentType()+" \n"+
-                patientAppointment.getDescription()+" \n"+
-                patientAppointment.getDate()+" \n"+
-                patientAppointment.getStartTime()+" \n"+
-                patientAppointment.getEndTime()+" \n"+
-                patientAppointment.getPatient());
+        // creating doctor object to validate
         Doctor doctor = doctorRepository.findByUserId(Integer.parseInt(bookingUpdateForm.getDoctor()));
-        System.out.println("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOO \n"+
-                doctor.getLastName());
-        return false;
+        doctorValidator = isDoctorValid(doctor,patientAppointment);
+        System.out.println("Verify doctor "+doctorValidator);
+
+        // validate room
+        int room = Integer.parseInt(bookingUpdateForm.getRoom());
+        roomValidator = isRoomValid(room,patientAppointment);
+        System.out.println("Verify room "+roomValidator);
+
+        //save booking
+        if(doctorValidator && roomValidator){
+
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     // return a patient
     public Patient getPatient(int patientId) {
         Patient patient = this.patientRepository.findByUserId(patientId);
         return patient;
     }
-
+    //returns a booking
     public Booking getbooking(int bookingId){
         Booking booking = bookingRepository.findByBookingId(bookingId);
         return booking;
@@ -123,6 +133,35 @@ public class BookingService {
         return userRepository.findByUserType("doctor");
     }
 
+    //validating a doctor based on a appointment
+    private boolean isDoctorValid(Doctor doctor, Appointment appointment){
+       Collection<Integer> doctorsId = this.
+                doctorRepository.
+                findAvailableDoctor
+                        (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        System.out.println("validator");
+      boolean valid = false;
+        for(int id:doctorsId){
+            System.out.println(id);
+            if(id == doctor.getUserId()){}
+            valid = true;
+        }
+        return valid;
+    }
+
+    private boolean isRoomValid(int room, Appointment appointment){
+        boolean valid = false;
+        Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+
+        System.out.println("Printing ROOOM taken");
+        for(int id : takenRooms){
+            System.out.println(id);
+        }
+        if(!takenRooms.contains(room)) {
+              valid = true;
+        }
+        return valid;
+    }
     private Date truncateTimeFromDate(Date date) {
 
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

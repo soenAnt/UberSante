@@ -6,14 +6,24 @@ public class BookingUpdateForm {
     private String date;
     private String time;
     private String doctor;
+    private String room;
 
     public BookingUpdateForm(){}
 
-    public BookingUpdateForm(String appointment_type, String date, String time, String doctor) {
+    public BookingUpdateForm(String appointment_type, String date, String time, String doctor, String room) {
         this.appointment_type = appointment_type;
         this.date = date;
         this.time = time;
         this.doctor = doctor;
+        this.room = room;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
     }
 
     public String getAppointment_type() {

@@ -46,19 +46,23 @@ public class BookingController {
 /*
         Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
         Doctor doctor = (Doctor)((BindingAwareModelMap) model).get("doctor");*/
-
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+        System.out.println("USER TYPE "+user.getLastName()+" X "+user.getUserType());
         doctorList = bookingService.getDoctorList();
         updateBooking = bookingService.getbooking(id);
         updatePatient = bookingService.getPatient(updateBooking.getPatient().getUserId());
-
+        model.addAttribute("user",user);
         model.addAttribute("patientUpdate", updatePatient);
         model.addAttribute("doctorList", doctorList);
+        model.addAttribute("booking",updateBooking);
 
         return "booking_add_update";
     }
     @RequestMapping(value="/updateBooking/validate", method= RequestMethod.POST)
     public String bookingUpdateValidate(@ModelAttribute BookingUpdateForm bookingUpdateForm, Model model){
-
+        User usert = (User) ((BindingAwareModelMap) model).get("user");
+        System.out.println("USER TYPE UPDATE "+usert.getLastName()+" X "+usert.getUserType());
+        
         boolean validate = bookingService.updateValidate_Save(bookingUpdateForm, updateBooking);
         User user = userRepository.findByUserId(13);
         model.addAttribute("user", user);
