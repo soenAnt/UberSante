@@ -42,8 +42,10 @@
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/home">Home</a></li>
+                <li th:if="${user} != null"><a href="/showBookings">Bookings</a></li>
                 <li th:if="${user.userType} == 'doctor'"><a th:with="baseUrl=('/schedule/'+${user.userId})"
                                                                 th:href="@{${baseUrl}}">Schedule Manager</a></li>
+                <li th:if="${user.userType} == 'nurse'"><a href="/addBooking">Appointments</a></li>
                 <li th:if="${user.userType} == 'patient'"><a href="/appointment_page">Appointments</a></li>
                 <li th:if="${user.userType} == 'patient'"><a href="/showBookings">Bookings</a></li>
                 <li><a href="/contact">Contact</a></li>
