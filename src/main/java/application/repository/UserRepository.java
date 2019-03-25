@@ -10,6 +10,8 @@ import java.util.Collection;
 public interface UserRepository extends JpaRepository<User, Integer>{
 
     Collection<User> findByLastName(String lastName);
+    Collection<User> findByUserType(String userType);
 
     User findByPassword(String password);
+    User findByUserId(int userId);
 }

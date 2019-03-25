@@ -1,9 +1,10 @@
 package application.controller;
 
 import application.datastructure.AppointmentForm;
-import application.datastructure.BookingForm;
+import application.datastructure.BookingAddForm;
+import application.datastructure.BookingUpdateForm;
 import application.model.*;
-import application.service.AppointmentService;
+import application.repository.UserRepository;
 import application.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,15 @@ import java.util.Collection;
 @SessionAttributes(value = {"user", "appointments", "patient", "doctor"})
 public class BookingController {
 
-
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private BookingService bookingService;
+
+    private Collection<User> doctorList;
+    private Booking updateBooking;
+    private User updatePatient;
+    private int bookingUpdateId;
 
     @RequestMapping("/showBookings")
     public String showBookings(Model model){
@@ -34,16 +41,79 @@ public class BookingController {
         return "booking";
     }
 
+    @RequestMapping("/booking/home")
+    public String homePageBookings(Model model){
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+        model.addAttribute("user", user);
+        return "home";
+    }
+    @RequestMapping("/addBooking")
+    public String addBookings(Model model){
+
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        model.addAttribute("user", user);
+        doctorList = bookingService.getDoctorList();
+        model.addAttribute("doctorList", doctorList);
+        //model.addAttribute("user", user);
+        model.addAttribute("appear","appear");
+
+        return "booking_add_update";
+    }
     @RequestMapping("/updateBookingPage")
     public String bookingUpdate(@RequestParam(value="id") int id, Model model){
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+        doctorList = bookingService.getDoctorList();
+        bookingUpdateId = id;
+        updateBooking = bookingService.getbooking(id);
+        updatePatient = bookingService.getPatient(updateBooking.getPatient().getUserId());
+        model.addAttribute("user",user);
+        model.addAttribute("patientUpdate", updatePatient);
+        model.addAttribute("doctorList", doctorList);
+        model.addAttribute("booking",updateBooking);
 
-        Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
-        Doctor doctor = (Doctor)((BindingAwareModelMap) model).get("doctor");
+        return "booking_add_update";
+    }
+    @RequestMapping(value="/updateBooking/validate", method= RequestMethod.POST)
+    public String bookingUpdateValidate(@ModelAttribute BookingUpdateForm bookingUpdateForm, Model model){
+        User user = (User) ((BindingAwareModelMap) model).get("user");
 
-        model.addAttribute("patient", patient);
-        model.addAttribute("doctor", doctor);
+        boolean validate = bookingService.updateValidate_Save(bookingUpdateForm, updateBooking);
+        model.addAttribute("user", user);
+        if(validate) {
+            return "home";
+        }
+        else{
+            doctorList = bookingService.getDoctorList();
+            updateBooking = bookingService.getbooking(bookingUpdateId);
+            updatePatient = bookingService.getPatient(updateBooking.getPatient().getUserId());
+            model.addAttribute("patientUpdate", updatePatient);
+            model.addAttribute("doctorList", doctorList);
+            model.addAttribute("booking",updateBooking);
+            model.addAttribute("error","error");
+            return "booking_add_update";
+        }
+    }
+    @RequestMapping(value="/addBooking/validate", method= RequestMethod.POST)
+    public String addBookingValidate(@ModelAttribute BookingAddForm bookingAddForm, Model model){
 
-        return "appointment";
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        boolean validate = bookingService.createValidate_Save(bookingAddForm);
+        model.addAttribute("user", user);
+        doctorList = bookingService.getDoctorList();
+        model.addAttribute("doctorList", doctorList);
+        model.addAttribute("appear","appear");
+        if(validate){
+
+            model.addAttribute("success","success");
+        }
+        else{
+
+            model.addAttribute("error","error");
+        }
+
+        return "booking_add_update";
     }
 
     @RequestMapping("/updateBooking")
@@ -71,6 +141,12 @@ public class BookingController {
 
         this.bookingService.cancelBooking(booking_id);
 
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        Collection<Booking> bookings = this.bookingService.getBookings(user);
+
+        model.addAttribute("bookings", bookings);
+        model.addAttribute("user", user);
         return "booking";
     }
 
