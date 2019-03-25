@@ -27,6 +27,7 @@ public class BookingController {
     private Collection<User> doctorList;
     private Booking updateBooking;
     private User updatePatient;
+    private int bookingUpdateId;
 
     @RequestMapping("/showBookings")
     public String showBookings(Model model){
@@ -49,8 +50,8 @@ public class BookingController {
     @RequestMapping("/addBooking")
     public String addBookings(Model model){
 
-        //User user = (User) ((BindingAwareModelMap) model).get("user");
-        User user = userRepository.findByUserId(13);
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
         model.addAttribute("user", user);
         doctorList = bookingService.getDoctorList();
         model.addAttribute("doctorList", doctorList);
@@ -61,12 +62,9 @@ public class BookingController {
     }
     @RequestMapping("/updateBookingPage")
     public String bookingUpdate(@RequestParam(value="id") int id, Model model){
-/*
-        Patient patient = (Patient) ((BindingAwareModelMap) model).get("patient");
-        Doctor doctor = (Doctor)((BindingAwareModelMap) model).get("doctor");*/
         User user = (User) ((BindingAwareModelMap) model).get("user");
-        System.out.println("USER TYPE "+user.getLastName()+" X "+user.getUserType());
         doctorList = bookingService.getDoctorList();
+        bookingUpdateId = id;
         updateBooking = bookingService.getbooking(id);
         updatePatient = bookingService.getPatient(updateBooking.getPatient().getUserId());
         model.addAttribute("user",user);
@@ -74,31 +72,35 @@ public class BookingController {
         model.addAttribute("doctorList", doctorList);
         model.addAttribute("booking",updateBooking);
 
-
         return "booking_add_update";
     }
     @RequestMapping(value="/updateBooking/validate", method= RequestMethod.POST)
     public String bookingUpdateValidate(@ModelAttribute BookingUpdateForm bookingUpdateForm, Model model){
-        User usert = (User) ((BindingAwareModelMap) model).get("user");
-        System.out.println("USER TYPE UPDATE "+usert.getLastName()+" X "+usert.getUserType());
+        User user = (User) ((BindingAwareModelMap) model).get("user");
 
         boolean validate = bookingService.updateValidate_Save(bookingUpdateForm, updateBooking);
-        User user = userRepository.findByUserId(13);
         model.addAttribute("user", user);
-        return "home";
+        if(validate) {
+            return "home";
+        }
+        else{
+            doctorList = bookingService.getDoctorList();
+            updateBooking = bookingService.getbooking(bookingUpdateId);
+            updatePatient = bookingService.getPatient(updateBooking.getPatient().getUserId());
+            model.addAttribute("patientUpdate", updatePatient);
+            model.addAttribute("doctorList", doctorList);
+            model.addAttribute("booking",updateBooking);
+            model.addAttribute("error","error");
+            return "booking_add_update";
+        }
     }
     @RequestMapping(value="/addBooking/validate", method= RequestMethod.POST)
     public String addBookingValidate(@ModelAttribute BookingAddForm bookingAddForm, Model model){
-       /* User usert = (User) ((BindingAwareModelMap) model).get("user");
-        System.out.println("USER TYPE CREATE "+usert.getLastName()+" X "+usert.getUserType());
-        User user = (User) ((BindingAwareModelMap) model).get("user");
-        System.out.println("USER TYPE "+user.getLastName()+" X "+user.getUserType());
-*/
-        System.out.println("BOooking being added");
-        boolean validate = bookingService.createValidate_Save(bookingAddForm);
-        User user = userRepository.findByUserId(13);
-        model.addAttribute("user", user);
 
+        User user = (User) ((BindingAwareModelMap) model).get("user");
+
+        boolean validate = bookingService.createValidate_Save(bookingAddForm);
+        model.addAttribute("user", user);
         doctorList = bookingService.getDoctorList();
         model.addAttribute("doctorList", doctorList);
         model.addAttribute("appear","appear");
@@ -144,7 +146,7 @@ public class BookingController {
         Collection<Booking> bookings = this.bookingService.getBookings(user);
 
         model.addAttribute("bookings", bookings);
-
+        model.addAttribute("user", user);
         return "booking";
     }
 

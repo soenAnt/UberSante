@@ -94,9 +94,10 @@
             <div class="container">
                 <div>
                     <div>
-                        <table>
+                        <table class="table">
                             <thead>
                             <tr>
+                                <th>User</th>
                                 <th>Date</th>
                                 <th>Start-Time</th>
                                 <th>End-Time</th>
@@ -110,6 +111,7 @@
                             </tr>
                             </thead>
                             <tr th:each="booking : ${bookings}">
+                                <td th:text="${booking.getPatient().firstName}+' '+${booking.getPatient().lastName}">Name Space Last</td>
                                 <td th:text="${booking.appointment.date}"></td>
                                 <td th:text="${booking.appointment.startTime}"></td>
                                 <td th:text="${booking.appointment.endTime}"></td>

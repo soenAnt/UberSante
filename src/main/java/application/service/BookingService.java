@@ -68,7 +68,9 @@ public class BookingService {
     public void cancelBooking(int booking){
 
         Booking bookingo = this.bookingRepository.findByBookingId(booking);
+        Appointment appointment = bookingo.getAppointment();
         this.bookingRepository.delete(bookingo);
+        appointmentRepository.delete(appointment);
 
     }
     
@@ -111,7 +113,12 @@ public class BookingService {
 
         //save booking
         if(doctorValidator && roomValidator){
-
+            appointmentRepository.saveAndFlush(patientAppointment);
+            updatebooking.setAppointment(patientAppointment);
+            updatebooking.setDoctor(doctor);
+            updatebooking.setRoom(room);
+            System.out.println("Booking Id that is being updated");
+            bookingRepository.save(updatebooking);
             return true;
         }
         else {
