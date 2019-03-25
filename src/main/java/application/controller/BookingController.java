@@ -2,7 +2,9 @@ package application.controller;
 
 import application.datastructure.AppointmentForm;
 import application.datastructure.BookingForm;
+import application.datastructure.BookingUpdateForm;
 import application.model.*;
+import application.repository.UserRepository;
 import application.service.AppointmentService;
 import application.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,14 @@ import java.util.Collection;
 @SessionAttributes(value = {"user", "appointments", "patient", "doctor"})
 public class BookingController {
 
-
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private BookingService bookingService;
 
     private Collection<User> doctorList;
-    private User upadtePatient;
+    private Booking updateBooking;
+    private User updatePatient;
 
     @RequestMapping("/showBookings")
     public String showBookings(Model model){
@@ -44,12 +48,21 @@ public class BookingController {
         Doctor doctor = (Doctor)((BindingAwareModelMap) model).get("doctor");*/
 
         doctorList = bookingService.getDoctorList();
-        upadtePatient = bookingService.getPatient(id);
+        updateBooking = bookingService.getbooking(id);
+        updatePatient = bookingService.getPatient(updateBooking.getPatient().getUserId());
 
-        model.addAttribute("patientUpdate", upadtePatient);
+        model.addAttribute("patientUpdate", updatePatient);
         model.addAttribute("doctorList", doctorList);
 
         return "booking_add_update";
+    }
+    @RequestMapping(value="/updateBooking/validate", method= RequestMethod.POST)
+    public String bookingUpdateValidate(@ModelAttribute BookingUpdateForm bookingUpdateForm, Model model){
+
+        boolean validate = bookingService.updateValidate_Save(bookingUpdateForm, updateBooking);
+        User user = userRepository.findByUserId(13);
+        model.addAttribute("user", user);
+        return "home";
     }
 
     @RequestMapping("/updateBooking")

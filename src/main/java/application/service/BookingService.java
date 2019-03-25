@@ -2,16 +2,21 @@ package application.service;
 
 
 import application.datastructure.AppointmentForm;
+import application.datastructure.BookingUpdateForm;
 import application.model.*;
-import application.repository.AppointmentRepository;
-import application.repository.BookingRepository;
-import application.repository.PatientRepository;
-import application.repository.UserRepository;
+import application.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+
+import static application.service.AppointmentService.stringToDate;
+import static application.service.AppointmentService.stringToTime;
 
 @Service
 public class BookingService {
@@ -30,6 +35,9 @@ public class BookingService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     //return bookings of a user by userid
     public Collection<Booking> getBookings(User user){
@@ -65,8 +73,8 @@ public class BookingService {
     // create follow-up appointment by doctor
     public void followUp(Doctor doctor, Patient patient, AppointmentForm appointmentForm){
 
-        Appointment followUpAppointment = new Appointment(patient, AppointmentService.stringToDate(appointmentForm.getDate()),
-                            AppointmentService.stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
+        Appointment followUpAppointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
+                            stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
                             appointmentForm.getDescription());
         
         int room = this.appointmentService.getAvailableRoom(followUpAppointment);
@@ -77,16 +85,59 @@ public class BookingService {
         
         this.bookingRepository.save(followUpBooking);
     }
-    
+
+    public boolean updateValidate_Save(BookingUpdateForm bookingUpdateForm, Booking updatebooking){
+        System.out.println("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        Appointment patientAppointment = updatebooking.getAppointment();
+        patientAppointment.setDate(truncateTimeFromDate(stringToDate(bookingUpdateForm.getDate())));
+        patientAppointment.setAppointmentType(bookingUpdateForm.getAppointment_type());
+        patientAppointment.setStartTime(stringToTime(bookingUpdateForm.getTime()));
+        patientAppointment.setEndTime(stringToTime(bookingUpdateForm.getTime()),bookingUpdateForm.getAppointment_type());
+
+        System.out.println("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOO \n"+
+                patientAppointment.getAppointmentType()+" \n"+
+                patientAppointment.getDescription()+" \n"+
+                patientAppointment.getDate()+" \n"+
+                patientAppointment.getStartTime()+" \n"+
+                patientAppointment.getEndTime()+" \n"+
+                patientAppointment.getPatient());
+        Doctor doctor = doctorRepository.findByUserId(Integer.parseInt(bookingUpdateForm.getDoctor()));
+        System.out.println("HELLLLLOOOOOOOOOOOOOOOOOOOOOOOOOO \n"+
+                doctor.getLastName());
+        return false;
+    }
     // return a patient
     public Patient getPatient(int patientId) {
-
         Patient patient = this.patientRepository.findByUserId(patientId);
         return patient;
     }
 
+    public Booking getbooking(int bookingId){
+        Booking booking = bookingRepository.findByBookingId(bookingId);
+        return booking;
+    }
+
+
     //return doctor List
     public Collection<User> getDoctorList(){
         return userRepository.findByUserType("doctor");
+    }
+
+    private Date truncateTimeFromDate(Date date) {
+
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date date_no_time = null;
+
+        try {
+
+            date_no_time = formatter.parse(formatter.format(date));
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        }
+
+        return date_no_time;
     }
 }
