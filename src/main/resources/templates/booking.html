@@ -24,7 +24,7 @@
 <div class="wrap">
     <div class="header">
 
-        <div class ="image"><img src="https://bonjour-sante.ca/uno/dist/images/8fc999dfe2bfdae49d12e32e303b77a6.jpg" height="200" /></div>
+        <div th:replace="fragments/header"></div>
     </div>
 
     <div th:replace="fragments/navbar"> </div>
@@ -33,7 +33,7 @@
     <div class="main">
 
 
-        <div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
+        <div class="container" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
 
             <div th:if="${user.userType} == 'patient'">
                 <h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
@@ -51,18 +51,9 @@
 
         <h1 align="center">Your Bookings</h1>
 
-        <table>
-            <!-- Cart.html -->
-            <head>
-                <title>UberSante</title>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            </head>
-            <body>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
             <div class="container">
-                <div>
-                    <div>
-                        <table>
+                        <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th>Date</th>
@@ -103,13 +94,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </div>
-                        <br/>
-                    </div>
-                </div>
-            </body>
-        </table>
-
+            </div>
 
         <footer th:replace="fragments/footer::footer"> </footer>
 

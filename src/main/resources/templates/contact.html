@@ -22,7 +22,7 @@
 <div class="wrap">
     <div class="header">
 
-        <div class ="image"><img src="https://bonjour-sante.ca/uno/dist/images/8fc999dfe2bfdae49d12e32e303b77a6.jpg" height="200" /></div>
+        <div th:replace="fragments/header"></div>
     </div>
 
     <div th:replace="fragments/navbar"> </div>
@@ -30,7 +30,7 @@
     <div class="main">
 
 
-        <div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
+        <div class="container" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
 
             <div th:if="${user.userType} == 'patient'">
                 <h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
@@ -43,10 +43,13 @@
             </div>
         </div>
         <div th:unless="${user}">
-            <h3>Contact Us</h3>
+            <div class="container">
+                <h3>Contact Us</h3>
+            </div>
+
         </div>
 
-        <div>
+        <div class ="container">
             <p>
 
                 With 24/7 access to the clinic’s availabilities, registration for walk-in bookings becomes fair and simple.
@@ -56,13 +59,17 @@
 
         </div>
 
-        <div class="welcomeimg"><img src="https://www.mhrclinicireland.com/images/upload/about1/001.jpg" /> </div>
+        <div class ="container">
 
-        <p>
-        <h2>
-            Contact Us at: (514) 555-2300
-        </h2>
-        </p>
+            <div class="welcomeimg"><img src="https://www.mhrclinicireland.com/images/upload/about1/001.jpg" /> </div>
+        </div>
+
+        <div class ="container">
+            <h2>
+                Contact Us at: (514) 555-2300
+            </h2>
+
+        </div>
 
 
         <footer th:replace="fragments/footer::footer"> </footer>

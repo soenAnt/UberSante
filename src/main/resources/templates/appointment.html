@@ -22,7 +22,7 @@
 <div class="wrap">
     <div class="header">
 
-        <div class ="image"><img src="https://bonjour-sante.ca/uno/dist/images/8fc999dfe2bfdae49d12e32e303b77a6.jpg" height="200" /></div>
+        <div th:replace="fragments/header"></div>
     </div>
 
     <div th:replace="fragments/navbar"> </div>
@@ -30,7 +30,7 @@
     <div class="main">
 
 
-        <div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
+        <div class="container" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
 
             <div th:if="${user.userType} == 'patient'">
                 <h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
@@ -43,14 +43,21 @@
             </div>
         </div>
         <div th:unless="${user}">
-            <h3>Welcome to UberSante</h3>
+            <div class="container">
+
+                <h3>Welcome to UberSante</h3>
+
+            </div>
         </div>
 
-        <div>
+        <div class="container" align="center">
             <h1 align="center">Add an appointment</h1>
 
-            <table align="center">
-                <form method="post" id="appointment" action="/add_to_cart">
+
+            <table>
+
+                <form class="form-horizontal" method="post" id="appointment" action="/add_to_cart">
+                    <div class="form-group">
                     <tr>
                         <td align="right">
                             <label><b>Appointment Type:</b></label>
@@ -62,6 +69,8 @@
                             </select>
                         </td>
                     </tr>
+                    </div>
+                    <div class="form-group">
                     <tr>
                         <td align="right">
                             <label><b>Date:</b></label>
@@ -70,7 +79,8 @@
                             <input type="date" name="date" id="date" required="true"/>
                         </td>
                     </tr>
-
+                    </div>
+                    <div class="form-group">
                     <tr>
                         <td align="right">
                             <label><b>Time:</b></label>
@@ -79,6 +89,8 @@
                             <input id="time" name="time" type="time"  min="8:00" max="19:40" required="true" />
                         </td>
                     </tr>
+                    </div>
+                    <div class="form-group">
                     <tr>
                         <td align="right">
                             <label><b>Description:</b></label>
@@ -89,23 +101,26 @@
                 </textarea>
                         </td>
                     </tr>
+                    </div>
+                    <div class="form-group">
                     <tr>
                         <td align="right">
-                            <button th:if="${user.userType} == 'patient'" id="add_to_cart" name="add_to_cart" type="submit" value="add_to_cart">Add to Cart</button>
-                            <button th:if="${user.userType} == 'doctor'" id="follow_up" name="follow_up" type="submit" value="follow_up">Follow-up</button>
+                            <button th:if="${user.userType} == 'patient'" id="add_to_cart" class="btn btn-default" name="add_to_cart" type="submit" value="add_to_cart">Add to Cart</button>
+                            <button th:if="${user.userType} == 'doctor'" id="follow_up"  class="btn btn-default" name="follow_up" type="submit" value="follow_up">Follow-up</button>
                         </td>
                     </tr>
                     <tr>
                         <td align="right">
-                            <button th:if="${user.userType} == 'nurse'" id="add_patient" name="add_patient" value="add_patient">Add Patient</button>
+                            <button th:if="${user.userType} == 'nurse'" id="add_patient" class="btn btn-default" name="add_patient" value="add_patient">Add Patient</button>
                         </td>
                         <td align="left">
-                            <button th:if="${user.userType} == 'nurse'" id="add_doctor" name="add_doctor" value="add_doctor">Add Doctor</button>
+                            <button th:if="${user.userType} == 'nurse'" id="add_doctor" class="btn btn-default" name="add_doctor" value="add_doctor">Add Doctor</button>
                         </td>
                     </tr>
+                    </div>
                 </form>
-            </table>
 
+            </table>
         </div>
 
 

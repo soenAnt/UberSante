@@ -2,15 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>UberSante</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
-    <!-- jQuery library -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/bootstrap/bootstrap-dropdown.js"></script>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+   <!-- <link id="active_style" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/cosmo/bootstrap.min.css" /> -->
+
+
 </head>
 <body>
 
@@ -27,12 +36,20 @@
                 <li><a href="/about">About</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Location <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Montreal</a></li>
+                        <li><a href="#">Outremont</a></li>
+                        <li><a href="#">Westmount</a></li>
+                    </ul>
+                </li>
                 <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
         </div>
     </nav>
 </div>
+
 
 <div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
     <nav class="navbar navbar-default navbar-fixed">
@@ -51,10 +68,24 @@
                 <li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Location <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Montreal</a></li>
+                        <li><a href="#">Outremont</a></li>
+                        <li><a href="#">Westmount</a></li>
+                    </ul>
+                </li>
                 <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
             </ul>
         </div>
     </nav>
 </div>
+
+
+<script>
+    $(document).ready( function() {
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
 </body>
 </html>

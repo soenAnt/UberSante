@@ -26,7 +26,7 @@
 <div class="wrap">
     <div class="header">
 
-        <div class ="image"><img src="https://bonjour-sante.ca/uno/dist/images/8fc999dfe2bfdae49d12e32e303b77a6.jpg" height="200" /></div>
+        <div th:replace="fragments/header"></div>
     </div>
 
 
@@ -37,7 +37,7 @@
     <div class="main">
 
 
-        <div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
+        <div class="container" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
 
             <div th:if="${user.userType} == 'patient'">
                 <h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
@@ -50,10 +50,12 @@
             </div>
         </div>
         <div th:unless="${user}">
-            <h3>About Us</h3>
+            <div class="container">
+                <h3>About Us</h3>
+            </div>
         </div>
 
-        <div>
+        <div class ="container">
             <p class="parag">
 
                 we are global nonprofit academic medical centre that has provided world class patient care to people from
@@ -91,13 +93,19 @@
 
         </div>
 
-        <div class="welcomeimg"><img src="https://www.mybancroftnow.com/wp-content/uploads/2015/08/doctor-health-wellness.jpg" height="500" /> </div>
 
-        <p>
-        <h2>
-            We are always available for you!
-        </h2>
-        </p>
+        <div class="container"><img src="https://www.mybancroftnow.com/wp-content/uploads/2015/08/doctor-health-wellness.jpg" height="500" /> </div>
+
+        <div class="container">
+
+            <p>
+            <h2>
+                We are always available for you!
+            </h2>
+            </p>
+
+        </div>
+
 
         <footer th:replace="fragments/footer::footer"> </footer>
 
