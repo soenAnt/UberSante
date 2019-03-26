@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>UberSante</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+<div class="navigation-bar-default" th:if="!${user}"><!--// if user doesn't exists then go inside the div, else skip-->
+    <nav class="navbar navbar-default navbar-fixed">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/home">UberSante</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/home">Home</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="navigation-bar" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
+    <nav class="navbar navbar-default navbar-fixed">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/home">UberSante</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/home">Home</a></li>
+                <li th:if="${user} != null"><a href="/showBookings">Bookings</a></li>
+                <li th:if="${user.userType} == 'doctor'"><a th:with="baseUrl=('/schedule/'+${user.userId})"
+                                                                th:href="@{${baseUrl}}">Schedule Manager</a></li>
+                <li th:if="${user.userType} == 'nurse'"><a href="/addBooking">Appointments</a></li>
+                <li th:if="${user.userType} == 'patient'"><a href="/appointment_page">Appointments</a></li>
+                <li th:if="${user.userType} == 'patient'"><a href="/showBookings">Bookings</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/about">About</a></li>
+                <li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

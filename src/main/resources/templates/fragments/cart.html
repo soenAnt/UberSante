@@ -25,7 +25,7 @@
                     </tr>
                     </thead>
                     <tr th:each="appointment : ${appointments}">
-                        <td th:text="${appointment.date}"></td>
+                        <td th:text="${{appointment.stringDate}}"></td>
                         <td th:text="${appointment.startTime}"></td>
                         <td th:text="${appointment.endTime}"></td>
                         <td th:text="${appointment.appointmentType}"></td>

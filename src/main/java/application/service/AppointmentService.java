@@ -52,8 +52,6 @@ public class AppointmentService {
                 stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
                 appointmentForm.getDescription());
 
-        appointment.setDate(truncateTimeFromDate(appointment.getDate()));
-
         appointment.setUuid(UUID.randomUUID().toString());
 
         patient.getCart().addAppointment(appointment);
@@ -256,28 +254,6 @@ public class AppointmentService {
         date = LocalDate.parse(string_date);
 
         return java.sql.Date.valueOf(date);
-    }
-
-    /*
-     * removing time from datetime to show only date.
-     * TODO fix bug that still displays time 00:00:00
-     */
-    private Date truncateTimeFromDate(Date date) {
-
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        Date date_no_time = null;
-
-        try {
-
-            date_no_time = formatter.parse(formatter.format(date));
-
-        } catch (ParseException e) {
-
-            e.printStackTrace();
-        }
-
-        return date_no_time;
     }
 
     public boolean isRoomsFull() {

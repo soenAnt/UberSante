@@ -11,6 +11,11 @@ The clinic has a __capacity of 5 medical rooms__, and there are __7 assigned doc
 
 -----
 
+Please visit our site by going to https://uber-sante.herokuapp.com
+
+
+-----
+
 
 Made by: 
 
