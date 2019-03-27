@@ -38,6 +38,9 @@ public class Appointment {
 
 	@Transient
     private String uuid;
+
+	@Transient
+    private String stringDate;
 	
 	public Appointment() {}
 
@@ -138,5 +141,14 @@ public class Appointment {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getStringDate(){
+        String d = String.valueOf(this.date);
+        this.stringDate = d.substring(0, 10);
+        return this.stringDate;
+    }
+    public void setStringDate(String s){
+        this.stringDate = s;
     }
 }
