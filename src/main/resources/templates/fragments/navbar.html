@@ -38,7 +38,6 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Location <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Montreal</a></li>
                         <li><a href="#">Outremont</a></li>
                         <li><a href="#">Westmount</a></li>
                     </ul>
@@ -64,7 +63,6 @@
                                                                 th:href="@{${baseUrl}}">Schedule Manager</a></li>
                 <li th:if="${user.userType} == 'nurse'"><a href="/addBooking">Appointments</a></li>
                 <li th:if="${user.userType} == 'patient'"><a href="/appointment_page">Appointments</a></li>
-                <li th:if="${user.userType} == 'patient'"><a href="/showBookings">Bookings</a></li>
                 <li><a href="/contact">Contact</a></li>
                 <li><a href="/about">About</a></li>
                 <li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
@@ -72,7 +70,6 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Location <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Montreal</a></li>
                         <li><a href="#">Outremont</a></li>
                         <li><a href="#">Westmount</a></li>
                     </ul>

@@ -49,8 +49,8 @@
             <h3>Welcome to UberSante</h3>
         </div>
 
-        <h1 align="center">Your Bookings</h1>
-
+        <h1 th:if="${user.userType} != 'nurse'" align="center">Your Bookings</h1>
+        <h1 th:if="${user.userType} == 'nurse'" align="center">Bookings</h1>
 
             <div class="container">
                         <table class="table table-striped">
