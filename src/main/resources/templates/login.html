@@ -50,16 +50,16 @@
 				</div>
 			</div>
 			<div th:unless="${user}">
-				<h3>Welcome to UberSante</h3>
+				<h3 style="margin-left:50px;">Welcome to UberSante</h3>
 			</div>
-
-			<form method="post" action="/validate">
+			<form style="margin-left:50px;" method="post" action="/validate">
 
 				<h2>Login</h2>
 				<br />
 
 				<label class="user_type_lb"><b>Log into UberSante as:</b></label>
 				<select name="user_type" id="user_type" onchange="selectUserType()">
+					<option selected="selected"> </option>
 					<option value="patient">Patient</option>
 					<option value="nurse">Nurse</option>
 					<option value="doctor">Doctor</option>
@@ -97,7 +97,6 @@
 				</div>
 
 			</form>
-
 			<footer th:replace="fragments/footer::footer"> </footer>
 
 			<div>

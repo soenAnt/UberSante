@@ -38,7 +38,7 @@ public class AppointmentService {
      */
     public void initCart(Patient patient) {
         patient.setCart(new Cart());
-        Collection<Appointment> collected = this.appointmentRepository.findByPatient(patient);
+        Collection<Appointment> collected = this.appointmentRepository.findByUnbookedApps(patient.getUserId());
         patient.getCart().setAppointments(new ArrayList<>(collected));
         patient.setHasCart(true);
     }
@@ -140,7 +140,6 @@ public class AppointmentService {
     public void confirmBooking(Booking booking, Patient patient) {
         this.bookingRepository.save(booking);
         patient.getCart().removeAppointment(booking.getAppointment());
-
     }
 
     public void quickRoomCheck(Appointment appointment){
