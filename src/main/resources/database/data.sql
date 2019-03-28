@@ -14,6 +14,10 @@ INSERT IGNORE INTO users VALUES (13, 'Rita', 'Rodriguez', 'nursing101', 'nurse')
 INSERT IGNORE INTO users VALUES (14, 'Gwendolyn', 'Shoop', 'costco', 'nurse');
 INSERT IGNORE INTO users VALUES (15, 'William', 'Kline', 'ubereats', 'nurse');
 
+INSERT IGNORE INTO clinics VALUES (1, 'Westmount');
+INSERT IGNORE INTO clinics VALUES (2, 'Mont-Royal');
+INSERT IGNORE INTO clinics VALUES (3, 'Outremont');
+
 INSERT IGNORE INTO patients VALUES (1,'1959-12-21', 'Male', '514-344-9140',
 'boris_the_goat@gmail.com', '2345 Mcintosh Street S8D 2L3, Montreal QC.', 'BORF 1145 1180');
 INSERT IGNORE INTO patients VALUES (2, '1980-05-05', 'Male', '514-370-7785',
