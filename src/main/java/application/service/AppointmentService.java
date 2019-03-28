@@ -38,7 +38,7 @@ public class AppointmentService {
      */
     public void initCart(Patient patient) {
         patient.setCart(new Cart());
-        Collection<Appointment> collected = this.appointmentRepository.findByPatient(patient);
+        Collection<Appointment> collected = this.appointmentRepository.findByUnbookedApps(patient.getUserId());
         patient.getCart().setAppointments(new ArrayList<>(collected));
         patient.setHasCart(true);
     }
@@ -51,8 +51,6 @@ public class AppointmentService {
         Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
                 stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
                 appointmentForm.getDescription());
-
-        appointment.setDate(truncateTimeFromDate(appointment.getDate()));
 
         appointment.setUuid(UUID.randomUUID().toString());
 
@@ -142,7 +140,6 @@ public class AppointmentService {
     public void confirmBooking(Booking booking, Patient patient) {
         this.bookingRepository.save(booking);
         patient.getCart().removeAppointment(booking.getAppointment());
-
     }
 
     public void quickRoomCheck(Appointment appointment){
@@ -256,28 +253,6 @@ public class AppointmentService {
         date = LocalDate.parse(string_date);
 
         return java.sql.Date.valueOf(date);
-    }
-
-    /*
-     * removing time from datetime to show only date.
-     * TODO fix bug that still displays time 00:00:00
-     */
-    private Date truncateTimeFromDate(Date date) {
-
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        Date date_no_time = null;
-
-        try {
-
-            date_no_time = formatter.parse(formatter.format(date));
-
-        } catch (ParseException e) {
-
-            e.printStackTrace();
-        }
-
-        return date_no_time;
     }
 
     public boolean isRoomsFull() {
