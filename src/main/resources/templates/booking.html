@@ -32,19 +32,6 @@
 
     <div class="main">
 
-
-        <div class="container" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
-
-            <div th:if="${user.userType} == 'patient'">
-                <h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
-            </div>
-            <div th:if="${user.userType} == 'doctor'">
-                <h3 th:text=" 'Welcome back Doctor ' + ${user.lastName}">Hi, User</h3>
-            </div>
-            <div th:if="${user.userType} == 'nurse'">
-                <h3 th:text=" 'Welcome back Nurse ' + ${user.lastName}">Hi, User</h3>
-            </div>
-        </div>
         <div th:unless="${user}">
             <h3>Welcome to UberSante</h3>
         </div>
@@ -57,13 +44,16 @@
 
                             <thead>
                             <tr>
-                                <th>User</th>
+                                <th th:if="${user.userType} == 'nurse'">Patient</th>
+                                <th th:if="${user.userType} == 'patient'">Patient</th>
+                                <th th:if="${user.userType} == 'doctor'">Doctor</th>
                                 <th>Date</th>
                                 <th>Start-Time</th>
                                 <th>End-Time</th>
                                 <th>Type</th>
                                 <th th:if="${user.userType} == 'doctor'">Patient</th>
                                 <th th:if="${user.userType} == 'patient'">Doctor</th>
+                                <th th:if="${user.userType} == 'nurse'">Doctor</th>
                                 <th>Room</th>
                                 <th></th>
                                 <th></th>
@@ -72,15 +62,16 @@
                             </thead>
                             <tr th:each="booking : ${bookings}">
 
-                                <td th:text="${booking.getPatient().firstName}+' '+${booking.getPatient().lastName}">Name Space Last</td>
+                                <td th:if="${user.userType} != 'doctor'" th:text="${booking.getPatient().firstName}+' '+${booking.getPatient().lastName}">Name Space Last</td>
+                                <td th:if="${user.userType} == 'doctor'"><span>Dr. </span><span th:text="${booking.doctor.firstName}"></span>
+                                    <span> </span><span th:text="${booking.doctor.lastName}"></span></td>
                                 <td th:text="${booking.appointment.stringDate}"></td>
                                 <td th:text="${booking.appointment.startTime}"></td>
                                 <td th:text="${booking.appointment.endTime}"></td>
                                 <td th:text="${booking.appointment.appointmentType}"></td>
-                                <td th:if="${user.userType} == 'patient'"><span>Dr. </span><span th:text="${booking.doctor.firstName}"></span>
+                                <td th:if="${user.userType} != 'doctor'"><span>Dr. </span><span th:text="${booking.doctor.firstName}"></span>
                                     <span> </span><span th:text="${booking.doctor.lastName}"></span></td>
-                                <td th:if="${user.userType} == 'doctor'"><span th:text="${booking.patient.firstName}"></span>
-                                    <span> </span><span th:text="${booking.patient.lastName}"></span></td>
+                                <td th:if="${user.userType} == 'doctor'" th:text="${booking.getPatient().firstName}+' '+${booking.getPatient().lastName}">Name Space Last</td>
                                 <td th:text="${booking.room}"></td>
 
                                 <td>
