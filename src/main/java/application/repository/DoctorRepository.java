@@ -35,6 +35,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer>{
     		+ "AND schedules.start_time <=?2 "
     		+ "AND schedules.end_time >=?3",
     		nativeQuery = true)
-    Collection<Integer> findAvailableDoctor(Date date, Time start_time, Time end_time);;
+    Collection<Integer> findAvailableDoctor(Date date, Time start_time, Time end_time);
 
 }
