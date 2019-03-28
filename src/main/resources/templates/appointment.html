@@ -53,6 +53,10 @@
         <div class="container" align="center">
             <h1 align="center">Add an appointment</h1>
 
+            <div th:if="${available} != null"><span style="color:red;" th:if="${available} == false">You have already added an appointment for
+                this date and time. Please check your cart or your bookings. </span></div>
+
+            <div th:if="${annual} != null"><span style="color:red;" th:if="${annual} == false">Annual appointments are restricted to 1 per patient per year. </span></div>
 
             <table>
 
