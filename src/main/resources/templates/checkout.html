@@ -83,11 +83,11 @@
                 </tr>
             </table>
             <div th:if="${booking} == null">
-    <span th:if="${isDoctorAvailable} == false">
-        The following appointment is not available as there are no doctors available in this time slot.
+    <span style="color:red;" th:if="${isDoctorAvailable} == false">
+        The following appointment is not available as there are no doctors available in this time slot. Please remove your appointment from cart.
     </span>
-                <span th:if="${isRoomsFull} == true">
-        The following appointment is not available as there are no available rooms in this time slot.
+                <span style="color:red;" th:if="${isRoomsFull} == true">
+        The following appointment is not available as there are no available rooms in this time slot. Please remove your appointment from cart.
     </span>
             </div>
             <table th:if="${payment} != null" class="cart-table">

@@ -46,16 +46,39 @@ public class AppointmentService {
     /*
      * Appointment is added to cart without being persisted
      */
-    public void addAppointmentToCart(Patient patient, AppointmentForm appointmentForm) {
+    public boolean addAppointmentToCart(Patient patient, AppointmentForm appointmentForm) {
 
-        Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
-                stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
-                appointmentForm.getDescription());
+        Collection<Appointment> available = this.appointmentRepository.isAvailable(patient.getUserId(),
+                stringToDate(appointmentForm.getDate()), stringToTime(appointmentForm.getTime()));
 
-        appointment.setUuid(UUID.randomUUID().toString());
+        if(available.size() == 0) {
+            Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
+                    stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
+                    appointmentForm.getDescription());
 
-        patient.getCart().addAppointment(appointment);
+            appointment.setUuid(UUID.randomUUID().toString());
 
+            patient.getCart().addAppointment(appointment);
+
+            return true;
+        }
+
+        else{
+            return false;
+        }
+
+    }
+
+    public boolean checkAnnualValid(Patient patient, AppointmentForm appointmentForm){
+
+        Collection<Appointment> annual_taken = this.appointmentRepository.isAnnualAvailable(patient.getUserId(),
+                stringToDate(appointmentForm.getDate()));
+
+        if(annual_taken.size() != 0){
+            return false;
+        }
+
+        return true;
     }
 
     /*
@@ -118,7 +141,7 @@ public class AppointmentService {
     public Booking checkoutAppointment(Patient patient, Appointment appointment) {
 
         Boolean exists = this.appointmentRepository.exists(appointment.getAppointmentId());
-        Booking booking = null;
+        Booking booking;
         if (!exists) {
             appointment = this.appointmentRepository.saveAndFlush(appointment);
         }
@@ -128,7 +151,8 @@ public class AppointmentService {
         int room = getAvailableRoom(appointment);
         
         if(doctor.getPhysicianPermitNumber() == 0 || room == 0) {
-        	System.out.println("doctor or room is not available");// might need to change, simply print out for now.	
+        	System.out.println("doctor or room is not available");// might need to change, simply print out for now.
+            return null;
         }
         else {
             booking = new Booking(doctor, patient, appointment, room);
