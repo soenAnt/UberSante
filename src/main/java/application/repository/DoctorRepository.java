@@ -33,8 +33,12 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer>{
     		+ "AS x WHERE x.user_id = schedules.doctor_id "
     		+ "AND schedules.day_of_week = (SELECT {fn dayname(?1)}) "
     		+ "AND schedules.start_time <=?2 "
-    		+ "AND schedules.end_time >=?3",
+    		+ "AND schedules.end_time >=?3"
+    		+ "AND location = ?4",
     		nativeQuery = true)
-    Collection<Integer> findAvailableDoctor(Date date, Time start_time, Time end_time);
+    Collection<Integer> findAvailableDoctor(Date date, Time start_time, Time end_time, String location);
+    
+    @Query(value = "UPDATE doctors SET location = ?1 WHERE user_id = ?2")
+    public void relocateDoctor(String location, int user_id);
 
 }
