@@ -40,8 +40,20 @@ public class AppointmentController {
 
         Patient patient = setupModel(model);
 
-        this.appointmentService.addAppointmentToCart(patient, appointmentForm);
+        if(appointmentForm.getAppointment_type().equals("annual")){
+            Boolean annual = this.appointmentService.checkAnnualValid(patient, appointmentForm);
+            if(!annual) {
+                model.addAttribute("annual", annual);
+                return "appointment";
+            }
+        }
 
+        Boolean available = this.appointmentService.addAppointmentToCart(patient, appointmentForm);
+        model.addAttribute("available", available);
+
+        if(!available){
+            return "appointment";
+        }
         return "home";
     }
 

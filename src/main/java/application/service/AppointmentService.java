@@ -38,7 +38,7 @@ public class AppointmentService {
      */
     public void initCart(Patient patient) {
         patient.setCart(new Cart());
-        Collection<Appointment> collected = this.appointmentRepository.findByPatient(patient);
+        Collection<Appointment> collected = this.appointmentRepository.findByUnbookedApps(patient.getUserId());
         patient.getCart().setAppointments(new ArrayList<>(collected));
         patient.setHasCart(true);
     }
@@ -46,18 +46,39 @@ public class AppointmentService {
     /*
      * Appointment is added to cart without being persisted
      */
-    public void addAppointmentToCart(Patient patient, AppointmentForm appointmentForm) {
+    public boolean addAppointmentToCart(Patient patient, AppointmentForm appointmentForm) {
 
-        Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
-                stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
-                appointmentForm.getDescription());
+        Collection<Appointment> available = this.appointmentRepository.isAvailable(patient.getUserId(),
+                stringToDate(appointmentForm.getDate()), stringToTime(appointmentForm.getTime()));
 
-        appointment.setDate(truncateTimeFromDate(appointment.getDate()));
+        if(available.size() == 0) {
+            Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
+                    stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
+                    appointmentForm.getDescription());
 
-        appointment.setUuid(UUID.randomUUID().toString());
+            appointment.setUuid(UUID.randomUUID().toString());
 
-        patient.getCart().addAppointment(appointment);
+            patient.getCart().addAppointment(appointment);
 
+            return true;
+        }
+
+        else{
+            return false;
+        }
+
+    }
+
+    public boolean checkAnnualValid(Patient patient, AppointmentForm appointmentForm){
+
+        Collection<Appointment> annual_taken = this.appointmentRepository.isAnnualAvailable(patient.getUserId(),
+                stringToDate(appointmentForm.getDate()));
+
+        if(annual_taken.size() != 0){
+            return false;
+        }
+
+        return true;
     }
 
     /*
@@ -120,7 +141,7 @@ public class AppointmentService {
     public Booking checkoutAppointment(Patient patient, Appointment appointment) {
 
         Boolean exists = this.appointmentRepository.exists(appointment.getAppointmentId());
-        Booking booking = null;
+        Booking booking;
         if (!exists) {
             appointment = this.appointmentRepository.saveAndFlush(appointment);
         }
@@ -130,7 +151,8 @@ public class AppointmentService {
         int room = getAvailableRoom(appointment);
         
         if(doctor.getPhysicianPermitNumber() == 0 || room == 0) {
-        	System.out.println("doctor or room is not available");// might need to change, simply print out for now.	
+        	System.out.println("doctor or room is not available");// might need to change, simply print out for now.
+            return null;
         }
         else {
             booking = new Booking(doctor, patient, appointment, room);
@@ -142,7 +164,6 @@ public class AppointmentService {
     public void confirmBooking(Booking booking, Patient patient) {
         this.bookingRepository.save(booking);
         patient.getCart().removeAppointment(booking.getAppointment());
-
     }
 
     public void quickRoomCheck(Appointment appointment){
@@ -256,28 +277,6 @@ public class AppointmentService {
         date = LocalDate.parse(string_date);
 
         return java.sql.Date.valueOf(date);
-    }
-
-    /*
-     * removing time from datetime to show only date.
-     * TODO fix bug that still displays time 00:00:00
-     */
-    private Date truncateTimeFromDate(Date date) {
-
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-        Date date_no_time = null;
-
-        try {
-
-            date_no_time = formatter.parse(formatter.format(date));
-
-        } catch (ParseException e) {
-
-            e.printStackTrace();
-        }
-
-        return date_no_time;
     }
 
     public boolean isRoomsFull() {
