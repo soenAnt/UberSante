@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS users (
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
-  `user_type` VARCHAR(45) NOT NULL
+  `user_type` VARCHAR(45) NOT NULL,
+  `notification` INT(1) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS patients (
@@ -70,4 +71,12 @@ CREATE TABLE IF NOT EXISTS schedules (
   `start_time` TIME NOT NULL,
   `end_time` TIME NOT NULL,
   FOREIGN KEY (doctor_id) REFERENCES doctors(user_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS notifications (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT UNSIGNED NOT NULL,
+  `message` VARCHAR(255) NOT NULL,
+  `day_time` TIMESTAMP NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;

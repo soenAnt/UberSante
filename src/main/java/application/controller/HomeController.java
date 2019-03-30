@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes(value = {"user", "appointments"})
+@SessionAttributes(value = {"user", "appointments", "notification", "notifications"})
 public class HomeController {
     @GetMapping("/")
     public String homepage() {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 
-@SessionAttributes(value={"user", "booking"})
+@SessionAttributes(value = {"user", "appointments", "notification", "notifications"})
 public class PaymentController {
     @Autowired
     ProxyPayment paymentProxy;

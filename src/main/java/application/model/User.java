@@ -1,6 +1,7 @@
 package application.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "users")
@@ -22,12 +23,19 @@ public class User {
 
 	@Column(name = "userType")
 	private String userType;
+
+	@Column(name = "notification")
+	private int notification;
+
+	@OneToMany(mappedBy = "user")
+	private Collection<Notification> notifications;
 	
 	public User(String firstName, String lastName, String password, String userType) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
 		this.userType = userType;
+		this.notification = 0;
 	}
 
 	public User() {
@@ -74,4 +82,19 @@ public class User {
 		this.userType = userType;
 	}
 
+	public int getNotification() {
+		return notification;
+	}
+
+	public void setNotification(int notification) {
+		this.notification = notification;
+	}
+
+	public Collection<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(Collection<Notification> notifications) {
+		this.notifications = notifications;
+	}
 }

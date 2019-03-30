@@ -1,18 +1,18 @@
-INSERT IGNORE INTO users VALUES (1, 'Boris', 'Fitzgerald','goat360', 'patient');
-INSERT IGNORE INTO users VALUES (2, 'Felix', 'Roscinante','pass123', 'patient');
-INSERT IGNORE INTO users VALUES (3, 'Alicia', 'Mayoris','osmosis', 'patient');
-INSERT IGNORE INTO users VALUES (4, 'Jerome', 'Damien', 'toothpaste', 'patient');
-INSERT IGNORE INTO users VALUES (5, 'Matthew', 'Colson','goawayhackers', 'patient');
-INSERT IGNORE INTO users VALUES (6, 'Claire', 'Titheradge','cardioc', 'doctor');
-INSERT IGNORE INTO users VALUES (7, 'Mikayla', 'Borella','mikay01', 'doctor');
-INSERT IGNORE INTO users VALUES (8, 'William', 'Petchy','doctor123', 'doctor');
-INSERT IGNORE INTO users VALUES (9, 'Sean', 'Pocock','marcopolo', 'doctor');
-INSERT IGNORE INTO users VALUES (10, 'Lara', 'Mingay','crying2019', 'doctor');
-INSERT IGNORE INTO users VALUES (11, 'Matilda', 'Fanny','fannypack', 'doctor');
-INSERT IGNORE INTO users VALUES (12, 'Zachary', 'Ludowici','toes300', 'doctor');
-INSERT IGNORE INTO users VALUES (13, 'Rita', 'Rodriguez', 'nursing101', 'nurse');
-INSERT IGNORE INTO users VALUES (14, 'Gwendolyn', 'Shoop', 'costco', 'nurse');
-INSERT IGNORE INTO users VALUES (15, 'William', 'Kline', 'ubereats', 'nurse');
+INSERT IGNORE INTO users VALUES (1, 'Boris', 'Fitzgerald','goat360', 'patient', 0);
+INSERT IGNORE INTO users VALUES (2, 'Felix', 'Roscinante','pass123', 'patient', 0);
+INSERT IGNORE INTO users VALUES (3, 'Alicia', 'Mayoris','osmosis', 'patient', 0);
+INSERT IGNORE INTO users VALUES (4, 'Jerome', 'Damien', 'toothpaste', 'patient', 0);
+INSERT IGNORE INTO users VALUES (5, 'Matthew', 'Colson','goawayhackers', 'patient', 0);
+INSERT IGNORE INTO users VALUES (6, 'Claire', 'Titheradge','cardioc', 'doctor', 0);
+INSERT IGNORE INTO users VALUES (7, 'Mikayla', 'Borella','mikay01', 'doctor', 0);
+INSERT IGNORE INTO users VALUES (8, 'William', 'Petchy','doctor123', 'doctor', 0);
+INSERT IGNORE INTO users VALUES (9, 'Sean', 'Pocock','marcopolo', 'doctor', 0);
+INSERT IGNORE INTO users VALUES (10, 'Lara', 'Mingay','crying2019', 'doctor', 0);
+INSERT IGNORE INTO users VALUES (11, 'Matilda', 'Fanny','fannypack', 'doctor', 0);
+INSERT IGNORE INTO users VALUES (12, 'Zachary', 'Ludowici','toes300', 'doctor', 0);
+INSERT IGNORE INTO users VALUES (13, 'Rita', 'Rodriguez', 'nursing101', 'nurse', 0);
+INSERT IGNORE INTO users VALUES (14, 'Gwendolyn', 'Shoop', 'costco', 'nurse', 0);
+INSERT IGNORE INTO users VALUES (15, 'William', 'Kline', 'ubereats', 'nurse', 0);
 
 INSERT IGNORE INTO patients VALUES (1,'1959-12-21', 'Male', '514-344-9140',
 'boris_the_goat@gmail.com', '2345 Mcintosh Street S8D 2L3, Montreal QC.', 'BORF 1145 1180');

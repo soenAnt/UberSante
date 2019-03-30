@@ -68,6 +68,8 @@
                 <li th:if="${user.userType} == 'patient'"><a id="cartToggle">Cart</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <a style="float:left;" th:if="${notification} == 1" href="/notifications"><img src="/images/notification_alert.png" width="40" height="40"/></a>
+                <a style="float:left;" th:if="${notification} == 0" href="/notifications"><img src="/images/notification_closed.png" width="45" height="45"/></a>
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Location <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Outremont</a></li>
