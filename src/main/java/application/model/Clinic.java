@@ -13,20 +13,16 @@ public class Clinic {
 	@Column(name = "name")
 	private String name;
 	
-	@ManyToOne
-	@JoinColumn(name = "num_doctors")
+	@Column(name = "num_doctors")
 	private int num_doctors;
 
-	@ManyToOne
-	@JoinColumn(name = "num_nurses")
+	@Column(name = "num_nurses")
 	private int num_nurses;
 
-	@ManyToOne
-	@JoinColumn(name = "num_rooms")
+	@Column(name = "num_rooms")
 	private int num_rooms;
 	
-	@ManyToOne
-	@JoinColumn(name = "num_bookings")
+	@Column(name = "num_bookings")
 	private int num_bookings;
 
 	public Clinic(){}
