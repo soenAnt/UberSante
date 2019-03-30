@@ -1,18 +1,22 @@
-INSERT IGNORE INTO users VALUES (1, 'Boris', 'Fitzgerald','goat360', 'patient', 0);
-INSERT IGNORE INTO users VALUES (2, 'Felix', 'Roscinante','pass123', 'patient', 0);
-INSERT IGNORE INTO users VALUES (3, 'Alicia', 'Mayoris','osmosis', 'patient', 0);
-INSERT IGNORE INTO users VALUES (4, 'Jerome', 'Damien', 'toothpaste', 'patient', 0);
-INSERT IGNORE INTO users VALUES (5, 'Matthew', 'Colson','goawayhackers', 'patient', 0);
-INSERT IGNORE INTO users VALUES (6, 'Claire', 'Titheradge','cardioc', 'doctor', 0);
-INSERT IGNORE INTO users VALUES (7, 'Mikayla', 'Borella','mikay01', 'doctor', 0);
-INSERT IGNORE INTO users VALUES (8, 'William', 'Petchy','doctor123', 'doctor', 0);
-INSERT IGNORE INTO users VALUES (9, 'Sean', 'Pocock','marcopolo', 'doctor', 0);
-INSERT IGNORE INTO users VALUES (10, 'Lara', 'Mingay','crying2019', 'doctor', 0);
-INSERT IGNORE INTO users VALUES (11, 'Matilda', 'Fanny','fannypack', 'doctor', 0);
-INSERT IGNORE INTO users VALUES (12, 'Zachary', 'Ludowici','toes300', 'doctor', 0);
-INSERT IGNORE INTO users VALUES (13, 'Rita', 'Rodriguez', 'nursing101', 'nurse', 0);
-INSERT IGNORE INTO users VALUES (14, 'Gwendolyn', 'Shoop', 'costco', 'nurse', 0);
-INSERT IGNORE INTO users VALUES (15, 'William', 'Kline', 'ubereats', 'nurse', 0);
+INSERT IGNORE INTO users VALUES (1, 'Boris', 'Fitzgerald','goat360', 'patient', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (2, 'Felix', 'Roscinante','pass123', 'patient', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (3, 'Alicia', 'Mayoris','osmosis', 'patient', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (4, 'Jerome', 'Damien', 'toothpaste', 'patient', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (5, 'Matthew', 'Colson','goawayhackers', 'patient', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (6, 'Claire', 'Titheradge','cardioc', 'doctor', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (7, 'Mikayla', 'Borella','mikay01', 'doctor', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (8, 'William', 'Petchy','doctor123', 'doctor', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (9, 'Sean', 'Pocock','marcopolo', 'doctor', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (10, 'Lara', 'Mingay','crying2019', 'doctor', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (11, 'Matilda', 'Fanny','fannypack', 'doctor', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (12, 'Zachary', 'Ludowici','toes300', 'doctor', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (13, 'Rita', 'Rodriguez', 'nursing101', 'nurse', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (14, 'Gwendolyn', 'Shoop', 'costco', 'nurse', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (15, 'William', 'Kline', 'ubereats', 'nurse', 0,'Westmount');
+
+INSERT IGNORE INTO clinics VALUES ('Westmount',0,0,5,0);
+INSERT IGNORE INTO clinics VALUES ('Mont-Royal',0,0,10,0);
+INSERT IGNORE INTO clinics VALUES ('Outremont',0,0,15,0);
 
 INSERT IGNORE INTO patients VALUES (1,'1959-12-21', 'Male', '514-344-9140',
 'boris_the_goat@gmail.com', '2345 Mcintosh Street S8D 2L3, Montreal QC.', 'BORF 1145 1180');
@@ -37,12 +41,12 @@ INSERT IGNORE INTO nurses VALUES (13, 'DHG88451');
 INSERT IGNORE INTO nurses VALUES (14, 'IUE15447');
 INSERT IGNORE INTO nurses VALUES (15, 'KMN12805');
 
-INSERT IGNORE INTO appointments VALUES(1, 1, '2019-09-09', '10:20', '10:40', "walk-in", "");
-INSERT IGNORE INTO appointments VALUES(2, 2, '2019-06-21', '16:00', '17:00', "annual", "");
-INSERT IGNORE INTO appointments VALUES(3, 3, '2019-04-04', '15:00', '15:20', 'walk-in', "");
-INSERT IGNORE INTO appointments VALUES(4, 3, '2019-08-10', '15:00', '16:00', 'annual', "");
-INSERT IGNORE INTO appointments VALUES(5, 4, '2019-06-14', '9:00', '9:20', 'walk-in', "toe fungus");
-INSERT IGNORE INTO appointments VALUES(6, 5, '2019-05-15', '18:00', '18:20', 'walk-in', "");
+INSERT IGNORE INTO appointments VALUES(1, 1, '2019-09-09', '10:20', '10:40', "walk-in", "Westmount", "");
+INSERT IGNORE INTO appointments VALUES(2, 2, '2019-06-21', '16:00', '17:00', "annual", "Westmount", "");
+INSERT IGNORE INTO appointments VALUES(3, 3, '2019-04-04', '15:00', '15:20', 'walk-in', "Westmount", "");
+INSERT IGNORE INTO appointments VALUES(4, 3, '2019-08-10', '15:00', '16:00', 'annual', "Westmount", "");
+INSERT IGNORE INTO appointments VALUES(5, 4, '2019-06-14', '9:00', '9:20', 'walk-in', "Westmount", "toe fungus");
+INSERT IGNORE INTO appointments VALUES(6, 5, '2019-05-15', '18:00', '18:20', 'walk-in', "Westmount", "");
 
 INSERT IGNORE INTO bookings VALUES(1, 6, 3, 3, 1);
 INSERT IGNORE INTO bookings VALUES(2, 7, 4, 5, 1);

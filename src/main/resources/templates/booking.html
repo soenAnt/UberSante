@@ -55,6 +55,7 @@
                                 <th th:if="${user.userType} == 'patient'">Doctor</th>
                                 <th th:if="${user.userType} == 'nurse'">Doctor</th>
                                 <th>Room</th>
+                                <th>Location</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -73,7 +74,7 @@
                                     <span> </span><span th:text="${booking.doctor.lastName}"></span></td>
                                 <td th:if="${user.userType} == 'doctor'" th:text="${booking.getPatient().firstName}+' '+${booking.getPatient().lastName}">Name Space Last</td>
                                 <td th:text="${booking.room}"></td>
-
+                                <td th:text="${booking.appointment.location}"></td>
                                 <td>
                                     <a th:if="${user.UserType} == 'nurse'"
                                        th:href="@{/updateBookingPage(id=${booking.bookingId})}"><button>Update</button></a>
@@ -101,7 +102,7 @@
                     var $this = $('#cart-panel');
                     if ($this.hasClass('open')) {
                         $this.animate({
-                            left : '600px'
+                            left : '700px'
                         }, 150).removeClass('open');
                     } else {
                         $this.animate({

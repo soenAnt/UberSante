@@ -30,12 +30,16 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private Collection<Notification> notifications;
 	
-	public User(String firstName, String lastName, String password, String userType) {
+	@Column(name = "location")
+	private String location;
+	
+	public User(String firstName, String lastName, String password, String userType, String location) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
 		this.userType = userType;
 		this.notification = 0;
+		this.location = location;
 	}
 
 	public User() {
@@ -96,5 +100,13 @@ public class User {
 
 	public void setNotifications(Collection<Notification> notifications) {
 		this.notifications = notifications;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }

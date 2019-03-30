@@ -23,8 +23,8 @@ public class Doctor extends User {
 	private Collection<Booking> bookings;
 
 	public Doctor(String firstName, String lastName, String specialty, String city,
-				  int physicianPermitNumber, String password, String userType) {
-		super(firstName, lastName, password, userType);
+				  int physicianPermitNumber, String password, String userType, String location) {
+		super(firstName, lastName, password, userType, location);
 		this.specialty = specialty;
 		this.city = city;
 		this.physicianPermitNumber = physicianPermitNumber;

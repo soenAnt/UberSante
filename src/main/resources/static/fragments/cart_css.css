@@ -5,12 +5,12 @@ html, body {
 }
 #cart-panel {
     z-index:99;
-    left: 600px;
+    left: 700px;
     position:absolute;
     height : calc(100% - 200px);
-    width  : 600px;
+    width  : 700px;
     margin-top: 200px;
-    margin-left:calc(100% - 600px);
+    margin-left:calc(100% - 700px);
     background-color: #444444;
     color: white;
     box-shadow: 0 3px 6px rgba(0,0,0,0.4);

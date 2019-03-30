@@ -62,6 +62,7 @@
                     <th>Start-Time</th>
                     <th>End-Time</th>
                     <th>Type</th>
+                    <th>Location</th>
                     <th>Room</th>
                     <th>Health Card Number</th>
                     <th>Email</th>
@@ -74,6 +75,7 @@
                     <td th:text="${booking.appointment.startTime}"></td>
                     <td th:text="${booking.appointment.endTime}"></td>
                     <td th:text="${booking.appointment.appointmentType}"></td>
+                    <td th:text="${booking.appointment.location}"></td>
                     <td th:text="${booking.room}"></td>
                     <td th:text="${booking.patient.healthCardNumber}"></td>
                     <td th:text="${booking.patient.email}"></td>
@@ -120,7 +122,7 @@
                     var $this = $('#cart-panel');
                     if ($this.hasClass('open')) {
                         $this.animate({
-                            left : '800px'
+                            left : '700px'
                         }, 150).removeClass('open');
                     } else {
                         $this.animate({

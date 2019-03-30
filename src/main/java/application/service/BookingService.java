@@ -85,7 +85,7 @@ public class BookingService implements Subject{
 
         Appointment followUpAppointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
                             stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
-                            appointmentForm.getDescription());
+                appointmentForm.getLocation(), appointmentForm.getDescription());
         
         int room = this.appointmentService.getAvailableRoom(followUpAppointment);
 
@@ -145,7 +145,7 @@ public class BookingService implements Subject{
 
         if(validPatient){
             Appointment appointment = new Appointment(patient, stringToDate(bookingAddForm.getDate()),
-                    stringToTime(bookingAddForm.getTime()), bookingAddForm.getAppointment_type(),
+                    stringToTime(bookingAddForm.getTime()), bookingAddForm.getAppointment_type(), user.getLocation(),
                     bookingAddForm.getDescription());
 
             appointment.setDate(truncateTimeFromDate(appointment.getDate()));
@@ -171,7 +171,7 @@ public class BookingService implements Subject{
                       break;
                   }
                 }
-              Booking booking = new Booking(doctor, patient, appointmentWithID,room);
+              Booking booking = new Booking(doctor, patient, appointmentWithID, room);
               bookingRepository.save(booking);
               nurseBookingNotification(user, booking, false);
             }
@@ -238,7 +238,7 @@ public class BookingService implements Subject{
        Collection<Integer> doctorsId = this.
                 doctorRepository.
                 findAvailableDoctor
-                        (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+                        (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getPatient().getLocation());
 
       boolean valid = false;
         for(int id:doctorsId){
@@ -250,7 +250,7 @@ public class BookingService implements Subject{
 
     private boolean isRoomValid(int room, Appointment appointment){
         boolean valid = false;
-        Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getPatient().getLocation());
 
         if(!takenRooms.contains(room)) {
               valid = true;

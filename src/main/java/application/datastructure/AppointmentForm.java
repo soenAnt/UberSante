@@ -10,14 +10,16 @@ public class AppointmentForm {
     private String appointment_type;
     private String date;
     private String time;
+    private String location;
     private String description;
 
     public AppointmentForm(){}
 
-    public AppointmentForm(String appointment_type, String date, String time, String description) {
+    public AppointmentForm(String appointment_type, String date, String time, String location, String description) {
         this.appointment_type = appointment_type;
         this.date = date;
         this.time = time;
+        this.location = location;
         this.description = description;
     }
 
@@ -43,6 +45,14 @@ public class AppointmentForm {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getDescription() {

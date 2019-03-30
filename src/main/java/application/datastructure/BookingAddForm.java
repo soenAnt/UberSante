@@ -9,6 +9,7 @@ public class BookingAddForm {
     private String room;
     private String email;
     private String description;
+
     public BookingAddForm(){}
 
     public String getEmail() {

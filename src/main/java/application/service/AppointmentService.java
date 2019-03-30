@@ -54,7 +54,7 @@ public class AppointmentService {
         if(available.size() == 0) {
             Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
                     stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
-                    appointmentForm.getDescription());
+                    appointmentForm.getLocation(), appointmentForm.getDescription());
 
             appointment.setUuid(UUID.randomUUID().toString());
 
@@ -167,7 +167,8 @@ public class AppointmentService {
     }
 
     public void quickRoomCheck(Appointment appointment){
-        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(),
+                appointment.getEndTime(), appointment.getLocation());
         if (rooms.size() == 5) {
             isRoomsFull = false;
         }
@@ -176,7 +177,7 @@ public class AppointmentService {
 
     public void quickDoctorCheck(Appointment appointment){
         Collection<Integer> doctors = this.doctorRepository.findAvailableDoctor
-                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getLocation());
         if (doctors.isEmpty()) {
             isDoctorAvailable = false;
         }
@@ -192,10 +193,12 @@ public class AppointmentService {
         Collection<Integer> doctorsId = this.
         		doctorRepository.
         		findAvailableDoctor
-        		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getLocation());
         
         if(!doctorsId.isEmpty()) 
         	doctor =this.doctorRepository.findByUserId( doctorsId.iterator().next() );
+        else // no available doctor at that location
+        	return null;
         
         return doctor;
     }
@@ -205,7 +208,8 @@ public class AppointmentService {
      */
     public int getAvailableRoom(Appointment appointment) {
 
-    	Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+    	Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(),
+                appointment.getStartTime(), appointment.getEndTime(), appointment.getLocation());
     	int room = 0;
     	for(int i=1; i<=5; i++) {
     		if(!takenRooms.contains(i)) {
@@ -214,7 +218,7 @@ public class AppointmentService {
     			}
     	}
     	
-    	return room;
+    	return room; // return 0 for no room available at the specified location
     }
 
 

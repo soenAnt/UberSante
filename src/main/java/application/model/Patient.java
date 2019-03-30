@@ -48,8 +48,8 @@ public class Patient extends User{
 	}
 	
 	public Patient(String firstName, String lastName, String healthCardNumber, Date birthday, String gender,
-			String phoneNumber, String email, String address, String password, String userType) {
-		super(firstName, lastName, password, userType);
+			String phoneNumber, String email, String address, String password, String userType, String location) {
+		super(firstName, lastName, password, userType, location);
 		this.healthCardNumber = healthCardNumber;
 		this.birthday = birthday;
 		this.gender = gender;
@@ -59,7 +59,7 @@ public class Patient extends User{
 	}
 
     public Patient(RegisterForm registerForm) {
-	    super(registerForm.getFirstName(),registerForm.getLastName(),registerForm.getPassword(), registerForm.getUSER_TYPE());
+	    super(registerForm.getFirstName(),registerForm.getLastName(),registerForm.getPassword(), registerForm.getUSER_TYPE(), registerForm.getLocation());
         this.healthCardNumber = registerForm.getHealthCard();
         this.birthday = stringToDate(registerForm.getDateOfBirth());
         this.gender = registerForm.getGender();
