@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 
 @Service
-public class NotificationService {
+public class NotificationService implements Observer{
 
     @Autowired
     private UserRepository users;
@@ -36,12 +38,12 @@ public class NotificationService {
         return this.notificationRepository.findByUser(userLogged);
     }
 
-    public void addBookingNotification(User user) {
-
-        String booking_notification = "";
-    }
-
     public void saveNotification(Notification notification) {
         this.notificationRepository.save(notification);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 }
