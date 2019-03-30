@@ -139,13 +139,12 @@ public class AppointmentController {
         Patient patient = setupModel(model);
 
         Appointment appointment = retrievePersistedAppointment(appointment_id, model);
-        String location = appointment.getPatient().getLocation();
 
-        this.appointmentService.quickRoomCheck(appointment, location);
-        this.appointmentService.quickDoctorCheck(appointment, location);
+        this.appointmentService.quickRoomCheck(appointment);
+        this.appointmentService.quickDoctorCheck(appointment);
 
         // booking is return
-        Booking booking = this.appointmentService.checkoutAppointment(patient, appointment, location);
+        Booking booking = this.appointmentService.checkoutAppointment(patient, appointment);
 
         if(booking != null)
         {

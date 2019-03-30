@@ -138,7 +138,7 @@ public class AppointmentService {
      * Booked appointment now removed from cart after checkout.
      * TODO refactor checkoutAppointment() to save booking ONLY after payment is made.
      */
-    public Booking checkoutAppointment(Patient patient, Appointment appointment, String location) {
+    public Booking checkoutAppointment(Patient patient, Appointment appointment) {
 
         Boolean exists = this.appointmentRepository.exists(appointment.getAppointmentId());
         Booking booking;
@@ -146,16 +146,16 @@ public class AppointmentService {
             appointment = this.appointmentRepository.saveAndFlush(appointment);
         }
         
-        Doctor doctor = getAvailableDoctor(appointment, location);
+        Doctor doctor = getAvailableDoctor(appointment);
         //feature 4
-        int room = getAvailableRoom(appointment, location);
+        int room = getAvailableRoom(appointment);
         
         if(doctor.getPhysicianPermitNumber() == 0 || room == 0) {
         	System.out.println("doctor or room is not available");// might need to change, simply print out for now.
             return null;
         }
         else {
-            booking = new Booking(doctor, patient, appointment, room, location);
+            booking = new Booking(doctor, patient, appointment, room);
         }
 
         return booking;
@@ -166,17 +166,17 @@ public class AppointmentService {
         patient.getCart().removeAppointment(booking.getAppointment());
     }
 
-    public void quickRoomCheck(Appointment appointment, String location){
-        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), location);
+    public void quickRoomCheck(Appointment appointment){
+        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
         if (rooms.size() == 5) {
             isRoomsFull = false;
         }
         isRoomsFull = true;
     }
 
-    public void quickDoctorCheck(Appointment appointment, String location){
+    public void quickDoctorCheck(Appointment appointment){
         Collection<Integer> doctors = this.doctorRepository.findAvailableDoctor
-                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), location);
+                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
         if (doctors.isEmpty()) {
             isDoctorAvailable = false;
         }
@@ -186,18 +186,16 @@ public class AppointmentService {
     /*
      * TODO feature 4: system must find an available doctor for the specified date-time
      */
-    public Doctor getAvailableDoctor(Appointment appointment, String location) {
+    public Doctor getAvailableDoctor(Appointment appointment) {
 
     	Doctor doctor = new Doctor(); // query db to find available doctor
         Collection<Integer> doctorsId = this.
         		doctorRepository.
         		findAvailableDoctor
-        		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), location);
+        		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
         
         if(!doctorsId.isEmpty()) 
         	doctor =this.doctorRepository.findByUserId( doctorsId.iterator().next() );
-        else // no available doctor at that location
-        	return null;
         
         return doctor;
     }
@@ -205,9 +203,9 @@ public class AppointmentService {
     /*
      * TODO feature 4: system must find an available room for the specified date-time
      */
-    public int getAvailableRoom(Appointment appointment, String location) {
+    public int getAvailableRoom(Appointment appointment) {
 
-    	Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), location);
+    	Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
     	int room = 0;
     	for(int i=1; i<=5; i++) {
     		if(!takenRooms.contains(i)) {
@@ -216,7 +214,7 @@ public class AppointmentService {
     			}
     	}
     	
-    	return room; // return 0 for no room available at the specified location
+    	return room;
     }
 
 
