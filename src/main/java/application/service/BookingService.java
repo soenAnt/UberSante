@@ -81,11 +81,11 @@ public class BookingService {
                             stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
                             appointmentForm.getDescription());
         
-        int room = this.appointmentService.getAvailableRoom(followUpAppointment);
+        int room = this.appointmentService.getAvailableRoom(followUpAppointment, followUpAppointment.getPatient().getLocation());
 
         Appointment appointment = this.appointmentRepository.saveAndFlush(followUpAppointment);
 
-        Booking followUpBooking = new Booking(doctor, patient, appointment, room);
+        Booking followUpBooking = new Booking(doctor, patient, appointment, room, appointment.getPatient().getLocation());
         
         this.bookingRepository.save(followUpBooking);
     }
@@ -164,7 +164,7 @@ public class BookingService {
                       break;
                   }
                 }
-              Booking booking = new Booking(doctor, patient, appointmentWithID,room);
+              Booking booking = new Booking(doctor, patient, appointmentWithID, room, appointmentWithID.getPatient().getLocation());
               bookingRepository.save(booking);
             }
 
@@ -199,7 +199,7 @@ public class BookingService {
        Collection<Integer> doctorsId = this.
                 doctorRepository.
                 findAvailableDoctor
-                        (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+                        (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getPatient().getLocation());
 
       boolean valid = false;
         for(int id:doctorsId){
@@ -211,7 +211,7 @@ public class BookingService {
 
     private boolean isRoomValid(int room, Appointment appointment){
         boolean valid = false;
-        Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getPatient().getLocation());
 
         if(!takenRooms.contains(room)) {
               valid = true;
