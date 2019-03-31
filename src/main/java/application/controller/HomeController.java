@@ -36,4 +36,19 @@ public class HomeController {
     public String aboutus(){
         return "about";
     }
+
+    @GetMapping("/Outremont")
+    public String homeOutremont() {
+        return "home";
+    }
+
+    @GetMapping("/Westmount")
+    public String homeWestmount() {
+        return "home";
+    }
+
+    @GetMapping("/Mont-Royal")
+    public String homeMontRoyal() {
+        return "home";
+    }
 }
