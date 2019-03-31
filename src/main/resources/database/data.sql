@@ -13,6 +13,21 @@ INSERT IGNORE INTO users VALUES (12, 'Zachary', 'Ludowici','toes300', 'doctor', 
 INSERT IGNORE INTO users VALUES (13, 'Rita', 'Rodriguez', 'nursing101', 'nurse', 0,'Westmount');
 INSERT IGNORE INTO users VALUES (14, 'Gwendolyn', 'Shoop', 'costco', 'nurse', 0,'Westmount');
 INSERT IGNORE INTO users VALUES (15, 'William', 'Kline', 'ubereats', 'nurse', 0,'Westmount');
+INSERT IGNORE INTO users VALUES (16, 'Amanda', 'Banana', 'applesandbananas', 'nurse', 0, 'Mont-Royal');
+INSERT IGNORE INTO users VALUES (17, 'Daniella', 'Rug', 'itsme123', 'nurse', 0, 'Mont-Royal');
+INSERT IGNORE INTO users VALUES (18, 'Kristine', 'Lalo', 'nursesrule', 'nurse', 0, 'Mont-Royal');
+INSERT IGNORE INTO users VALUES (19, 'Carmen', 'Larsen', 'cooldoc123', 'doctor', 0, 'Mont-Royal');
+INSERT IGNORE INTO users VALUES (20, 'Anthony', 'Fugaz', 'doc4lyf', 'doctor', 0, 'Mont-Royal');
+INSERT IGNORE INTO users VALUES (21, 'Mike', 'Champ', 'heyholetsgo', 'doctor', 0, 'Mont-Royal');
+INSERT IGNORE INTO users VALUES (22, 'Mer', 'Pink', 'georgy123', 'nurse', 0, 'Outremont');
+INSERT IGNORE INTO users VALUES (23, 'Cristina', 'Ho', 'peace123', 'nurse', 0, 'Outremont');
+INSERT IGNORE INTO users VALUES (24, 'Andrew', 'Loo', 'schoolrox', 'nurse', 0, 'Outremont');
+INSERT IGNORE INTO users VALUES (25, 'Lina', 'Coin', 'lamps876', 'doctor', 0, 'Outremont');
+INSERT IGNORE INTO users VALUES (26, 'Elena', 'Vamp', 'doors1234', 'doctor', 0, 'Outremont');
+INSERT IGNORE INTO users VALUES (27, 'Park', 'Rec', 'creativity-1', 'doctor', 0, 'Outremont');
+
+
+
 
 INSERT IGNORE INTO clinics VALUES ('Westmount',0,0,5,0);
 INSERT IGNORE INTO clinics VALUES ('Mont-Royal',0,0,10,0);
@@ -29,17 +44,31 @@ INSERT IGNORE INTO patients VALUES (4,  '1990-10-10', 'Male', '514-612-5527',
 INSERT IGNORE INTO patients VALUES (5,  '1984-07-23', 'Male', '438-955-6541',
 'angel-lessons@outlook.com', '1544 Victoria Park Ave M2J 3T7, Montreal QC.', 'MATC 4888 7556');
 
-INSERT IGNORE INTO doctors VALUES (6, 'Cardiology', 'Montreal', '1141833');
-INSERT IGNORE INTO doctors VALUES (7, 'General practice', 'Montreal', '2748499');
-INSERT IGNORE INTO doctors VALUES (8, 'Gastroenterology', 'Montreal', '5986621');
-INSERT IGNORE INTO doctors VALUES (9, 'Endocrinology', 'Montreal', '4508102');
-INSERT IGNORE INTO doctors VALUES (10, 'Paediatrics', 'Montreal', '9856221');
-INSERT IGNORE INTO doctors VALUES (11, 'Internal medicine', 'Montreal', '7391852');
-INSERT IGNORE INTO doctors VALUES (12, 'Orthopaedics', 'Montreal', '1223554');
+INSERT IGNORE INTO doctors VALUES (6, 'Cardiology', 'Montreal', '1111111');
+INSERT IGNORE INTO doctors VALUES (7, 'General practice', 'Montreal', '2222222');
+INSERT IGNORE INTO doctors VALUES (8, 'Gastroenterology', 'Montreal', '3333333');
+INSERT IGNORE INTO doctors VALUES (9, 'Endocrinology', 'Montreal', '4444444');
+INSERT IGNORE INTO doctors VALUES (10, 'Paediatrics', 'Montreal', '5555555');
+INSERT IGNORE INTO doctors VALUES (11, 'Internal medicine', 'Montreal', '6666666');
+INSERT IGNORE INTO doctors VALUES (12, 'Orthopaedics', 'Montreal', '7777777');
+INSERT IGNORE INTO doctors VALUES (19, 'Neurologist', 'Montreal', '8888888');
+INSERT IGNORE INTO doctors VALUES (20, 'Oncologist', 'Montreal', '9999999');
+INSERT IGNORE INTO doctors VALUES (21, 'Osteopath', 'Montreal', '1234567');
+INSERT IGNORE INTO doctors VALUES (25, 'Plastic surgeon', 'Montreal', '7654321');
+INSERT IGNORE INTO doctors VALUES (26, 'Radiologist', 'Montreal', '1112223');
+INSERT IGNORE INTO doctors VALUES (27, 'Urologist', 'Montreal', '1231234');
+
 
 INSERT IGNORE INTO nurses VALUES (13, 'DHG88451');
 INSERT IGNORE INTO nurses VALUES (14, 'IUE15447');
 INSERT IGNORE INTO nurses VALUES (15, 'KMN12805');
+INSERT IGNORE INTO nurses VALUES (16, 'ABC89076');
+INSERT IGNORE INTO nurses VALUES (17, 'DEF12758');
+INSERT IGNORE INTO nurses VALUES (18, 'GHI75901');
+INSERT IGNORE INTO nurses VALUES (22, 'JKL56227');
+INSERT IGNORE INTO nurses VALUES (23, 'MNO77221');
+INSERT IGNORE INTO nurses VALUES (24, 'PQR88007');
+
 
 INSERT IGNORE INTO appointments VALUES(1, 1, '2019-09-09', '10:20', '10:40', "walk-in", "Westmount", "");
 INSERT IGNORE INTO appointments VALUES(2, 2, '2019-06-21', '16:00', '17:00', "annual", "Westmount", "");
@@ -100,3 +129,45 @@ INSERT IGNORE INTO schedules VALUES (46, 12, 'Wednesday', '9:00', '17:00');
 INSERT IGNORE INTO schedules VALUES (47, 12, 'Thursday', '9:00', '17:00');
 INSERT IGNORE INTO schedules VALUES (48, 12, 'Friday', '9:00', '17:00');
 INSERT IGNORE INTO schedules VALUES (49, 12, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (50, 19, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (51, 19, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (52, 19, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (53, 19, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (54, 19, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (55, 19, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (56, 19, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (57, 20, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (58, 20, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (59, 20, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (60, 20, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (61, 20, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (62, 20, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (63, 20, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (64, 21, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (65, 21, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (66, 21, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (67, 21, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (68, 21, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (69, 21, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (70, 21, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (71, 25, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (72, 25, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (73, 25, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (74, 25, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (75, 25, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (76, 25, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (77, 25, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (78, 26, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (79, 26, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (80, 26, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (81, 26, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (82, 26, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (83, 26, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (84, 26, 'Saturday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (85, 27, 'Sunday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (86, 27, 'Monday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (87, 27, 'Tuesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (88, 27, 'Wednesday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (89, 27, 'Thursday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (90, 27, 'Friday', '9:00', '17:00');
+INSERT IGNORE INTO schedules VALUES (91, 27, 'Saturday', '9:00', '17:00');
