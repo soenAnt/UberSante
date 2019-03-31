@@ -30,28 +30,19 @@ public class LocationService implements Subject{
 
     /**
      * When num_bookings gets too lopsided in one location, we sent staff to help out.
-     * @param location
-     * @param id
      */
-	public void relocateDoctor(String location, int id) {
-		Doctor doctor = doctorRepository.findByUserId(id);
+	public void relocateDoctor(String location, Doctor doctor) {
 		doctor.setLocation(location);
 		doctorRepository.save(doctor);
 		clinicService.updateClinicDoctors(location);
 		notifyRelocation(doctor);
 	}
 	
-	public void relocateNurse(String location, String id) {
-	    Nurse nurse;
-	    Collection<Nurse> nurses = nurseRepository.findByAccessId(id);
-
-	    if(nurses.size() == 1){
-		    nurse = nurses.iterator().next();
-		    nurse.setLocation(location);
-		    nurseRepository.save(nurse);
-		    clinicService.updateClinicNurses(location);
-		    notifyRelocation(nurse);
-        }
+	public void relocateNurse(String location, Nurse nurse) {
+        nurse.setLocation(location);
+        nurseRepository.save(nurse);
+        clinicService.updateClinicNurses(location);
+        notifyRelocation(nurse);
 	}
 
 	public void notifyRelocation(User user){
@@ -60,6 +51,27 @@ public class LocationService implements Subject{
         this.notificationService.saveNotification(notification);
         notifyObserver(user);
     }
+
+    public void relocateSomeDoctors(int num_doctor_relocation, String location) {
+
+        Collection<Doctor> doctors = this.doctorRepository.findAll();
+        for(Doctor doctor : doctors){
+            if(num_doctor_relocation > 0 && !doctor.getLocation().equals(location)){
+                relocateDoctor(location, doctor);
+                num_doctor_relocation--;
+            }
+        }
+	}
+
+    public void relocateSomeNurses(int num_nurse_relocation, String location) {
+        Collection<Nurse> nurses = this.nurseRepository.findAll();
+        for(Nurse nurse : nurses){
+            if(num_nurse_relocation > 0 && !nurse.getLocation().equals(location)){
+                relocateNurse(location, nurse);
+                num_nurse_relocation--;
+            }
+        }
+	}
 
     @Override
     public void register(Observer o) {
@@ -76,4 +88,6 @@ public class LocationService implements Subject{
 	    user.setNotification(1);
         notificationService.setNotificationStatus(user);
     }
+
+
 }

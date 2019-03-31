@@ -47,6 +47,9 @@ public class BookingService implements Subject{
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private ClinicService clinicService;
+
     //return bookings of a user by userid
     public Collection<Booking> getBookings(User user){
 
@@ -66,6 +69,8 @@ public class BookingService implements Subject{
 
         this.appointmentRepository.save(appointment);
 
+        clinicService.updateClinicBookings(booking.getAppointment().getLocation());
+
         return patient.getCart().getBookings();
     }
 
@@ -77,7 +82,7 @@ public class BookingService implements Subject{
         Appointment appointment = bookingo.getAppointment();
         this.bookingRepository.delete(bookingo);
         appointmentRepository.delete(appointment);
-
+        clinicService.updateClinicBookings(bookingo.getAppointment().getLocation());
     }
     
     // create follow-up appointment by doctor
@@ -94,6 +99,8 @@ public class BookingService implements Subject{
         Booking followUpBooking = new Booking(doctor, patient, appointment, room);
         
         this.bookingRepository.save(followUpBooking);
+
+        clinicService.updateClinicBookings(followUpBooking.getAppointment().getLocation());
     }
 
     public boolean updateValidate_Save(User user, BookingUpdateForm bookingUpdateForm, Booking updatebooking){
@@ -122,6 +129,7 @@ public class BookingService implements Subject{
             updatebooking.setRoom(room);
             bookingRepository.save(updatebooking);
             nurseBookingNotification(user, updatebooking, true);
+            clinicService.updateClinicBookings(updatebooking.getAppointment().getLocation());
             return true;
         }
         else {
@@ -174,6 +182,7 @@ public class BookingService implements Subject{
               Booking booking = new Booking(doctor, patient, appointmentWithID, room);
               bookingRepository.save(booking);
               nurseBookingNotification(user, booking, false);
+              clinicService.updateClinicBookings(booking.getAppointment().getLocation());
             }
 
         }

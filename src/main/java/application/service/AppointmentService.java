@@ -30,6 +30,9 @@ public class AppointmentService {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    @Autowired
+    private ClinicService clinicService;
+
     private boolean isRoomsFull = false;
     private boolean isDoctorAvailable = true;
 
@@ -164,6 +167,7 @@ public class AppointmentService {
     public void confirmBooking(Booking booking, Patient patient) {
         this.bookingRepository.save(booking);
         patient.getCart().removeAppointment(booking.getAppointment());
+        clinicService.updateClinicBookings(booking.getAppointment().getLocation());
     }
 
     public void quickRoomCheck(Appointment appointment){

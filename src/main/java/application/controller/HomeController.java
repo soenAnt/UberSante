@@ -1,5 +1,7 @@
 package application.controller;
 
+import application.service.ClinicService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -7,8 +9,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Controller
 @SessionAttributes(value = {"user", "appointments", "notification", "notifications"})
 public class HomeController {
+
+    @Autowired
+    private ClinicService clinicService;
+
     @GetMapping("/")
     public String homepage() {
+        this.clinicService.updateAll();
         return "home";
     }
 
