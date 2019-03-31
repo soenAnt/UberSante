@@ -20,8 +20,8 @@ public class ClinicService {
 	public void updateClinicNurses(String location) {
 
 	    if(first_update){
+            first_update = false;
 	        updateAll();
-	        first_update = false;
         }
 	    else {
             int num_nurses = clinicRepository.get_num_nurses(location);
@@ -33,8 +33,8 @@ public class ClinicService {
 
     public void updateClinicDoctors(String location) {
         if(first_update){
-            updateAll();
             first_update = false;
+            updateAll();
         }
         else {
             int num_doctors = clinicRepository.get_num_doctors(location);
@@ -51,8 +51,8 @@ public class ClinicService {
     public void updateClinicBookings(String location) {
 
         if(first_update){
-            updateAll();
             first_update = false;
+            updateAll();
         }
         else {
             int num_bookings = clinicRepository.get_num_bookings(location);
