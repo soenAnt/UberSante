@@ -17,7 +17,7 @@ import static application.controller.BookingController.getAppointment;
 
 
 @Controller
-@SessionAttributes(value = {"user", "appointments", "booking", "patient"})
+@SessionAttributes(value = {"user", "appointments", "booking", "patient", "notification", "notifications"})
 public class AppointmentController {
 
     @Autowired

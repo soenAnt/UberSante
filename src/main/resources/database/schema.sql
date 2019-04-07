@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS users (
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
-  `user_type` VARCHAR(45) NOT NULL
+  `user_type` VARCHAR(45) NOT NULL,
+  `notification` INT(1) NOT NULL,
+  `location` VARCHAR(45) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS patients (
@@ -48,6 +50,7 @@ CREATE TABLE IF NOT EXISTS appointments (
   `start_time` TIME NOT NULL,
   `end_time` TIME NOT NULL,
   `appointment_type` VARCHAR(10) NOT NULL,
+  `location` VARCHAR(45) NOT NULL,
   `description` VARCHAR(140) NULL,
   FOREIGN KEY (patient_id) REFERENCES patients(user_id)
 ) ENGINE=InnoDB;
@@ -71,3 +74,20 @@ CREATE TABLE IF NOT EXISTS schedules (
   `end_time` TIME NOT NULL,
   FOREIGN KEY (doctor_id) REFERENCES doctors(user_id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS notifications (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT UNSIGNED NOT NULL,
+  `message` VARCHAR(255) NOT NULL,
+  `day_time` TIMESTAMP NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS clinics (
+  `name` VARCHAR(45) NOT NULL PRIMARY KEY,
+  `num_doctors` INT UNSIGNED NOT NULL,
+  `num_nurses` INT UNSIGNED NOT NULL,
+  `num_rooms` INT UNSIGNED NOT NULL,
+  `num_bookings` INT UNSIGNED NOT NULL
+) ENGINE=InnoDB;
+

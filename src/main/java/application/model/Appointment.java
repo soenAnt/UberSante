@@ -23,6 +23,9 @@ public class Appointment {
 	@Column(name = "endTime")
     private Time endTime;
 
+    @Column(name = "location")
+    private String location;
+
 	@Column(name = "description")
     private String description;
 	
@@ -44,7 +47,7 @@ public class Appointment {
 	
 	public Appointment() {}
 
-    public Appointment(Patient patient, Date date, Time startTime, String appointmentType, String description) {
+    public Appointment(Patient patient, Date date, Time startTime, String appointmentType, String location, String description) {
         this.patient = patient;
 	    this.date = date;
         this.startTime = startTime;
@@ -52,6 +55,7 @@ public class Appointment {
         this.endTime = processEndTime(startTime, appointmentType);
         this.description = description;
         this.uuid = "abc";
+        this.location = location;
     }
 
     private Time processEndTime(Time startTime, String appointmentType) {
@@ -150,5 +154,13 @@ public class Appointment {
     }
     public void setStringDate(String s){
         this.stringDate = s;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

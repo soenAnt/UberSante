@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
-@SessionAttributes(value = {"user", "appointments", "patient", "doctor"})
+@SessionAttributes(value = {"user", "appointments", "patient", "doctor", "notification", "notifications"})
 public class BookingController {
 
     @Autowired
@@ -78,7 +78,7 @@ public class BookingController {
     public String bookingUpdateValidate(@ModelAttribute BookingUpdateForm bookingUpdateForm, Model model){
         User user = (User) ((BindingAwareModelMap) model).get("user");
 
-        boolean validate = bookingService.updateValidate_Save(bookingUpdateForm, updateBooking);
+        boolean validate = bookingService.updateValidate_Save(user, bookingUpdateForm, updateBooking);
         model.addAttribute("user", user);
         if(validate) {
             return "home";
@@ -99,7 +99,7 @@ public class BookingController {
 
         User user = (User) ((BindingAwareModelMap) model).get("user");
 
-        boolean validate = bookingService.createValidate_Save(bookingAddForm);
+        boolean validate = bookingService.createValidate_Save(user, bookingAddForm);
         model.addAttribute("user", user);
         doctorList = bookingService.getDoctorList();
         model.addAttribute("doctorList", doctorList);

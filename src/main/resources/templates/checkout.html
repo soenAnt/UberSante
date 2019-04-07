@@ -54,7 +54,6 @@
         <div class ="container">
             <span th:if="${booking} != null">Follow checkout procedure with payment and receipt.</span>
             <table class="cart-table" th:if="${booking} != null">
-                <thead>
                 <tr>
                     <th>Patient </th>
                     <th>Doctor</th>
@@ -62,11 +61,11 @@
                     <th>Start-Time</th>
                     <th>End-Time</th>
                     <th>Type</th>
+                    <th>Location</th>
                     <th>Room</th>
                     <th>Health Card Number</th>
                     <th>Email</th>
                 </tr>
-                </thead>
                 <tr th:object="${booking}">
                     <td th:text="${booking.patient.lastName}"></td>
                     <td th:text="${booking.doctor.lastName}"></td>
@@ -74,41 +73,72 @@
                     <td th:text="${booking.appointment.startTime}"></td>
                     <td th:text="${booking.appointment.endTime}"></td>
                     <td th:text="${booking.appointment.appointmentType}"></td>
+                    <td th:text="${booking.appointment.location}"></td>
                     <td th:text="${booking.room}"></td>
                     <td th:text="${booking.patient.healthCardNumber}"></td>
                     <td th:text="${booking.patient.email}"></td>
+                </tr>
+            </table>
+
+            <table class="cart-table" th:if="${booking} != null">
+                <tr>
+                    <th>Booking Fee</th>
+                </tr>
+                <tr>
+                    <td th:text="'Fee:  ' + ${booking.string_fee}"></td>
+                </tr>
+                <tr>
+                    <td th:text="'Tax:  ' + ${booking.string_tax}"></td>
+                </tr>
+                <tr>
+                    <td th:text="'Total:  ' + ${booking.string_total_fee}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
                     <td>
                         <a th:if="${payment} == null" href="/payment"><button>Payment</button></a>
                     </td>
                 </tr>
             </table>
-            <div th:if="${booking} == null">
-    <span style="color:red;" th:if="${isDoctorAvailable} == false">
-        The following appointment is not available as there are no doctors available in this time slot. Please remove your appointment from cart.
-    </span>
-                <span style="color:red;" th:if="${isRoomsFull} == true">
-        The following appointment is not available as there are no available rooms in this time slot. Please remove your appointment from cart.
-    </span>
-            </div>
-            <table th:if="${payment} != null" class="cart-table">
-                <thead>
-                <tr>
-                    <th>Credit Card Number</th>
-                    <th>Expiration Date</th>
-                    <th>CVC</th>
-                </tr>
-                </thead>
-                <tr th:object="${payment}">
-                    <td th:text="${payment.number}"></td>
-                    <td><span th:text="${payment.month}"></span><span>/</span><span th:text="${payment.year}"></span></td>
-                    <td th:text="XXX"></td>
-                    <td>
-                        <a href="/confirm"><button>Confirm</button></a>
-                    </td>
-                </tr>
-            </table>
-            <a href="/"><button>Cancel</button></a>
 
+            <div th:if="${booking} == null">
+                <span style="color:red;" th:if="${isDoctorAvailable} == false">
+                    The following appointment is not available as there are no doctors available in this time slot. Please remove your appointment from cart.
+                </span>
+                <span style="color:red;" th:if="${isRoomsFull} == true">
+                    The following appointment is not available as there are no available rooms in this time slot. Please remove your appointment from cart.
+                </span>
+            </div>
+
+            <div th:if="${payment} != null">
+                <table th:object="${payment}" class="cart-table">
+                    <tr>
+                        <th>Payment Information</th>
+                    </tr>
+                    <tr>
+                        <td th:text="'credit card:  ' + ${payment.number}"></td>
+                    </tr>
+                    <tr>
+                        <td th:text="'exp. date: ' + ${payment.month} + '/' + ${payment.year}"></td>
+                    </tr>
+                    <tr>
+                        <td>cvc: XXX</td>
+                    </tr>
+                </table>
+                <table style="margin-bottom: 100px;">
+                    <tr>
+                        <td>
+                            <a href="/confirm"><button>Confirm</button></a>
+                        </td>
+                        <td>&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <a href="/"><button>Cancel</button></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <footer th:replace="fragments/footer::footer"> </footer>
@@ -120,7 +150,7 @@
                     var $this = $('#cart-panel');
                     if ($this.hasClass('open')) {
                         $this.animate({
-                            left : '800px'
+                            left : '700px'
                         }, 150).removeClass('open');
                     } else {
                         $this.animate({

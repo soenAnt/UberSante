@@ -19,6 +19,7 @@
                         <th>Start-Time</th>
                         <th>End-Time</th>
                         <th>Type</th>
+                        <th>Location</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -29,6 +30,7 @@
                         <td th:text="${appointment.startTime}"></td>
                         <td th:text="${appointment.endTime}"></td>
                         <td th:text="${appointment.appointmentType}"></td>
+                        <td th:text="${appointment.location}"></td>
                         <td>
                             <a th:if="${appointment.appointmentId} == 0" th:href="@{/persistAppointment
                             (id=${appointment.uuid})}"><button>Save</button></a>

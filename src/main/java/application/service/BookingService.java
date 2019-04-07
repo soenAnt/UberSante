@@ -4,6 +4,8 @@ package application.service;
 import application.datastructure.AppointmentForm;
 import application.datastructure.BookingAddForm;
 import application.datastructure.BookingUpdateForm;
+import application.interfaces.Observer;
+import application.interfaces.Subject;
 import application.model.*;
 import application.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -21,7 +24,7 @@ import static application.service.AppointmentService.stringToDate;
 import static application.service.AppointmentService.stringToTime;
 
 @Service
-public class BookingService {
+public class BookingService implements Subject{
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -40,6 +43,12 @@ public class BookingService {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
+    private ClinicService clinicService;
 
     //return bookings of a user by userid
     public Collection<Booking> getBookings(User user){
@@ -60,6 +69,8 @@ public class BookingService {
 
         this.appointmentRepository.save(appointment);
 
+        clinicService.updateClinicBookings(booking.getAppointment().getLocation());
+
         return patient.getCart().getBookings();
     }
 
@@ -71,7 +82,7 @@ public class BookingService {
         Appointment appointment = bookingo.getAppointment();
         this.bookingRepository.delete(bookingo);
         appointmentRepository.delete(appointment);
-
+        clinicService.updateClinicBookings(bookingo.getAppointment().getLocation());
     }
     
     // create follow-up appointment by doctor
@@ -79,7 +90,7 @@ public class BookingService {
 
         Appointment followUpAppointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
                             stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
-                            appointmentForm.getDescription());
+                appointmentForm.getLocation(), appointmentForm.getDescription());
         
         int room = this.appointmentService.getAvailableRoom(followUpAppointment);
 
@@ -88,9 +99,11 @@ public class BookingService {
         Booking followUpBooking = new Booking(doctor, patient, appointment, room);
         
         this.bookingRepository.save(followUpBooking);
+
+        clinicService.updateClinicBookings(followUpBooking.getAppointment().getLocation());
     }
 
-    public boolean updateValidate_Save(BookingUpdateForm bookingUpdateForm, Booking updatebooking){
+    public boolean updateValidate_Save(User user, BookingUpdateForm bookingUpdateForm, Booking updatebooking){
         boolean doctorValidator = false;
         boolean roomValidator = false;
         //transfering all the new appointment information
@@ -115,13 +128,15 @@ public class BookingService {
             updatebooking.setDoctor(doctor);
             updatebooking.setRoom(room);
             bookingRepository.save(updatebooking);
+            nurseBookingNotification(user, updatebooking, true);
+            clinicService.updateClinicBookings(updatebooking.getAppointment().getLocation());
             return true;
         }
         else {
             return false;
         }
     }
-    public boolean createValidate_Save(BookingAddForm bookingAddForm){
+    public boolean createValidate_Save(User user, BookingAddForm bookingAddForm){
         Collection<Patient> patientCollection = patientRepository.findByEmail(bookingAddForm.getEmail());
         Patient patient = null;
         boolean validPatient = false;
@@ -138,7 +153,7 @@ public class BookingService {
 
         if(validPatient){
             Appointment appointment = new Appointment(patient, stringToDate(bookingAddForm.getDate()),
-                    stringToTime(bookingAddForm.getTime()), bookingAddForm.getAppointment_type(),
+                    stringToTime(bookingAddForm.getTime()), bookingAddForm.getAppointment_type(), user.getLocation(),
                     bookingAddForm.getDescription());
 
             appointment.setDate(truncateTimeFromDate(appointment.getDate()));
@@ -164,8 +179,10 @@ public class BookingService {
                       break;
                   }
                 }
-              Booking booking = new Booking(doctor, patient, appointmentWithID,room);
+              Booking booking = new Booking(doctor, patient, appointmentWithID, room);
               bookingRepository.save(booking);
+              nurseBookingNotification(user, booking, false);
+              clinicService.updateClinicBookings(booking.getAppointment().getLocation());
             }
 
         }
@@ -177,6 +194,37 @@ public class BookingService {
             return false;
         }
     }
+
+    // notifications saved after doctor follow-up is booked
+    private void doctorFollowUpNotification(Booking booking) {
+        String message = "Dr. " + booking.getDoctor().getFirstName() + " " + booking.getDoctor().getLastName() +
+                " has booked a follow-up appointment for you on " + booking.getAppointment().getStringDate() + " at " +
+                booking.getAppointment().getStartTime() + ".";
+
+        Notification notification = new Notification(booking.getPatient(), message, java.sql.Timestamp.valueOf(LocalDateTime.now()));
+        this.notificationService.saveNotification(notification);
+        notifyObserver(booking.getPatient());
+    }
+
+    // notifications saved after nurse books an appointment
+    private void nurseBookingNotification(User user, Booking booking, boolean isUpdate) {
+        String message;
+        if(isUpdate){
+            message = "Nurse " + user.getFirstName() + " " + user.getLastName() +
+                    " has made an update on one of your previous bookings. The appointment is now set on " +
+                    booking.getAppointment().getDate() + " at " +
+                    booking.getAppointment().getStartTime() + ".";
+        }
+        else {
+            message = "Nurse " + user.getFirstName() + " " + user.getLastName() +
+                    " has booked a new appointment for you on " + booking.getAppointment().getDate() + " at " +
+                    booking.getAppointment().getStartTime() + ".";
+        }
+        Notification notification = new Notification(booking.getPatient(), message, java.sql.Timestamp.valueOf(LocalDateTime.now()));
+        this.notificationService.saveNotification(notification);
+        notifyObserver(booking.getPatient());
+    }
+
     // return a patient
     public Patient getPatient(int patientId) {
         Patient patient = this.patientRepository.findByUserId(patientId);
@@ -199,7 +247,7 @@ public class BookingService {
        Collection<Integer> doctorsId = this.
                 doctorRepository.
                 findAvailableDoctor
-                        (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+                        (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getPatient().getLocation());
 
       boolean valid = false;
         for(int id:doctorsId){
@@ -211,7 +259,7 @@ public class BookingService {
 
     private boolean isRoomValid(int room, Appointment appointment){
         boolean valid = false;
-        Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getPatient().getLocation());
 
         if(!takenRooms.contains(room)) {
               valid = true;
@@ -234,5 +282,21 @@ public class BookingService {
         }
 
         return date_no_time;
+    }
+
+    @Override
+    public void register(Observer o) {
+
+    }
+
+    @Override
+    public void unregister(Observer o) {
+
+    }
+
+    @Override
+    public void notifyObserver(User user) {
+        user.setNotification(1);
+        this.notificationService.setNotificationStatus(user);
     }
 }
