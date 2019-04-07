@@ -1,6 +1,8 @@
 package application.service;
 
 import application.datastructure.AppointmentForm;
+import application.interfaces.Visitable;
+import application.interfaces.Visitor;
 import application.model.*;
 import application.repository.BookingRepository;
 import application.repository.DoctorRepository;
@@ -8,9 +10,6 @@ import application.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class AppointmentService {
+public class AppointmentService implements Visitable{
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -30,8 +29,17 @@ public class AppointmentService {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    @Autowired
+    private ClinicService clinicService;
+
+    @Autowired
+    private ProvincialTax provincialTax;
+
+    private Booking booking = null;
+
     private boolean isRoomsFull = false;
     private boolean isDoctorAvailable = true;
+
 
     /*
      * If cart has not been initialized, create it and populate with persisted appointments.
@@ -54,7 +62,7 @@ public class AppointmentService {
         if(available.size() == 0) {
             Appointment appointment = new Appointment(patient, stringToDate(appointmentForm.getDate()),
                     stringToTime(appointmentForm.getTime()), appointmentForm.getAppointment_type(),
-                    appointmentForm.getDescription());
+                    appointmentForm.getLocation(), appointmentForm.getDescription());
 
             appointment.setUuid(UUID.randomUUID().toString());
 
@@ -72,7 +80,7 @@ public class AppointmentService {
     public boolean checkAnnualValid(Patient patient, AppointmentForm appointmentForm){
 
         Collection<Appointment> annual_taken = this.appointmentRepository.isAnnualAvailable(patient.getUserId(),
-                stringToDate(appointmentForm.getDate()));
+                stringToDate(appointmentForm.getDate()), "annual");
 
         if(annual_taken.size() != 0){
             return false;
@@ -141,7 +149,7 @@ public class AppointmentService {
     public Booking checkoutAppointment(Patient patient, Appointment appointment) {
 
         Boolean exists = this.appointmentRepository.exists(appointment.getAppointmentId());
-        Booking booking;
+
         if (!exists) {
             appointment = this.appointmentRepository.saveAndFlush(appointment);
         }
@@ -149,34 +157,44 @@ public class AppointmentService {
         Doctor doctor = getAvailableDoctor(appointment);
         //feature 4
         int room = getAvailableRoom(appointment);
-        
-        if(doctor.getPhysicianPermitNumber() == 0 || room == 0) {
-        	System.out.println("doctor or room is not available");// might need to change, simply print out for now.
+
+        if(doctor == null){
+            System.out.println("doctor is not available");
+            isDoctorAvailable = false;
+            return null;
+        }
+        if(room == 0) {
+        	System.out.println("room is not available");// might need to change, simply print out for now.
+            isRoomsFull = true;
             return null;
         }
         else {
-            booking = new Booking(doctor, patient, appointment, room);
+            this.booking = new Booking(doctor, patient, appointment, room);
+            this.booking.setTax(accept(provincialTax));
+            this.booking.setTotal_fee(this.booking.getFee() + this.booking.getTax());
         }
 
-        return booking;
+        return this.booking;
     }
 
     public void confirmBooking(Booking booking, Patient patient) {
         this.bookingRepository.save(booking);
         patient.getCart().removeAppointment(booking.getAppointment());
+        clinicService.updateClinicBookings(booking.getAppointment().getLocation());
     }
 
     public void quickRoomCheck(Appointment appointment){
-        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        Collection<Integer> rooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(),
+                appointment.getEndTime(), appointment.getLocation());
         if (rooms.size() == 5) {
-            isRoomsFull = false;
+            isRoomsFull = true;
         }
-        isRoomsFull = true;
+        isRoomsFull = false;
     }
 
     public void quickDoctorCheck(Appointment appointment){
         Collection<Integer> doctors = this.doctorRepository.findAvailableDoctor
-                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+                (appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getLocation());
         if (doctors.isEmpty()) {
             isDoctorAvailable = false;
         }
@@ -192,10 +210,12 @@ public class AppointmentService {
         Collection<Integer> doctorsId = this.
         		doctorRepository.
         		findAvailableDoctor
-        		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        		(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime(), appointment.getLocation());
         
         if(!doctorsId.isEmpty()) 
         	doctor =this.doctorRepository.findByUserId( doctorsId.iterator().next() );
+        else // no available doctor at that location
+        	return null;
         
         return doctor;
     }
@@ -205,7 +225,8 @@ public class AppointmentService {
      */
     public int getAvailableRoom(Appointment appointment) {
 
-    	Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+    	Collection<Integer> takenRooms = this.bookingRepository.findTakenRooms(appointment.getDate(),
+                appointment.getStartTime(), appointment.getEndTime(), appointment.getLocation());
     	int room = 0;
     	for(int i=1; i<=5; i++) {
     		if(!takenRooms.contains(i)) {
@@ -214,7 +235,7 @@ public class AppointmentService {
     			}
     	}
     	
-    	return room;
+    	return room; // return 0 for no room available at the specified location
     }
 
 
@@ -285,5 +306,10 @@ public class AppointmentService {
 
     public boolean isDoctorAvailable() {
         return isDoctorAvailable;
+    }
+
+    @Override
+    public Double accept(Visitor visitor) {
+        return visitor.visit(this.booking);
     }
 }

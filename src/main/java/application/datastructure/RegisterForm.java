@@ -17,6 +17,7 @@ public class RegisterForm {
     private String phoneNumber;
     private String email;
     private String address;
+    private String location;
     private final String USER_TYPE = "patient";
 
     public RegisterForm(){}
@@ -30,7 +31,7 @@ public class RegisterForm {
     }
 
     public RegisterForm(String firstName, String lastName, String password, String confirm_password, String healthCard,
-                        String dateOfBirth, String gender, String phoneNumber, String email, String address) {
+                        String dateOfBirth, String gender, String phoneNumber, String email, String address, String location) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -41,6 +42,8 @@ public class RegisterForm {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
+        this.setLocation(location);
+        
     }
 
     public String getFirstName() {
@@ -118,4 +121,12 @@ public class RegisterForm {
     public String getUSER_TYPE() {
         return USER_TYPE;
     }
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 }

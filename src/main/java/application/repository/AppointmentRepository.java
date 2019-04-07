@@ -26,6 +26,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     @Query(value = "SELECT * FROM appointments WHERE patient_id=?1 AND date=?2 AND start_time=?3", nativeQuery = true)
     Collection<Appointment> isAvailable(int patient_id, Date date, Time start_time);
 
-    @Query(value = "SELECT * FROM appointments WHERE patient_id=?1 AND YEAR(date)=YEAR(?2)", nativeQuery = true)
-    Collection<Appointment> isAnnualAvailable(int userId, Date date);
+    @Query(value = "SELECT * FROM appointments WHERE patient_id=?1 AND YEAR(date)=YEAR(?2) AND appointments.appointment_type=?3", nativeQuery = true)
+    Collection<Appointment> isAnnualAvailable(int userId, Date date, String annual);
 }

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Bookings</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
 
@@ -14,9 +17,7 @@
 
     <link rel="stylesheet" type="text/css" href="../fragments/footer.css"/>
     <meta charset="UTF-8"/>
-    <title>Payment</title>
 </head>
-
 <body>
 
 <div th:if="${user.userType} == 'patient'" th:replace="fragments/cart::cart"></div> <!-- cart-->
@@ -31,50 +32,29 @@
 
     <div class="main">
 
-
-        <div class="container" th:if="${user}"> <!--// if user exists then go inside the div, else skip-->
-
-            <div th:if="${user.userType} == 'patient'">
-                <h3 th:text=" 'Welcome ' +  ${user.firstName}+' '+${user.lastName}">Hi, Name Space Last</h3>
-            </div>
-            <div th:if="${user.userType} == 'doctor'">
-                <h3 th:text=" 'Welcome back Doctor ' + ${user.lastName}">Hi, User</h3>
-            </div>
-            <div th:if="${user.userType} == 'nurse'">
-                <h3 th:text=" 'Welcome back Nurse ' + ${user.lastName}">Hi, User</h3>
-            </div>
-        </div>
         <div th:unless="${user}">
-            <div class="container">
-                Payment Below
-            </div>
+            <h3>Welcome to UberSante</h3>
         </div>
 
-        <div class ="container">
+        <h1 align="center">Your notifications</h1>
+        <div class="container">
+            <table class="table table-striped">
 
-            <form action="#" th:action="@{/payment}" th:object="${payment}" method="post" >
-                <div class="container">
-                    <p>Please fill in the following form to pay for your appointment.</p>
-
-                    <b>Credit Card Number</b>
-                    <input type="text" placeholder="XXXX XXXX XXXX XXXX" th:field="*{number}" id="number" required="true"/>
-
-                    <b>Expiration Date</b>
-                    <input type="text" placeholder="MM" th:field="*{month}" id="month" required="true"/>
-                    /
-                    <input type="text" placeholder="YY" th:field="*{year}" id="year" required="true"/>
-                    <b>CVC</b>
-                    <input type="text" placeholder="XXX" th:field="*{cvc}" id="cvc" required="true"/>
-
-                    <div>
-                        <button type="submit" class="confirm-btn" onsubmit="return validate()">Confirm</button>
-                    </div>
-                </div>
-            </form>
-
+                <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Message</th>
+                </tr>
+                </thead>
+                <tr th:each="notification : ${notifications}">
+                    <td th:text="${notification.timestamp}"></td>
+                    <td th:text="${notification.message}"></td>
+                </tr>
+            </table>
         </div>
 
         <footer th:replace="fragments/footer::footer"> </footer>
+
 
         <div>
             <!-- Cart Slider -->
@@ -93,9 +73,9 @@
                 });
             </script>
         </div>
-
     </div>
 </div>
+
 
 </body>
 </html>

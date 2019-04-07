@@ -38,8 +38,9 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Location <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Outremont</a></li>
-                        <li><a href="#">Westmount</a></li>
+                        <li><a href="/Westmount">Westmount</a></li>
+                        <li><a href="/Mont-Royal">Mont-Royal</a></li>
+                        <li><a href="/Outremont">Outremont</a></li>
                     </ul>
                 </li>
                 <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -70,10 +71,13 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Location <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Outremont</a></li>
-                        <li><a href="#">Westmount</a></li>
+                        <li><a href="/Westmount">Westmount</a></li>
+                        <li><a href="/Mont-Royal">Mont-Royal</a></li>
+                        <li><a href="/Outremont">Outremont</a></li>
                     </ul>
                 </li>
+                <a style="float:left;" th:if="${notification} == 1" href="/notifications"><img src="/images/notification_alert.png" width="40" height="40"/></a>
+                <a style="float:left;" th:if="${notification} == 0" href="/notifications"><img src="/images/notification_closed.png" width="45" height="45"/></a>
                 <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
             </ul>
         </div>

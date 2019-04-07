@@ -9,8 +9,8 @@ public class Nurse extends User{
 	@Column(name = "accessId")
 	private String accessId;
 
-	public Nurse(String firstName,String lastName, String accessId, String password, String userType) {
-		super(firstName, lastName, password, userType);
+	public Nurse(String firstName,String lastName, String accessId, String password, String userType,  String location) {
+		super(firstName, lastName, password, userType, location);
 		this.accessId = accessId;
 	}
 	public Nurse() {super();}

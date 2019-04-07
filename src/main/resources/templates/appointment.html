@@ -62,14 +62,26 @@
 
                 <form class="form-horizontal" method="post" id="appointment" action="/add_to_cart">
                     <div class="form-group">
-                    <tr>
+                        <tr>
+                            <td align="right">
+                                <label><b>Location:</b></label>
+                            </td>
+                            <td align="left">
+                                <select name="location" class="appointment_type">
+                                    <option selected="selected" value="Westmount">Westmount</option>
+                                    <option value="Mont-Royal">Mont-Royal</option>
+                                    <option value="Outremont">Outremont</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
                         <td align="right">
                             <label><b>Appointment Type:</b></label>
                         </td>
                         <td align="left">
                             <select name="appointment_type" class="appointment_type">
                                 <option value="walk-in">Walk-In</option>
-                                <option value="annual">Annual</option>n>
+                                <option value="annual">Annual</option>
                             </select>
                         </td>
                     </tr>
@@ -137,7 +149,7 @@
                     var $this = $('#cart-panel');
                     if ($this.hasClass('open')) {
                         $this.animate({
-                            left : '600px'
+                            left : '700px'
                         }, 150).removeClass('open');
                     } else {
                         $this.animate({
