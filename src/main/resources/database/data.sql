@@ -171,3 +171,15 @@ INSERT IGNORE INTO schedules VALUES (88, 27, 'Wednesday', '9:00', '17:00');
 INSERT IGNORE INTO schedules VALUES (89, 27, 'Thursday', '9:00', '17:00');
 INSERT IGNORE INTO schedules VALUES (90, 27, 'Friday', '9:00', '17:00');
 INSERT IGNORE INTO schedules VALUES (91, 27, 'Saturday', '9:00', '17:00');
+
+UPDATE clinics SET num_doctors=(SELECT count(doctors.user_id) FROM doctors LEFT JOIN users ON doctors.user_id=users.user_id WHERE users.location="Outremont") WHERE name="Outremont";
+UPDATE clinics SET num_doctors=(SELECT count(doctors.user_id) FROM doctors LEFT JOIN users ON doctors.user_id=users.user_id WHERE users.location="Mont-royal") WHERE name="Mont-Royal";
+UPDATE clinics SET num_doctors=(SELECT count(doctors.user_id) FROM doctors LEFT JOIN users ON doctors.user_id=users.user_id WHERE users.location="Westmount") WHERE name="Westmount";
+
+UPDATE clinics SET num_nurses=(SELECT count(nurses.user_id) FROM nurses LEFT JOIN users ON nurses.user_id=users.user_id WHERE users.location="Outremont") WHERE name="Outremont";
+UPDATE clinics SET num_nurses=(SELECT count(nurses.user_id) FROM nurses LEFT JOIN users ON nurses.user_id=users.user_id WHERE users.location="Mont-royal") WHERE name="Mont-Royal";
+UPDATE clinics SET num_nurses=(SELECT count(nurses.user_id) FROM nurses LEFT JOIN users ON nurses.user_id=users.user_id WHERE users.location="Westmount") WHERE name="Westmount";
+
+UPDATE clinics SET num_bookings=(SELECT count(bookings.booking_id) FROM bookings LEFT JOIN appointments ON bookings.appointment_id=appointments.appointment_id WHERE appointments.location="Outremont") WHERE name="Outremont";
+UPDATE clinics SET num_bookings=(SELECT count(bookings.booking_id) FROM bookings LEFT JOIN appointments ON bookings.appointment_id=appointments.appointment_id WHERE appointments.location="Mont-royal") WHERE name="Mont-Royal";
+UPDATE clinics SET num_bookings=(SELECT count(bookings.booking_id) FROM bookings LEFT JOIN appointments ON bookings.appointment_id=appointments.appointment_id WHERE appointments.location="Westmount") WHERE name="Westmount";
