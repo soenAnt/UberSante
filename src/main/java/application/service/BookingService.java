@@ -100,6 +100,8 @@ public class BookingService implements Subject{
         
         this.bookingRepository.save(followUpBooking);
 
+        doctorFollowUpNotification(followUpBooking);
+
         clinicService.updateClinicBookings(followUpBooking.getAppointment().getLocation());
     }
 
