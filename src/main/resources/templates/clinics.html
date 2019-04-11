@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bookings</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="../fragments/footer.css"/>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+
+<div th:if="${user.userType} == 'patient'" th:replace="fragments/cart::cart"></div> <!-- cart-->
+<div class="wrap">
+    <div class="header">
+
+        <div th:replace="fragments/header"></div>
+    </div>
+
+    <div th:replace="fragments/navbar"> </div>
+
+
+    <div class="main">
+
+        <div th:unless="${user}">
+            <h3>Welcome to UberSante</h3>
+        </div>
+
+        <div class="container">
+            <table class="table table-striped">
+
+                <thead>
+                <tr>
+                    <th>Clinic</th>
+                    <th>Number of rooms</th>
+                    <th>Number of nurses</th>
+                    <th>Number of doctors</th>
+                    <th>Number of bookings</th>
+                </tr>
+                </thead>
+                <tr th:each="clinic : ${clinics}">
+                    <td th:text="${clinic.name}"></td>
+                    <td th:text="${clinic.num_rooms}"></td>
+                    <td th:text="${clinic.num_nurses}"></td>
+                    <td th:text="${clinic.num_doctors}"></td>
+                    <td th:text="${clinic.num_bookings}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <footer th:replace="fragments/footer::footer"> </footer>
+
+
+        <div>
+            <!-- Cart Slider -->
+            <script>
+                $('#cartToggle').on('click', function(){
+                    var $this = $('#cart-panel');
+                    if ($this.hasClass('open')) {
+                        $this.animate({
+                            left : '700px'
+                        }, 150).removeClass('open');
+                    } else {
+                        $this.animate({
+                            left : '17px'
+                        }, 150).addClass('open');
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
