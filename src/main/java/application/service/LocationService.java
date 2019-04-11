@@ -34,14 +34,14 @@ public class LocationService implements Subject{
 	public void relocateDoctor(String location, Doctor doctor) {
 		doctor.setLocation(location);
 		doctorRepository.save(doctor);
-		clinicService.updateClinicDoctors(location);
+		clinicService.updateAllDoctors();
 		notifyRelocation(doctor);
 	}
 	
 	public void relocateNurse(String location, Nurse nurse) {
         nurse.setLocation(location);
         nurseRepository.save(nurse);
-        clinicService.updateClinicNurses(location);
+        clinicService.updateAllNurses();
         notifyRelocation(nurse);
 	}
 
