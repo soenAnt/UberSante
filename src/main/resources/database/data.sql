@@ -25,7 +25,7 @@ INSERT IGNORE INTO users VALUES (24, 'Andrew', 'Loo', 'schoolrox', 'nurse', 0, '
 INSERT IGNORE INTO users VALUES (25, 'Lina', 'Coin', 'lamps876', 'doctor', 0, 'Outremont');
 INSERT IGNORE INTO users VALUES (26, 'Elena', 'Vamp', 'doors1234', 'doctor', 0, 'Outremont');
 INSERT IGNORE INTO users VALUES (27, 'Park', 'Rec', 'creativity-1', 'doctor', 0, 'Outremont');
-
+INSERT IGNORE INTO users VALUES (28, 'admin', '1', '123', 'patient', 0, 'Westmount');
 
 
 
@@ -43,6 +43,8 @@ INSERT IGNORE INTO patients VALUES (4,  '1990-10-10', 'Male', '514-612-5527',
 'JeromeD@dayrep.com', '3326 De la Providence Avenue J8H 2J7, Montreal QC.', 'JERD 4485 1200');
 INSERT IGNORE INTO patients VALUES (5,  '1984-07-23', 'Male', '438-955-6541',
 'angel-lessons@outlook.com', '1544 Victoria Park Ave M2J 3T7, Montreal QC.', 'MATC 4888 7556');
+INSERT IGNORE INTO patients VALUES (28, '1990-10-10', 'Male', '438-958-6541',
+'admin@gmail.com', '1544 Victoria Park Ave M2J 3T7, Montreal QC.', 'ADMN 1234 5678');
 
 INSERT IGNORE INTO doctors VALUES (6, 'Cardiology', 'Montreal', '1111111');
 INSERT IGNORE INTO doctors VALUES (7, 'General practice', 'Montreal', '2222222');
